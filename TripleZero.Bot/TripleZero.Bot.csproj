@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Helper\ModuleHelper.cs" />
+    <Compile Remove="Modules\AdminModule.cs" />
+    <Compile Remove="Modules\ArenaModule.cs" />
+    <Compile Remove="Modules\CharacterModule.cs" />
+    <Compile Remove="Modules\DBStatsModule.cs" />
+    <Compile Remove="Modules\GuildModule.cs" />
+    <Compile Remove="Modules\HelpModule.cs" />
+    <Compile Remove="Modules\ModsModule.cs" />
+    <Compile Remove="Modules\PlayerModule.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="Discord.Net" Version="1.0.2" />
+    <PackageReference Include="Discord.Net.Commands" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="JSonAppSettings\configBot.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="JSonAppSettings\configRepository.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

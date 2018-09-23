@@ -8,6 +8,7 @@ using TripleZero.Bot.Settings;
 using Autofac;
 using TripleZero.Bot.Helper;
 using TripleZero.Bot.Modules;
+using SWGoH.Model;
 
 namespace TripleZero.Bot
 {
@@ -22,6 +23,7 @@ namespace TripleZero.Bot
         static Autofac.IContainer autoFacContainer = null;
         static ApplicationSettings applicationSettings = null;
         private DiscordSocketClient client = null;
+        static Logo logo = null;
         private IServiceProvider services = null;
         private CommandService commands = null;
 
@@ -30,20 +32,22 @@ namespace TripleZero.Bot
         public async Task MainAsync()
         {
             ///////////initialize autofac
+            SettingsTripleZeroBot settingsTripleZeroBot = null;
             autoFacContainer = AutofacConfig.ConfigureContainer();
             using (var scope = autoFacContainer.BeginLifetimeScope())
             {
                 applicationSettings = scope.Resolve<ApplicationSettings>();
                 commands = scope.Resolve<CommandService>();
                 client = scope.Resolve<DiscordSocketClient>();
+                logo = scope.Resolve<Logo>();
 
-                var appSettings = applicationSettings.GetTripleZeroBotSettings();
+                settingsTripleZeroBot = applicationSettings.GetTripleZeroBotSettings();
 
                 await InstallCommands();
 
-                await client.LoginAsync(TokenType.Bot, appSettings.DiscordSettings.Token);
+                await client.LoginAsync(TokenType.Bot, settingsTripleZeroBot.DiscordSettings.Token);
                 await client.StartAsync();
-                await client.SetGameAsync(string.Format("{0}help", appSettings.DiscordSettings.Prefix));
+                await client.SetGameAsync(string.Format("{0}help", settingsTripleZeroBot.DiscordSettings.Prefix));
             }
 
             //client.MessageReceived += MessageReceived;           
@@ -53,14 +57,14 @@ namespace TripleZero.Bot
                 Consoler.WriteLineInColor(string.Format("Still not connected... {0}", DateTime.Now), ConsoleColor.Yellow);
                 await Task.Delay(2000);
             }
-            Logo.ConsolePrintLogo(); //prints application name,version etc 
+            logo.ConsolePrintLogo(); //prints application name,version etc 
             //await TestCharAliasesDelete();
             //await TestDelete();
             //await TestGuildPlayers("41st");
             //await TestPlayerReport("tsitas_66");
             //await TestGuildModule("41s", "gk");
             //await TestCharacterModule("tsitas_66", "cls");
-            await client.GetUser("TSiTaS", "1984").SendMessageAsync(Logo.GetLogo());
+            await client.GetUser("TSiTaS", "1984").SendMessageAsync(logo.GetLogo());
             await Task.Delay(-1);
 
 

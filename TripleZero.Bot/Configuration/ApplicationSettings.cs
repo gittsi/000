@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using SWGoH.Model;
 
 namespace TripleZero.Bot.Settings
 {
@@ -52,6 +53,13 @@ namespace TripleZero.Bot.Settings
                     ApiKey = _SettingsConfigurationRoot.GetSection("MongoDB_Settings")["ApiKey"]
                     ,
                     DB = _SettingsConfigurationRoot.GetSection("MongoDB_Settings")["DB"]
+                },
+
+                SWGoHHelpSettings = new SWGoHHelpSettings()
+                {
+                    UserName = _SettingsConfigurationRoot.GetSection("SWGoHHelp_Settings")["UserName"]
+                    ,
+                    Password = _SettingsConfigurationRoot.GetSection("SWGoHHelp_Settings")["Password"]
                 },
 
                 CachingSettings = new CachingSettings()

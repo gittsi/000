@@ -1,7 +1,10 @@
 ﻿using Autofac;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Caching.Memory;
+using TripleZero.Bot.Helper;
 using TripleZero.Bot.Settings;
+using TripleZero.Core;
 
 namespace TripleZero.Bot.Infrastructure.DI
 {
@@ -18,9 +21,14 @@ namespace TripleZero.Bot.Infrastructure.DI
             
             //configuration
             builder.RegisterType<ApplicationSettings>().SingleInstance();                        
-            builder.RegisterType<SettingsConfiguration>().As<ISettingsConfiguration>().SingleInstance();            
+            builder.RegisterType<SettingsConfiguration>().As<ISettingsConfiguration>().SingleInstance();
+            builder.RegisterType<Logo>().SingleInstance();
 
-            ////modules
+            builder.RegisterType<PlayerContext>().As<IPlayerContext>().SingleInstance();
+
+            builder.RegisterType<MemoryCache>().As<IMemoryCache>().SingleInstance().WithParameter("MemoryCacheOptions", new MemoryCacheOptions());
+
+            ////moules
             //builder.RegisterType<HelpModule>().InstancePerDependency();
             //builder.RegisterType<FunModule>().InstancePerDependency();
             //builder.RegisterType<GuildModule>().InstancePerDependency();

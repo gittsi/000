@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TripleZero.Bot.Settings
+namespace SWGoH.Model
 {
     public class SettingsTripleZeroRepository
     {
@@ -20,6 +20,9 @@ namespace TripleZero.Bot.Settings
     {
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string Protocol => "https";
+        public string Host => "api.swgoh.help";
+        public string Port => "";
     }
     public partial class CachingSettings
     {

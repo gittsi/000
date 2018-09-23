@@ -229,13 +229,58 @@ namespace TripleZero.Repository.SWGoHHelp.Dto
         public SkillType Type { get; set; }
     }
 
-    public enum PrimaryBonusType { Accuracy, CriticalAvoidance, CriticalChance, CriticalDamage, Defense, Health, Offense, Potency, Protection, Speed, Tenacity };
+    public enum PrimaryBonusType
+    {
+        Health = 55,
+        Speed = 5,        
+        CriticalDamage=16,
+        Potency = 17,
+        Tenacity = 18,
+        Offense =48, //5880000        
+        Defense = 49,
+        Accuracy = 52,
+        CriticalChance = 53,
+        CriticalAvoidance = 54,       
+        Protection =56
+    };
 
-    public enum SecondaryType { CriticalChance, Defense, Health, Offense, Potency, Protection, SecondaryTypeDefense, SecondaryTypeHealth, SecondaryTypeOffense, SecondaryTypeProtection, Speed, Tenacity };
+    public enum SecondaryType
+    {
+        Health = 1, //41900000000
+        Speed = 5, //	1200000000
+        Potency = 17,//3334000
+        Tenacity = 18,
+        Protection = 28,
+        Offense = 41,
+        Defense = 42,
+        SecondaryTypeOffense = 48,
+        SecondaryTypeDefense = 49,
+        CriticalChance = 53, //1808000
+        SecondaryTypeHealth =55,
+        SecondaryTypeProtection=56
+    };
 
-    public enum Set { CritChance, CritDamage, Defense, Health, Offense, Potency, Speed, Tenacity };
+    public enum Set
+    {
+        Health = 1,
+        Offense = 2,
+        Defense = 3,
+        Speed = 4,
+        CritChance = 5,
+        CritDamage = 6,
+        Potency = 7,        
+        Tenacity = 8
+    };
 
-    public enum Slot { Arrow, Circle, Cross, Diamond, Square, Triangle };
+    public enum Slot
+    {
+        Square = 1,
+        Arrow = 2,
+        Diamond = 3,
+        Triangle =4,
+        Circle=5,
+        Cross=6
+    };
 
     public enum SkillType { Basic, Contract, Hardware, Leader, Special, Unique };
 

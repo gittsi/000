@@ -31,7 +31,14 @@ namespace TripleZero.Core
 
         public Player GetPlayerData(string alias)
         {
-            throw new NotImplementedException();
+            var allyCode =  alias.Replace("-","" );
+
+            if (  int.TryParse(allyCode, out int result))
+            {
+                return GetPlayerData(result);
+            }
+            else
+                return null;
         }
     }
 }

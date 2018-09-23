@@ -9,6 +9,7 @@ using Autofac;
 using TripleZero.Bot.Helper;
 using TripleZero.Bot.Modules;
 using SWGoH.Model;
+using TripleZero.Modules;
 
 namespace TripleZero.Bot
 {
@@ -77,7 +78,7 @@ namespace TripleZero.Bot
             //await commands.AddModuleAsync<CharacterModule>();
             //await commands.AddModuleAsync<GuildModule>();
             //await commands.AddModuleAsync<ArenaModule>();
-            //await commands.AddModuleAsync<ModsModule>();
+            await commands.AddModuleAsync<ModsModule>();
             //await commands.AddModuleAsync<AdminModule>();
             //await commands.AddModuleAsync<HelpModule>();
             await commands.AddModuleAsync<FunModule>();

@@ -16,7 +16,6 @@
     <Compile Remove="Modules\DBStatsModule.cs" />
     <Compile Remove="Modules\GuildModule.cs" />
     <Compile Remove="Modules\HelpModule.cs" />
-    <Compile Remove="Modules\ModsModule.cs" />
     <Compile Remove="Modules\PlayerModule.cs" />
   </ItemGroup>
 

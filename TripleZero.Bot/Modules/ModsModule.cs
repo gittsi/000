@@ -3,12 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using TripleZero.Infrastructure.DI;
+//using TripleZero.Infrastructure.DI;
 using SWGoH.Model.Extensions;
 using SWGoH.Model.Enums;
 using SWGoH.Model;
-using TripleZero.Helper;
-using TripleZero.Core.Caching;
+using TripleZero.Bot.Settings;
+using AutoMapper;
+using TripleZero.Core;
+using Microsoft.Extensions.Caching.Memory;
+//using TripleZero.Helper;
+//using TripleZero.Core.Caching;
 
 namespace TripleZero.Modules
 {
@@ -16,18 +20,18 @@ namespace TripleZero.Modules
     [Summary("Mods Commands")]
     public class ModsModule : ModuleBase<SocketCommandContext>
     {
-        private CacheClient cacheClient = IResolver.Current.CacheClient;
+        //private CacheClient cacheClient = IResolver.Current.CacheClient;
 
         #region "Secondary stats"
         private async void SendSecondaryModReply(Player player, ModStatType modStatType, ModValueType secondaryStatValueType, List<Tuple<string, Mod>> result)
         {
-            if (player.LoadedFromCache) await ReplyAsync($"{cacheClient.GetCachedDataRepositoryMessage()}");
+            //if (player.LoadedFromCache) await ReplyAsync($"{cacheClient.GetCachedDataRepositoryMessage()}");
 
             string retStr = "";
             if (result != null)
             {
                 retStr += $"```css\n{modStatType.GetDescription()} secondary mods for player {player.PlayerName} - {player.PlayerNameInGame} \n```";
-                retStr += string.Format("```Last update : {0}(UTC)```\n", player.SWGoHUpdateDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                retStr += string.Format("```Last update : {0}(UTC)```\n", player.RosterUpdateDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 retStr += string.Format("Returned mods : {0}", result.Count());
                 foreach (var row in result)
@@ -107,7 +111,13 @@ namespace TripleZero.Modules
             }
 
             //get player
-            var player = IResolver.Current.MongoDBRepository.GetPlayer(playerUserName).Result;
+            //var player = IResolver.Current.MongoDBRepository.GetPlayer(playerUserName).Result;
+            var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
+            var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
+            IMapper mapper = null;
+            var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
+            var player = context.GetPlayerData(playerUserName);
+
             if (player == null)
             {
                 await ReplyAsync($"I couldn't find player : {playerUserName}...");
@@ -124,13 +134,13 @@ namespace TripleZero.Modules
         #region "Primary stats"
         private async void SendPrimaryModReply(Player player, ModStatType modStatType, List<Tuple<string, Mod>> result)
         {
-            if (player.LoadedFromCache) await ReplyAsync($"{cacheClient.GetCachedDataRepositoryMessage()}");
+          //  if (player.LoadedFromCache) await ReplyAsync($"{cacheClient.GetCachedDataRepositoryMessage()}");
 
             string retStr = "";
             if (result != null)
             {
                 retStr += $"```css\n{modStatType.GetDescription()} primary mods for player {player.PlayerName} - {player.PlayerNameInGame} \n```";
-                retStr += string.Format("```Last update : {0}(UTC)```\n", player.SWGoHUpdateDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                retStr += string.Format("```Last update : {0}(UTC)```\n", player.RosterUpdateDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 retStr += string.Format("Returned mods : {0}", result.Count());
                 foreach (var row in result)
@@ -198,7 +208,12 @@ namespace TripleZero.Modules
             }
 
             //get player
-            var player = IResolver.Current.MongoDBRepository.GetPlayer(playerUserName).Result;
+            var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
+            var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
+            IMapper mapper = null;
+            var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
+            var player = context.GetPlayerData(playerUserName);
+
             if (player == null)
             {
                 await ReplyAsync($"I couldn't find player : {playerUserName}...");

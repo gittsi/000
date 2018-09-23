@@ -127,7 +127,7 @@ namespace TripleZero.Repository.SWGoHHelper
                 //dataStream.Write(byteArray, 0, byteArray.Length);
                 //dataStream.Close();
                 WebResponse response = request.GetResponse();
-                Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                //Console.WriteLine(((HttpWebResponse)response).StatusDescription);
                 var dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
                 var apiResponse = reader.ReadToEnd();

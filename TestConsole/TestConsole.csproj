@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SWGoH.Model\SWGoH.Model.csproj" />
+    <ProjectReference Include="..\TripleZero.Bot\TripleZero.Bot.csproj" />
+    <ProjectReference Include="..\TripleZero.Core\TripleZero.Core.csproj" />
+    <ProjectReference Include="..\TripleZero.Repository\TripleZero.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="JSonAppSettings\configBot.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="JSonAppSettings\configRepository.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

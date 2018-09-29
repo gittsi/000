@@ -5,37 +5,37 @@ using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
 using SWGoH.Model;
 using TripleZero.Repository.SWGoHHelp;
-using TripleZero.Repository.SWGoHHelpRepository;
+
 
 namespace TripleZero.Core
 {
-    public class PlayerContext : IPlayerContext
+    public class GuildContext : IGuildContext
     {
         IMemoryCache _memoryCache;
         private SettingsTripleZeroRepository _settings;
         private IMapper _mapper;
-        public PlayerContext(SettingsTripleZeroRepository settings, IMemoryCache memoryCache , IMapper mapper)
+        public GuildContext(SettingsTripleZeroRepository settings, IMemoryCache memoryCache , IMapper mapper)
         {
             _settings = settings;
             _memoryCache = memoryCache;
             _mapper = mapper;
         }
 
-        public Player GetPlayerData( int allyCode)
+        public Guild GetGuildData( int allyCode)
         {
-            var playerRepo = new SWGoHHelpPlayerRepository(_settings.SWGoHHelpSettings, _memoryCache,_mapper);
-            var result = playerRepo.GetPlayer(allyCode);
+            var guildRepo = new SWGoHHelpGuildRepository(_settings.SWGoHHelpSettings, _memoryCache,_mapper);
+            var result = guildRepo.GetGuild(allyCode);
 
             return result;
         }
 
-        public Player GetPlayerData(string alias)
+        public Guild GetGuildData(string alias)
         {
             var allyCode =  alias.Replace("-","" );
 
             if (  int.TryParse(allyCode, out int result))
             {
-                return GetPlayerData(result);
+                return GetGuildData(result);
             }
             else
                 return null;

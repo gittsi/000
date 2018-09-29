@@ -5,7 +5,7 @@
 //    var swgohUnits = SwgohUnits.FromJson(jsonString);
 using Newtonsoft.Json;
 
-namespace TripleZero.Repository.SWGoHHelp.Dto
+namespace TripleZero.Repository.SWGoHHelpRepository.Dto
 {
     using System;
     using System.Collections.Generic;
@@ -36,12 +36,12 @@ namespace TripleZero.Repository.SWGoHHelp.Dto
 
     public partial class Units
     {
-        public static Dictionary<string, Units> FromJson(string json) => JsonConvert.DeserializeObject<Dictionary<string, Units>>(json, TripleZero.Repository.SWGoHHelp.Dto.ConverterUnits.Settings);
+        public static Dictionary<string, Units> FromJson(string json) => JsonConvert.DeserializeObject<Dictionary<string, Units>>(json, ConverterUnits.Settings);
     }
 
     public static class SerializeUnits
     {
-        public static string ToJson(this Dictionary<string, Units> self) => JsonConvert.SerializeObject(self, TripleZero.Repository.SWGoHHelp.Dto.ConverterUnits.Settings);
+        public static string ToJson(this Dictionary<string, Units> self) => JsonConvert.SerializeObject(self, ConverterUnits.Settings);
     }
 
     internal static class ConverterUnits

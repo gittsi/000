@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using TripleZero.Repository.SWGoHHelp.Dto;
 
-namespace TripleZero.Repository.SWGoHHelpRepository.Authentication
+namespace TripleZero.Repository.SWGoHHelpRepository
 {
     public class Authentication
     {

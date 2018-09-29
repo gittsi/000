@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TripleZero.Repository.Mapping
 {
-    internal interface IMappingConfiguration
+    public interface IMappingConfiguration
     {
         IMapper GetConfigureMapper();
     }

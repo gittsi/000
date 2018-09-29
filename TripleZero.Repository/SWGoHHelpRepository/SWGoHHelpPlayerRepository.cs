@@ -6,13 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Text;
 using TripleZero.Repository.Mapping;
-using TripleZero.Repository.SWGoHHelp.Dto;
+using TripleZero.Repository.SWGoHHelpRepository.Dto;
 using TripleZero.Repository.SWGoHHelper;
-using TripleZero.Repository.SWGoHHelpRepository.Authentication;
 
-namespace TripleZero.Repository.SWGoHHelp
+namespace TripleZero.Repository.SWGoHHelpRepository
 {
     public class SWGoHHelpPlayerRepository : ISWGoHHelpPlayerRepository
     {

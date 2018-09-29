@@ -4,11 +4,12 @@ using SWGoH.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TripleZero.Repository.SWGoHHelp.Dto;
+using TripleZero.Repository.Dto;
+using TripleZero.Repository.SWGoHHelpRepository.Dto;
 
 namespace TripleZero.Repository.Mapping
 {
-    internal class MappingConfiguration : IMappingConfiguration
+    public class MappingConfiguration : IMappingConfiguration
     {
         private IMapper _Mapper;
         public MappingConfiguration()
@@ -47,8 +48,8 @@ namespace TripleZero.Repository.Mapping
                     //    }
                     //});
 
-                    cfg.CreateMap<SWGoHHelp.Dto.Mod, ModStat>().ConvertUsing<PrimaryModConverter>();
-                    cfg.CreateMap<SWGoHHelp.Dto.Mod, List<ModStat>>().ConvertUsing<SecondaryModConverter>();
+                    cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, ModStat>().ConvertUsing<PrimaryModConverter>();
+                    cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, List<ModStat>>().ConvertUsing<SecondaryModConverter>();
 
                     cfg.CreateMap<Slot, ModSlot>().ConvertUsing(value =>
                     {
@@ -72,7 +73,7 @@ namespace TripleZero.Repository.Mapping
                     });
 
 
-                    cfg.CreateMap<SWGoHHelp.Dto.Mod, SWGoH.Model.Mod>()
+                    cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, SWGoH.Model.Mod>()
                     .ForMember(dest => dest.Level, src => src.MapFrom(source => source.Level))
                     .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Id))
                     .ForMember(dest => dest.PrimaryStat, src => src.MapFrom(source => source))
@@ -126,6 +127,22 @@ namespace TripleZero.Repository.Mapping
                     .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
                     ;
 
+                    cfg.CreateMap<GuildSWGoHHelp, Guild>()
+                    .ForMember(dest => dest.GalacticPowerAverage, src => src.Ignore())
+                    .ForMember(dest => dest.SWGoHUpdateDate, src => src.MapFrom(source => ConvertFromUnixTimestamp(source.Updated)))
+                    .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
+                    .ForMember(dest => dest.EntryUpdateDate, src => src.Ignore())
+                    .ForMember(dest => dest.Name, src => src.MapFrom(source => source.GuildName))
+                    .ForMember(dest => dest.GalacticPower, src => src.MapFrom(source => source.GP))
+                    .ForMember(dest => dest.Players, src => src.MapFrom(source => source.Roster))
+                    ;
+
+
+                    //guild config
+                    cfg.CreateMap<GuildConfigDto, GuildConfig>()
+                    .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
+                    ;
+
                     cfg.AllowNullDestinationValues = true;
                     cfg.AllowNullCollections = true;
                 });
@@ -139,9 +156,9 @@ namespace TripleZero.Repository.Mapping
             }
         }
 
-        public class PrimaryModConverter : ITypeConverter<SWGoHHelp.Dto.Mod, ModStat>
+        public class PrimaryModConverter : ITypeConverter<SWGoHHelpRepository.Dto.Mod, ModStat>
         {
-            public ModStat Convert(SWGoHHelp.Dto.Mod source, ModStat destination, ResolutionContext context)
+            public ModStat Convert(SWGoHHelpRepository.Dto.Mod source, ModStat destination, ResolutionContext context)
             {
                 var perc = 1000000.0;
                 var flat = 100000000;
@@ -204,9 +221,9 @@ namespace TripleZero.Repository.Mapping
             }
         }
 
-        public class SecondaryModConverter : ITypeConverter<SWGoHHelp.Dto.Mod, List<ModStat>>
+        public class SecondaryModConverter : ITypeConverter<SWGoHHelpRepository.Dto.Mod, List<ModStat>>
         {
-            public List<ModStat> Convert(SWGoHHelp.Dto.Mod source, List<ModStat> destination, ResolutionContext context)
+            public List<ModStat> Convert(SWGoHHelpRepository.Dto.Mod source, List<ModStat> destination, ResolutionContext context)
             {
                 List<ModStat> modsStat = new List<ModStat>();
                 modsStat.Add(GetModStat(source.SecondaryType1, source.SecondaryValue1));

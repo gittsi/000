@@ -4,7 +4,7 @@
 //
 //    var player = Player.FromJson(jsonString);
 
-namespace TripleZero.Repository.SWGoHHelp.Dto
+namespace TripleZero.Repository.SWGoHHelpRepository.Dto
 {
     using System;
     using System.Collections.Generic;
@@ -288,13 +288,13 @@ namespace TripleZero.Repository.SWGoHHelp.Dto
 
     public partial class PlayerSWGoHHelp
     {
-        public static List<PlayerSWGoHHelp> GuildFromJson(string json) => JsonConvert.DeserializeObject<List<PlayerSWGoHHelp>>(json, TripleZero.Repository.SWGoHHelp.Dto.Converter.Settings);
-        public static PlayerSWGoHHelp FromJson(string json) => JsonConvert.DeserializeObject<PlayerSWGoHHelp>(json, TripleZero.Repository.SWGoHHelp.Dto.Converter.Settings);
+        public static List<PlayerSWGoHHelp> GuildFromJson(string json) => JsonConvert.DeserializeObject<List<PlayerSWGoHHelp>>(json, Converter.Settings);
+        public static PlayerSWGoHHelp FromJson(string json) => JsonConvert.DeserializeObject<PlayerSWGoHHelp>(json, Converter.Settings);
     }
 
     public static class Serialize
     {
-        public static string ToJson(this List<PlayerSWGoHHelp> self) => JsonConvert.SerializeObject(self, TripleZero.Repository.SWGoHHelp.Dto.Converter.Settings);
+        public static string ToJson(this List<PlayerSWGoHHelp> self) => JsonConvert.SerializeObject(self, Converter.Settings);
     }
 
     internal static class Converter

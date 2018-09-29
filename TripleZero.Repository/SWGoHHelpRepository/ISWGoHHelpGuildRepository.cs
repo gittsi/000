@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Text;
 using TripleZero.Repository.SWGoHHelp.Dto;
 
-namespace TripleZero.Repository.SWGoHHelpRepository
+namespace TripleZero.Repository.SWGoHHelp
 {
-    public interface ISWGoHHelpPlayerRepository
+    public interface ISWGoHHelpGuildRepository
     {
-        Player GetPlayer(int allyCode);
+        Guild GetGuild(int allyCode);
     }
 }

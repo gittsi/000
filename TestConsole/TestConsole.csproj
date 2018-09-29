@@ -16,4 +16,13 @@
     <ProjectReference Include="..\TripleZero.Repository\TripleZero.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="JSonAppSettings\configBot.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="JSonAppSettings\configRepository.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

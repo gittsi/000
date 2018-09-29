@@ -5,8 +5,10 @@ using Microsoft.Extensions.Caching.Memory;
 using TripleZero.Bot.Infrastructure.DI;
 using TripleZero.Bot.Settings;
 using TripleZero.Core;
-using TripleZero.Repository.SWGoHHelpRepository.Authentication;
 using AutoMapper;
+using TripleZero.Repository.MongoDBRepository;
+using TripleZeroApi.Repository;
+using TripleZero.Repository.Mapping;
 
 namespace TestConsole
 {
@@ -60,10 +62,22 @@ namespace TestConsole
         {
             applicationSettings = new ApplicationSettings(new SettingsConfiguration());
             var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
-            IMapper mapper = null;
-            var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
+            IMapper mapper = new MappingConfiguration().GetConfigureMapper();
+          
+            //    var aaaa = new MongoDBContext(repoSettings.MongoDBSettings);
 
+            //var repo = new GuildConfigRepository(new MongoDBConnectionHelper(repoSettings.MongoDBSettings),mapper);
+            //var result = repo.GetAll();
+
+            //var repo = new PlayerRepository(new MongoDBConnectionHelper(repoSettings.MongoDBSettings), mapper);
+            //var result = repo.Get("saf");
+
+            var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
             var player = context.GetPlayerData(462747278);
+
+            var guildContext = new GuildContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
+            var guild = guildContext.GetGuildData(462747278);
+
 
             /////////////initialize autofac
             //autoFacContainer = AutofacConfig.ConfigureContainer();

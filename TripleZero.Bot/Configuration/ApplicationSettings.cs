@@ -53,6 +53,8 @@ namespace TripleZero.Bot.Settings
                     ApiKey = _SettingsConfigurationRoot.GetSection("MongoDB_Settings")["ApiKey"]
                     ,
                     DB = _SettingsConfigurationRoot.GetSection("MongoDB_Settings")["DB"]
+                    ,
+                    ConnectionString = _SettingsConfigurationRoot.GetSection("MongoDB_Settings")["ConnectionString"]
                 },
 
                 SWGoHHelpSettings = new SWGoHHelpSettings()

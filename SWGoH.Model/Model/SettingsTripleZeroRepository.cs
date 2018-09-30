@@ -7,7 +7,7 @@ namespace SWGoH.Model
     public class SettingsTripleZeroRepository
     {
         public MongoDBSettings MongoDBSettings { get; set; }
-        public CachingSettings CachingSettings { get; set; }
+        public RepoCachingSettings CachingSettings { get; set; }
         public SWGoHHelpSettings SWGoHHelpSettings { get; set; }
     }
     public class MongoDBSettings
@@ -24,8 +24,9 @@ namespace SWGoH.Model
         public string Protocol => "https";
         public string Host => "api.swgoh.help";
         public string Port => "";
+        public short TokenCachingInMinutes { get; set; }
     }
-    public partial class CachingSettings
+    public class RepoCachingSettings
     {
         public int RepositoryCachingInMinutes { get; set; }
     }

@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SWGoH.Model;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
+using TripleZero.Core.Caching;
 using TripleZero.Repository.SWGoHHelp.Dto;
 
 namespace TripleZero.Repository.SWGoHHelpRepository
@@ -18,19 +18,25 @@ namespace TripleZero.Repository.SWGoHHelpRepository
         public string _host = "";
         public string _port = "";
 
-        private IMemoryCache cache;
+        private CacheClient _cacheClient;
         SWGoHHelpSettings _settings;
-        public Authentication(SWGoHHelpSettings settings, IMemoryCache cache)
+        public Authentication(SWGoHHelpSettings settings, CacheClient cacheClient)
         {
-            this.cache = cache;
+            _cacheClient = cacheClient;
             _settings = settings;
         }
 
-        public string GetToken()
+        public async Task<string> GetToken()
         {
-            var token = cache.Get<string>("access_token");
-
-            if (!string.IsNullOrEmpty(token)) return token;
+            var token = "";
+            string functionName = "SWGoHHelp";
+            string key = "token";
+            var objCache = _cacheClient.GetDataFromRepositoryCache(functionName, key);
+            if (objCache != null)
+            {
+                token = (string)objCache;
+                return token;
+            }
 
             string protocol = string.IsNullOrEmpty(_protocol) ? "https" : _protocol;
             string host = string.IsNullOrEmpty(_host) ? "api.swgoh.help" : _host;
@@ -68,7 +74,16 @@ namespace TripleZero.Repository.SWGoHHelpRepository
                 var loginResponseObject = JsonConvert.DeserializeObject<LoginResponse>(loginresponse);
                 token = loginResponseObject.access_token;
 
-                cache.Set<string>("access_token",token, new TimeSpan(0,50,0));
+                //load to cache
+                try
+                {
+                    var b = await _cacheClient.AddToRepositoryCache(functionName, key, token, _settings.TokenCachingInMinutes);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
                 return token;
             }
             catch (Exception e)

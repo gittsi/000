@@ -11,6 +11,8 @@ using TripleZero.Bot.Settings;
 using AutoMapper;
 using TripleZero.Core;
 using Microsoft.Extensions.Caching.Memory;
+using TripleZero.Infrastructure.DI;
+using TripleZero.Core.Caching;
 //using TripleZero.Helper;
 //using TripleZero.Core.Caching;
 
@@ -20,7 +22,18 @@ namespace TripleZero.Modules
     [Summary("Mods Commands")]
     public class ModsModule : ModuleBase<SocketCommandContext>
     {
-        //private CacheClient cacheClient = IResolver.Current.CacheClient;
+        //ApplicationSettings _applicationSettings;
+        //public ModsModule(ApplicationSettings applicationSettings)
+        //{
+        //    _applicationSettings = applicationSettings;
+        //}
+
+        //public ModsModule()
+        //{
+
+        //}
+
+        private CacheClient _cacheClient = IResolver.Current.CacheClient;
 
         #region "Secondary stats"
         private async void SendSecondaryModReply(Player player, ModStatType modStatType, ModValueType secondaryStatValueType, List<Tuple<string, Mod>> result)
@@ -115,8 +128,9 @@ namespace TripleZero.Modules
             var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
             var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
             IMapper mapper = null;
-            var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
-            var player = context.GetPlayerData(playerUserName);
+            //var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper, new Core.Caching.CacheClient(applicationSettings.GetTripleZeroRepositorySettings(),applicationSettings.GetTripleZeroBotSettings()));
+            var context = new PlayerContext(repoSettings,_cacheClient ,mapper);
+            var player = await context.GetPlayerData(playerUserName);
 
             if (player == null)
             {
@@ -211,8 +225,8 @@ namespace TripleZero.Modules
             var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
             var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
             IMapper mapper = null;
-            var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
-            var player = context.GetPlayerData(playerUserName);
+            var context = new PlayerContext(repoSettings, _cacheClient, mapper);
+            var player = await context.GetPlayerData(playerUserName);
 
             if (player == null)
             {
@@ -322,8 +336,8 @@ namespace TripleZero.Modules
             var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
             var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
             IMapper mapper = null;
-            var context = new GuildContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
-            var guild = context.GetGuildData(playerUserName);
+            var context = new GuildContext(repoSettings, _cacheClient, mapper);
+            var guild = await context.GetGuildData(playerUserName);
 
             if (guild == null)
             {

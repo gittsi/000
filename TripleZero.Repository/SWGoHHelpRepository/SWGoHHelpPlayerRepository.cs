@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using SWGoH.Model;
 using System;
@@ -9,6 +8,8 @@ using System.Linq;
 using TripleZero.Repository.Mapping;
 using TripleZero.Repository.SWGoHHelpRepository.Dto;
 using TripleZero.Repository.SWGoHHelper;
+using TripleZero.Core.Caching;
+using System.Threading.Tasks;
 
 namespace TripleZero.Repository.SWGoHHelpRepository
 {
@@ -16,21 +17,21 @@ namespace TripleZero.Repository.SWGoHHelpRepository
     {
         public string _url;
 
-        IMemoryCache _memoryCache;
         SWGoHHelpSettings _settings;
         IMapper _mapper;
-        public SWGoHHelpPlayerRepository(SWGoHHelpSettings settings, IMemoryCache memoryCache, IMapper mapper)
+        private CacheClient _cacheClient;
+        public SWGoHHelpPlayerRepository(SWGoHHelpSettings settings, CacheClient cacheClient, IMapper mapper)
         {
             _settings = settings;
-            _memoryCache = memoryCache;
+            _cacheClient = cacheClient;
             _mapper = mapper;
             if (_mapper == null) _mapper = new MappingConfiguration().GetConfigureMapper();
             _url = settings.Protocol + "://" + settings.Host + settings.Port + "/swgoh/player/";
         }
 
-        public Player GetPlayer(int allyCode)
-        {     
-            var playerJson = FetchPlayer(new int[] { Convert.ToInt32(allyCode) } , null, null, new { allyCode =1, name =1 , level =1, guildName = 1, stats = 1, roster =1 , arena =1 ,updated = 1 } );
+        public async Task<Player> GetPlayer(int allyCode)
+        {
+            var playerJson = await FetchPlayer(new int[] { Convert.ToInt32(allyCode) }, null, null, new { allyCode = 1, name = 1, level = 1, guildName = 1, stats = 1, roster = 1, arena = 1, updated = 1 });
             var playerDto = JsonConvert.DeserializeObject<PlayerSWGoHHelp[]>(playerJson);
 
             if (playerDto == null)
@@ -41,10 +42,10 @@ namespace TripleZero.Repository.SWGoHHelpRepository
             return player.FirstOrDefault();
         }
 
-        private string FetchPlayer(int[] allycodes, string language = null, bool? enums = null, object project = null)
+        private async Task<string> FetchPlayer(int[] allycodes, string language = null, bool? enums = null, object project = null)
         {
-            var helper = new Authentication(_settings, _memoryCache);
-            var token = helper.GetToken();
+            var helper = new Authentication(_settings, _cacheClient);
+            var token = await helper.GetToken();
 
             dynamic obj = new ExpandoObject();
             obj.allycodes = allycodes;
@@ -58,6 +59,6 @@ namespace TripleZero.Repository.SWGoHHelpRepository
             var response = new SWGoHHelpApiHelper().FetchApi(_url, obj, token);
 
             return response;
-        }        
+        }
     }
 }

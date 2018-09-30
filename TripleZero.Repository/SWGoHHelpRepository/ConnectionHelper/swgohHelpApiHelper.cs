@@ -15,24 +15,24 @@ namespace TripleZero.Repository.SWGoHHelper
 {
     public class SWGoHHelpApiHelper
     {
-    //    string user = "";
-    //    string token = "";
-    //    string url = "";
-    //    string signin = "";
-    //    string data = "";
-    //    string player = "";
-    //    string units = "";
-    //    string zetas = "";
-    //    string squads = "";
-    //    string events = "";
-    //    string battles = "";
-    //    string guild = "";
+        //    string user = "";
+        //    string token = "";
+        //    string url = "";
+        //    string signin = "";
+        //    string data = "";
+        //    string player = "";
+        //    string units = "";
+        //    string zetas = "";
+        //    string squads = "";
+        //    string events = "";
+        //    string battles = "";
+        //    string guild = "";
 
-    //    //JavaScriptSerializer javaSerializer;
+        //    //JavaScriptSerializer javaSerializer;
 
-    //    Dictionary<string, string> userAsDictonary;
+        //    Dictionary<string, string> userAsDictonary;
 
-    //    private HttpClient client = new HttpClient();
+        //    private HttpClient client = new HttpClient();
 
         //public SWGoHHelpApiHelper(UserSettings settings)
         //{
@@ -143,8 +143,8 @@ namespace TripleZero.Repository.SWGoHHelper
                 throw e;
             }
         }
-        
-        
+
+
 
         //public string fetchZetas(object project = null)
         //{

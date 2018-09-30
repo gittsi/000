@@ -1,10 +1,4 @@
-﻿// To parse this JSON data, add NuGet 'Newtonsoft.Json' then do:
-//
-//    using swgoh_help_api;
-//
-//    var player = Player.FromJson(jsonString);
-
-namespace TripleZero.Repository.SWGoHHelpRepository.Dto
+﻿namespace TripleZero.Repository.SWGoHHelpRepository.Dto
 {
     using System;
     using System.Collections.Generic;
@@ -232,16 +226,16 @@ namespace TripleZero.Repository.SWGoHHelpRepository.Dto
     public enum PrimaryBonusType
     {
         Health = 55,
-        Speed = 5,        
-        CriticalDamage=16,
+        Speed = 5,
+        CriticalDamage = 16,
         Potency = 17,
         Tenacity = 18,
-        Offense =48, //5880000        
+        Offense = 48, //5880000        
         Defense = 49,
         Accuracy = 52,
         CriticalChance = 53,
-        CriticalAvoidance = 54,       
-        Protection =56
+        CriticalAvoidance = 54,
+        Protection = 56
     };
 
     public enum SecondaryType
@@ -256,8 +250,8 @@ namespace TripleZero.Repository.SWGoHHelpRepository.Dto
         SecondaryTypeOffense = 48,
         SecondaryTypeDefense = 49,
         CriticalChance = 53, //1808000
-        SecondaryTypeHealth =55,
-        SecondaryTypeProtection=56
+        SecondaryTypeHealth = 55,
+        SecondaryTypeProtection = 56
     };
 
     public enum Set
@@ -268,7 +262,7 @@ namespace TripleZero.Repository.SWGoHHelpRepository.Dto
         Speed = 4,
         CritChance = 5,
         CritDamage = 6,
-        Potency = 7,        
+        Potency = 7,
         Tenacity = 8
     };
 
@@ -277,14 +271,14 @@ namespace TripleZero.Repository.SWGoHHelpRepository.Dto
         Square = 1,
         Arrow = 2,
         Diamond = 3,
-        Triangle =4,
-        Circle=5,
-        Cross=6
+        Triangle = 4,
+        Circle = 5,
+        Cross = 6
     };
 
     public enum SkillType { Basic, Contract, Hardware, Leader, Special, Unique };
 
-    public enum RosterType { Char = 1, Ship =2 };
+    public enum RosterType { Char = 1, Ship = 2 };
 
     public partial class PlayerSWGoHHelp
     {

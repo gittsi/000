@@ -24,29 +24,6 @@ namespace TripleZero.Repository.Mapping
             {
                 var config = new MapperConfiguration(cfg =>
                 {
-                    //cfg.CreateMap<Crew, string>()
-                    //.ForMember(dest => dest, src => src.MapFrom(source => source.UnitId))
-                    //;
-                    //cfg.CreateMap<Slot, ModSlot>().ConvertUsing(value =>
-                    //{
-                    //    switch (value)
-                    //    {
-                    //        case Slot.Arrow:
-                    //            return ModSlot.Receiver;
-                    //        case Slot.Circle:
-                    //            return ModSlot.DataBus;
-                    //        case Slot.Cross:
-                    //            return ModSlot.Multiplexer;
-                    //        case Slot.Diamond:
-                    //            return ModSlot.Processor;
-                    //        case Slot.Square:
-                    //            return ModSlot.Transmitter;
-                    //        case Slot.Triangle:
-                    //            return ModSlot.HoloArray;
-                    //        default:
-                    //            return ModSlot.None;
-                    //    }
-                    //});
 
                     cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, ModStat>().ConvertUsing<PrimaryModConverter>();
                     cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, List<ModStat>>().ConvertUsing<SecondaryModConverter>();
@@ -297,7 +274,7 @@ namespace TripleZero.Repository.Mapping
                     break;
                 case SecondaryType.Speed:
                     modStat.StatType = ModStatType.Speed;
-                    isFlat =true;
+                    isFlat = true;
                     break;
                 default:
                     break;

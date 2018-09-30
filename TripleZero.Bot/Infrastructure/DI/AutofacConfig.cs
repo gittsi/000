@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using TripleZero.Bot.Helper;
 using TripleZero.Bot.Settings;
 using TripleZero.Core;
+using TripleZero.Infrastructure.DI;
 
 namespace TripleZero.Bot.Infrastructure.DI
 {
@@ -16,7 +17,7 @@ namespace TripleZero.Bot.Infrastructure.DI
 
             //Resolvers
             //builder.RegisterType<TripleZero.Infrastructure.DI.IResolver>().As<IStartable>().SingleInstance();
-            //builder.RegisterType<TripleZero.Repository.Infrastructure.DI.IResolver>().As<IStartable>().SingleInstance();
+            builder.RegisterType<IResolver>().As<IStartable>().SingleInstance();
             //builder.RegisterType<TripleZero.Core.Caching.Infrastructure.DI.IResolver>().As<IStartable>().SingleInstance();
             
             //configuration
@@ -38,6 +39,8 @@ namespace TripleZero.Bot.Infrastructure.DI
             //builder.RegisterType<AdminModule>().InstancePerDependency();
             //builder.RegisterType<DBStatsModule>().InstancePerDependency();
             //builder.RegisterType<ArenaModule>().InstancePerDependency();
+
+
 
             //discord
             builder.RegisterType<DiscordSocketClient>().SingleInstance();

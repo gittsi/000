@@ -72,8 +72,8 @@ namespace TestConsole
             //var repo = new PlayerRepository(new MongoDBConnectionHelper(repoSettings.MongoDBSettings), mapper);
             //var result = repo.Get("saf");
 
-            var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
-            var player = context.GetPlayerData(462747278);
+            //var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
+            //var player = context.GetPlayerData(462747278);
 
             var guildContext = new GuildContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
             var guild = guildContext.GetGuildData(462747278);

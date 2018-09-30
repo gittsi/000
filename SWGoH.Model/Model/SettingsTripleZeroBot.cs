@@ -22,7 +22,7 @@ namespace SWGoH.Model
         public string Prefix { get; set; }
         public string BotAdminRole { get; set; }
     }    
-    public partial class CachingSettings
+    public class CachingSettings
     {        
         public int ModuleCachingInMinutes { get; set; }
     }

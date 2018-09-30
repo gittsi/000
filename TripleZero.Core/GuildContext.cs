@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.Extensions.Caching.Memory;
 using SWGoH.Model;
+using TripleZero.Core.Caching;
 using TripleZero.Repository.SWGoHHelp;
 
 
@@ -11,31 +10,51 @@ namespace TripleZero.Core
 {
     public class GuildContext : IGuildContext
     {
-        IMemoryCache _memoryCache;
+        private CacheClient _cacheClient;
         private SettingsTripleZeroRepository _settings;
         private IMapper _mapper;
-        public GuildContext(SettingsTripleZeroRepository settings, IMemoryCache memoryCache , IMapper mapper)
+        public GuildContext(SettingsTripleZeroRepository settings, CacheClient cacheClient, IMapper mapper)
         {
             _settings = settings;
-            _memoryCache = memoryCache;
+            _cacheClient = cacheClient;
             _mapper = mapper;
         }
 
-        public Guild GetGuildData( int allyCode)
+        public async Task<Guild> GetGuildData(int allyCode)
         {
-            var guildRepo = new SWGoHHelpGuildRepository(_settings.SWGoHHelpSettings, _memoryCache,_mapper);
-            var result = guildRepo.GetGuild(allyCode);
+            string functionName = "GetGuildRepo";
+            string key = allyCode.ToString();
+            var objCache = _cacheClient.GetDataFromRepositoryCache(functionName, key);
+            if (objCache != null)
+            {
+                var guild = (Guild)objCache;
+                guild.LoadedFromCache = true;
+                return guild;
+            }
 
-            return result;
+            var guildRepo = new SWGoHHelpGuildRepository(_settings.SWGoHHelpSettings, _cacheClient, _mapper);
+            var guildResult = await guildRepo.GetGuild(allyCode);
+
+            //load to cache
+            try
+            {
+                var b = await _cacheClient.AddToRepositoryCache(functionName, key, guildResult);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return guildResult;
         }
 
-        public Guild GetGuildData(string alias)
+        public async Task<Guild> GetGuildData(string alias)
         {
-            var allyCode =  alias.Replace("-","" );
+            var allyCode = alias.Replace("-", "");
 
-            if (  int.TryParse(allyCode, out int result))
+            if (int.TryParse(allyCode, out int result))
             {
-                return GetGuildData(result);
+                return await GetGuildData(result);
             }
             else
                 return null;

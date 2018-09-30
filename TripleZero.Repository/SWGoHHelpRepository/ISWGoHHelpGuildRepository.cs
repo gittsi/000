@@ -1,13 +1,10 @@
 ﻿using SWGoH.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using TripleZero.Repository.SWGoHHelp.Dto;
+using System.Threading.Tasks;
 
 namespace TripleZero.Repository.SWGoHHelp
 {
     public interface ISWGoHHelpGuildRepository
     {
-        Guild GetGuild(int allyCode);
+        Task<Guild> GetGuild(int allyCode);
     }
 }

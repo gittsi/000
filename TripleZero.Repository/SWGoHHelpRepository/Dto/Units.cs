@@ -1,11 +1,4 @@
-﻿// To parse this JSON data, add NuGet 'Newtonsoft.Json' then do:
-//
-//    using swgoh_help_api;
-//
-//    var swgohUnits = SwgohUnits.FromJson(jsonString);
-using Newtonsoft.Json;
-
-namespace TripleZero.Repository.SWGoHHelpRepository.Dto
+﻿namespace TripleZero.Repository.SWGoHHelpRepository.Dto
 {
     using System;
     using System.Collections.Generic;

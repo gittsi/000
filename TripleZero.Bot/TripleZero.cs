@@ -10,6 +10,7 @@ using TripleZero.Bot.Helper;
 using TripleZero.Bot.Modules;
 using SWGoH.Model;
 using TripleZero.Modules;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TripleZero.Bot
 {
@@ -27,6 +28,7 @@ namespace TripleZero.Bot
         static Logo logo = null;
         private IServiceProvider services = null;
         private CommandService commands = null;
+        //private IMemoryCache memoryCache = null;
 
         static void Main(string[] args)
             => new TripleZero().MainAsync().GetAwaiter().GetResult();
@@ -41,6 +43,7 @@ namespace TripleZero.Bot
                 commands = scope.Resolve<CommandService>();
                 client = scope.Resolve<DiscordSocketClient>();
                 logo = scope.Resolve<Logo>();
+                //memoryCache = scope.Resolve<MemoryCache>();
 
                 settingsTripleZeroBot = applicationSettings.GetTripleZeroBotSettings();
 

@@ -1,41 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.Extensions.Caching.Memory;
 using SWGoH.Model;
-using TripleZero.Repository.SWGoHHelp;
+using TripleZero.Core.Caching;
 using TripleZero.Repository.SWGoHHelpRepository;
 
 namespace TripleZero.Core
 {
     public class PlayerContext : IPlayerContext
     {
-        IMemoryCache _memoryCache;
         private SettingsTripleZeroRepository _settings;
         private IMapper _mapper;
-        public PlayerContext(SettingsTripleZeroRepository settings, IMemoryCache memoryCache , IMapper mapper)
+        private CacheClient _cacheClient;
+        public PlayerContext(SettingsTripleZeroRepository settings, CacheClient cacheClient, IMapper mapper)
         {
             _settings = settings;
-            _memoryCache = memoryCache;
             _mapper = mapper;
+            _cacheClient = cacheClient;
         }
 
-        public Player GetPlayerData( int allyCode)
+        public async Task<Player> GetPlayerData(int allyCode)
         {
-            var playerRepo = new SWGoHHelpPlayerRepository(_settings.SWGoHHelpSettings, _memoryCache,_mapper);
-            var result = playerRepo.GetPlayer(allyCode);
-
-            return result;
-        }
-
-        public Player GetPlayerData(string alias)
-        {
-            var allyCode =  alias.Replace("-","" );
-
-            if (  int.TryParse(allyCode, out int result))
+            string functionName = "GetPlayerRepo";
+            string key = allyCode.ToString();
+            var objCache = _cacheClient.GetDataFromRepositoryCache(functionName, key);
+            if (objCache != null)
             {
-                return GetPlayerData(result);
+                var player = (Player)objCache;
+                player.LoadedFromCache = true;
+                return player;
+            }
+
+            var playerRepo = new SWGoHHelpPlayerRepository(_settings.SWGoHHelpSettings, _cacheClient, _mapper);
+            var playerResult = await playerRepo.GetPlayer(allyCode);
+
+            //load to cache
+            try
+            {
+                var b = await _cacheClient.AddToRepositoryCache(functionName, key, playerResult);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return playerResult;
+        }
+
+        public async Task<Player> GetPlayerData(string alias)
+        {
+            var allyCode = alias.Replace("-", "");
+
+            if (int.TryParse(allyCode, out int result))
+            {
+                return await GetPlayerData(result);
             }
             else
                 return null;

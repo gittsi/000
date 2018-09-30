@@ -45,6 +45,8 @@ namespace TripleZero.Bot.Settings
         public SettingsTripleZeroRepository GetTripleZeroRepositorySettings()
         {
             var boolRepositoryCachingInMinutes = int.TryParse(_SettingsConfigurationRoot.GetSection("Caching_Settings")["RepositoryCachingInMinutes"], out int RepositoryCachingInMinutes);
+            var boolTokenCachingInMinutes = short.TryParse(_SettingsConfigurationRoot.GetSection("SWGoHHelp_Settings")["TokenCachingInMinutes"], out short TokenCachingInMinutes);
+
 
             SettingsTripleZeroRepository appSettings = new SettingsTripleZeroRepository
             {               
@@ -62,9 +64,11 @@ namespace TripleZero.Bot.Settings
                     UserName = _SettingsConfigurationRoot.GetSection("SWGoHHelp_Settings")["UserName"]
                     ,
                     Password = _SettingsConfigurationRoot.GetSection("SWGoHHelp_Settings")["Password"]
+                    ,
+                    TokenCachingInMinutes = TokenCachingInMinutes
                 },
 
-                CachingSettings = new CachingSettings()
+                CachingSettings = new RepoCachingSettings()
                 {                    
                     RepositoryCachingInMinutes = RepositoryCachingInMinutes
                 }

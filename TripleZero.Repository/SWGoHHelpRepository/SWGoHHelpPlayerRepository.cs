@@ -56,7 +56,9 @@ namespace TripleZero.Repository.SWGoHHelpRepository
             if (project != null)
                 obj.project = project;
 
+            Console.WriteLine($"fetching data for {(allycodes.Any() ? allycodes.FirstOrDefault().ToString() : "") }");
             var response = new SWGoHHelpApiHelper().FetchApi(_url, obj, token);
+            Console.WriteLine($"got data for {(allycodes.Any() ? allycodes.FirstOrDefault().ToString() : "")}");
 
             return response;
         }

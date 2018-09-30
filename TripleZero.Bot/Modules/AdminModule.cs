@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using TripleZero.Infrastructure.DI;
-using TripleZero.Helper;
 using SWGoH.Model.Enums;
 using System.Diagnostics;
 using System.Globalization;
 using Discord;
 using TripleZero.Core.Caching;
+using TripleZero.Bot.Helper;
 
 namespace TripleZero.Modules
 {
@@ -18,436 +18,436 @@ namespace TripleZero.Modules
     [Summary("Admin Commands")]
     public class AdminModule : ModuleBase<SocketCommandContext>
     {
-        private CacheClient cacheClient = IResolver.Current.CacheClient;
+        private CacheClient _cacheClient = IResolver.Current.CacheClient;
 
-        [Command("alias-remove", RunMode = RunMode.Async)]
-        [Summary("Remove alias for specific character(Admin Command)")]
-        [Remarks("*alias-remove {characterFullName} {alias}*")]
-        [Alias("ar")]
-        public async Task RemoveAlias(string characterFullName, string alias)
-        {
-            characterFullName = characterFullName.Trim();
-            alias = alias.Trim();
+        //[Command("alias-remove", RunMode = RunMode.Async)]
+        //[Summary("Remove alias for specific character(Admin Command)")]
+        //[Remarks("*alias-remove {characterFullName} {alias}*")]
+        //[Alias("ar")]
+        //public async Task RemoveAlias(string characterFullName, string alias)
+        //{
+        //    characterFullName = characterFullName.Trim();
+        //    alias = alias.Trim();
 
-            string retStr = "";
+        //    string retStr = "";
 
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }
 
-            var result = IResolver.Current.MongoDBRepository.RemoveCharacterAlias(characterFullName, alias.ToLower()).Result;
+        //    var result = IResolver.Current.MongoDBRepository.RemoveCharacterAlias(characterFullName, alias.ToLower()).Result;
 
-            if (result != null)
-            {
-                retStr += $"\nAlias '**{alias}**' for '**{characterFullName}**' was removed!\n";
-                retStr += string.Format("\nName:**{0}**", result.Name);
-                retStr += string.Format("\nCommand:**{0}**", result.Command != null ? result.Command.Length == 0 ? "empty!!!" : result.Command : "empty!!!");
-                retStr += string.Format("\nSWGoH url:**{0}**", result.SWGoHUrl);
+        //    if (result != null)
+        //    {
+        //        retStr += $"\nAlias '**{alias}**' for '**{characterFullName}**' was removed!\n";
+        //        retStr += string.Format("\nName:**{0}**", result.Name);
+        //        retStr += string.Format("\nCommand:**{0}**", result.Command != null ? result.Command.Length == 0 ? "empty!!!" : result.Command : "empty!!!");
+        //        retStr += string.Format("\nSWGoH url:**{0}**", result.SWGoHUrl);
 
-                string aliases = "";
-                int countAliases = 0;
-                foreach (var _alias in result.Aliases)
-                {
-                    countAliases += 1;
-                    aliases += _alias;
-                    if (countAliases != result.Aliases.Count()) aliases += ", ";
-                }
+        //        string aliases = "";
+        //        int countAliases = 0;
+        //        foreach (var _alias in result.Aliases)
+        //        {
+        //            countAliases += 1;
+        //            aliases += _alias;
+        //            if (countAliases != result.Aliases.Count()) aliases += ", ";
+        //        }
 
-                retStr += string.Format("\nAliases: [**{0}**]", aliases.Count() > 0 ? aliases : "empty!!!");
-            }
-            else
-            {
-                retStr = "Not updated. Probably something is wrong with your command!";
-            }
+        //        retStr += string.Format("\nAliases: [**{0}**]", aliases.Count() > 0 ? aliases : "empty!!!");
+        //    }
+        //    else
+        //    {
+        //        retStr = "Not updated. Probably something is wrong with your command!";
+        //    }
 
-            await ReplyAsync($"{retStr}");
-        }
+        //    await ReplyAsync($"{retStr}");
+        //}
 
-        [Command("alias-add", RunMode = RunMode.Async)]
-        [Summary("Add alias for specific character(Admin Command)")]
-        [Remarks("*alias-add {characterFullName} {alias}*")]
-        [Alias("aa")]
-        public async Task AddAlias(string characterFullName, string alias)
-        {
-            characterFullName = characterFullName.Trim();
-            alias = alias.Trim();
+        //[Command("alias-add", RunMode = RunMode.Async)]
+        //[Summary("Add alias for specific character(Admin Command)")]
+        //[Remarks("*alias-add {characterFullName} {alias}*")]
+        //[Alias("aa")]
+        //public async Task AddAlias(string characterFullName, string alias)
+        //{
+        //    characterFullName = characterFullName.Trim();
+        //    alias = alias.Trim();
 
-            string retStr = "";
+        //    string retStr = "";
 
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }
 
-            var result = IResolver.Current.MongoDBRepository.SetCharacterAlias(characterFullName, alias.ToLower()).Result;
+        //    var result = IResolver.Current.MongoDBRepository.SetCharacterAlias(characterFullName, alias.ToLower()).Result;
 
-            if (result != null)
-            {
-                retStr += $"\nNew alias '**{alias}**' for '**{characterFullName}**' was added!\n";
-                retStr += string.Format("\nName:**{0}**", result.Name);
-                retStr += string.Format("\nCommand:**{0}**", result.Command != null ? result.Command.Length == 0 ? "empty!!!" : result.Command : "empty!!!");
-                retStr += string.Format("\nSWGoH url:**{0}**", result.SWGoHUrl);
+        //    if (result != null)
+        //    {
+        //        retStr += $"\nNew alias '**{alias}**' for '**{characterFullName}**' was added!\n";
+        //        retStr += string.Format("\nName:**{0}**", result.Name);
+        //        retStr += string.Format("\nCommand:**{0}**", result.Command != null ? result.Command.Length == 0 ? "empty!!!" : result.Command : "empty!!!");
+        //        retStr += string.Format("\nSWGoH url:**{0}**", result.SWGoHUrl);
 
-                string aliases = "";
-                int countAliases = 0;
-                foreach (var _alias in result.Aliases)
-                {
-                    countAliases += 1;
-                    aliases += _alias;
-                    if (countAliases != result.Aliases.Count()) aliases += ", ";
-                }
+        //        string aliases = "";
+        //        int countAliases = 0;
+        //        foreach (var _alias in result.Aliases)
+        //        {
+        //            countAliases += 1;
+        //            aliases += _alias;
+        //            if (countAliases != result.Aliases.Count()) aliases += ", ";
+        //        }
 
-                retStr += string.Format("\nAliases: [**{0}**]", aliases.Count() > 0 ? aliases : "empty!!!");
-            }
-            else
-            {
-                retStr = "Not updated. Probably something is wrong with your command!";
-            }
+        //        retStr += string.Format("\nAliases: [**{0}**]", aliases.Count() > 0 ? aliases : "empty!!!");
+        //    }
+        //    else
+        //    {
+        //        retStr = "Not updated. Probably something is wrong with your command!";
+        //    }
 
-            await ReplyAsync($"{retStr}");
-
-
-        }
-
-        [Command("command-remove", RunMode = RunMode.Async)]        
-        [Summary("Remove command for specific character(Admin Command)")]
-        [Remarks("*command-remove {characterFullName}*")]
-        [Alias("cr")]
-        public async Task RemoveCommand(string characterFullName)
-        {
-            characterFullName = characterFullName.Trim();            
-
-            string retStr = "";
-
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }
-
-            var result = IResolver.Current.MongoDBRepository.RemoveCharacterCommand(characterFullName).Result;
-
-            if (result != null)
-            {
-                retStr += $"\nCommand for '**{characterFullName}**' was deleted!\n";
-                retStr += string.Format("\nName:**{0}**", result.Name);                
-                retStr += string.Format("\nCommand:**{0}**", result.Command != null ? result.Command.Length == 0 ? "empty!!!" : result.Command : "empty!!!");
-                retStr += string.Format("\nSWGoH url:**{0}**", result.SWGoHUrl);
-
-                string aliases = "";
-                int countAliases = 0;
-                foreach (var _alias in result.Aliases)
-                {
-                    countAliases += 1;
-                    aliases += _alias;
-                    if (countAliases != result.Aliases.Count()) aliases += ", ";
-                }
-
-                retStr += string.Format("\nAliases: [**{0}**]", aliases.Count() > 0 ? aliases : "empty!!!");
-            }
-            else
-            {
-                retStr = "Not updated. Probably something is wrong with your command!";
-            }
-
-            await ReplyAsync($"{retStr}");
-        }
-
-        [Command("command-add", RunMode = RunMode.Async)]
-        [Summary("Add command for specific character(Admin Command)")]
-        [Remarks("*command-add {characterFullName} {command}*")]
-        [Alias("ca")]
-        public async Task AddCommand(string characterFullName, string command)
-        {
-            characterFullName = characterFullName.Trim();
-            command = command.Trim().ToLower();
-
-            string retStr = "";
-
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }
-
-            var result = IResolver.Current.MongoDBRepository.SetCharacterCommand(characterFullName, command.ToLower()).Result;
-
-            if (result != null)
-            {
-                retStr += $"\nNew command '**{command}**' for '**{characterFullName}**' was added!\n";
-                retStr += string.Format("\nName:**{0}**", result.Name);
-                retStr += string.Format("\nCommand:**{0}**", result.Command != null ? result.Command.Length == 0 ? "empty!!!" : result.Command : "empty!!!");
-                retStr += string.Format("\nSWGoH url:**{0}**", result.SWGoHUrl);
-
-                string aliases = "";
-                int countAliases = 0;
-                foreach (var _alias in result.Aliases)
-                {
-                    countAliases += 1;
-                    aliases += _alias;
-                    if (countAliases != result.Aliases.Count()) aliases += ", ";
-                }
-
-                retStr += string.Format("\nAliases: [**{0}**]", aliases.Count() > 0 ? aliases : "empty!!!");
-            }
-            else
-            {
-                retStr = "Not updated. Probably something is wrong with your command!";
-            }
-
-            await ReplyAsync($"{retStr}");
+        //    await ReplyAsync($"{retStr}");
 
 
-        }
+        //}
 
-        [Command("queue", RunMode = RunMode.Async)]
-        //[Summary("Set alias for specific character(Admin Command).\nUsage : ***$alias -set {characterFullName}***")]
-        [Summary("Get current for specific character(Admin Command)")]
-        [Remarks("*queue*")]
-        [Alias("q")]
-        public async Task GetQueue(string resultsRows = "10")
-        {
-            bool rowsIsNumber = int.TryParse(resultsRows, out int rows);
-            if (!rowsIsNumber) { await ReplyAsync($"If you want to specify how many results want, you have to put a number as third parameter! '{rows}' is not a number!"); return; }
+        //[Command("command-remove", RunMode = RunMode.Async)]        
+        //[Summary("Remove command for specific character(Admin Command)")]
+        //[Remarks("*command-remove {characterFullName}*")]
+        //[Alias("cr")]
+        //public async Task RemoveCommand(string characterFullName)
+        //{
+        //    characterFullName = characterFullName.Trim();            
+
+        //    string retStr = "";
+
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }
+
+        //    var result = IResolver.Current.MongoDBRepository.RemoveCharacterCommand(characterFullName).Result;
+
+        //    if (result != null)
+        //    {
+        //        retStr += $"\nCommand for '**{characterFullName}**' was deleted!\n";
+        //        retStr += string.Format("\nName:**{0}**", result.Name);                
+        //        retStr += string.Format("\nCommand:**{0}**", result.Command != null ? result.Command.Length == 0 ? "empty!!!" : result.Command : "empty!!!");
+        //        retStr += string.Format("\nSWGoH url:**{0}**", result.SWGoHUrl);
+
+        //        string aliases = "";
+        //        int countAliases = 0;
+        //        foreach (var _alias in result.Aliases)
+        //        {
+        //            countAliases += 1;
+        //            aliases += _alias;
+        //            if (countAliases != result.Aliases.Count()) aliases += ", ";
+        //        }
+
+        //        retStr += string.Format("\nAliases: [**{0}**]", aliases.Count() > 0 ? aliases : "empty!!!");
+        //    }
+        //    else
+        //    {
+        //        retStr = "Not updated. Probably something is wrong with your command!";
+        //    }
+
+        //    await ReplyAsync($"{retStr}");
+        //}
+
+        //[Command("command-add", RunMode = RunMode.Async)]
+        //[Summary("Add command for specific character(Admin Command)")]
+        //[Remarks("*command-add {characterFullName} {command}*")]
+        //[Alias("ca")]
+        //public async Task AddCommand(string characterFullName, string command)
+        //{
+        //    characterFullName = characterFullName.Trim();
+        //    command = command.Trim().ToLower();
+
+        //    string retStr = "";
+
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }
+
+        //    var result = IResolver.Current.MongoDBRepository.SetCharacterCommand(characterFullName, command.ToLower()).Result;
+
+        //    if (result != null)
+        //    {
+        //        retStr += $"\nNew command '**{command}**' for '**{characterFullName}**' was added!\n";
+        //        retStr += string.Format("\nName:**{0}**", result.Name);
+        //        retStr += string.Format("\nCommand:**{0}**", result.Command != null ? result.Command.Length == 0 ? "empty!!!" : result.Command : "empty!!!");
+        //        retStr += string.Format("\nSWGoH url:**{0}**", result.SWGoHUrl);
+
+        //        string aliases = "";
+        //        int countAliases = 0;
+        //        foreach (var _alias in result.Aliases)
+        //        {
+        //            countAliases += 1;
+        //            aliases += _alias;
+        //            if (countAliases != result.Aliases.Count()) aliases += ", ";
+        //        }
+
+        //        retStr += string.Format("\nAliases: [**{0}**]", aliases.Count() > 0 ? aliases : "empty!!!");
+        //    }
+        //    else
+        //    {
+        //        retStr = "Not updated. Probably something is wrong with your command!";
+        //    }
+
+        //    await ReplyAsync($"{retStr}");
 
 
-            string retStr = "";
+        //}
+
+        //[Command("queue", RunMode = RunMode.Async)]
+        ////[Summary("Set alias for specific character(Admin Command).\nUsage : ***$alias -set {characterFullName}***")]
+        //[Summary("Get current for specific character(Admin Command)")]
+        //[Remarks("*queue*")]
+        //[Alias("q")]
+        //public async Task GetQueue(string resultsRows = "10")
+        //{
+        //    bool rowsIsNumber = int.TryParse(resultsRows, out int rows);
+        //    if (!rowsIsNumber) { await ReplyAsync($"If you want to specify how many results want, you have to put a number as third parameter! '{rows}' is not a number!"); return; }
 
 
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }
+        //    string retStr = "";
 
-            var result = IResolver.Current.MongoDBRepository.GetQueue().Result;            
 
-            if (result == null)
-            {
-                await ReplyAsync($"Problem!! Cannot get queue!!!");
-                return;
-            }
-            else
-            {
-                await ReplyAsync($"I Found **{result.Count()} total entries in queue!**");
-            }
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }
 
-            var guildQueues = result.Where(p => p.Type == QueueType.Guild).OrderByDescending(p => p.Status).ThenBy(p => p.NextRunDate).Take(rows);
-            var playerQueues = result.Where(p => p.Type == QueueType.Player).OrderByDescending(p => p.Status).ThenBy(p => p.NextRunDate).Take(rows);
+        //    var result = IResolver.Current.MongoDBRepository.GetQueue().Result;            
 
-            if(guildQueues.Count()>0)
-            {
-                retStr += "\n**--------Guild Queue--------**";
-                foreach(var guild in guildQueues)
-                {
-                    retStr += string.Format("\nGuild : **{0}** - Status : **{1}** - Next Run : **{2}**(UTC){3}"
-                        , guild.Name
-                        , guild.Status
-                        , guild.NextRunDate?.ToString("yyyy-MM-dd HH:mm")
-                        , string.IsNullOrWhiteSpace(guild.ProcessingBy) ? "" : string.Format(" - Processing started by : {0} at {1}(UTC)", guild.ProcessingBy,guild.ProcessingStartDate?.ToString("yyyy-MM-dd HH:mm")));
-                }
-            }
+        //    if (result == null)
+        //    {
+        //        await ReplyAsync($"Problem!! Cannot get queue!!!");
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        await ReplyAsync($"I Found **{result.Count()} total entries in queue!**");
+        //    }
 
-            if(playerQueues.Count()>0)
-            {
-                retStr += "\n\n**--------Player Queue--------**";
-            }            
+        //    var guildQueues = result.Where(p => p.Type == QueueType.Guild).OrderByDescending(p => p.Status).ThenBy(p => p.NextRunDate).Take(rows);
+        //    var playerQueues = result.Where(p => p.Type == QueueType.Player).OrderByDescending(p => p.Status).ThenBy(p => p.NextRunDate).Take(rows);
 
-            var processingPlayer = playerQueues.Where(p => p.Status == QueueStatus.Processing);
-            var pendingPlayer = playerQueues.Where(p => p.Status == QueueStatus.PendingProcess);
-            var failedPlayer = playerQueues.Where(p => p.Status == QueueStatus.Failed);
+        //    if(guildQueues.Count()>0)
+        //    {
+        //        retStr += "\n**--------Guild Queue--------**";
+        //        foreach(var guild in guildQueues)
+        //        {
+        //            retStr += string.Format("\nGuild : **{0}** - Status : **{1}** - Next Run : **{2}**(UTC){3}"
+        //                , guild.Name
+        //                , guild.Status
+        //                , guild.NextRunDate?.ToString("yyyy-MM-dd HH:mm")
+        //                , string.IsNullOrWhiteSpace(guild.ProcessingBy) ? "" : string.Format(" - Processing started by : {0} at {1}(UTC)", guild.ProcessingBy,guild.ProcessingStartDate?.ToString("yyyy-MM-dd HH:mm")));
+        //        }
+        //    }
+
+        //    if(playerQueues.Count()>0)
+        //    {
+        //        retStr += "\n\n**--------Player Queue--------**";
+        //    }            
+
+        //    var processingPlayer = playerQueues.Where(p => p.Status == QueueStatus.Processing);
+        //    var pendingPlayer = playerQueues.Where(p => p.Status == QueueStatus.PendingProcess);
+        //    var failedPlayer = playerQueues.Where(p => p.Status == QueueStatus.Failed);
             
-            if (processingPlayer.Count()>0) retStr += "\n**--Processing**";
-            foreach (var queuePlayer in processingPlayer)
-            {
-                retStr += string.Format("\nPlayer : **{0}** - Status : **{1}** - Processing started by {3} at **{2}**(UTC)", queuePlayer.Name, queuePlayer.Status, queuePlayer.ProcessingStartDate?.ToString("yyyy-MM-dd HH:mm"),queuePlayer.ProcessingBy);
+        //    if (processingPlayer.Count()>0) retStr += "\n**--Processing**";
+        //    foreach (var queuePlayer in processingPlayer)
+        //    {
+        //        retStr += string.Format("\nPlayer : **{0}** - Status : **{1}** - Processing started by {3} at **{2}**(UTC)", queuePlayer.Name, queuePlayer.Status, queuePlayer.ProcessingStartDate?.ToString("yyyy-MM-dd HH:mm"),queuePlayer.ProcessingBy);
 
-                if (retStr.Length > 1800)
-                {
-                    await ReplyAsync($"{retStr}");
-                    retStr = "";
-                }
-            }
+        //        if (retStr.Length > 1800)
+        //        {
+        //            await ReplyAsync($"{retStr}");
+        //            retStr = "";
+        //        }
+        //    }
 
-            if (pendingPlayer.Count() > 0) retStr += "\n**--Pending Process**";
-            foreach (var queuePlayer in pendingPlayer)
-            {
-                retStr += string.Format("\nPlayer : **{0}** - Status : **{1}** - Next Run : **{2}**(UTC)", queuePlayer.Name, queuePlayer.Status, queuePlayer.NextRunDate?.ToString("yyyy-MM-dd HH:mm"));
+        //    if (pendingPlayer.Count() > 0) retStr += "\n**--Pending Process**";
+        //    foreach (var queuePlayer in pendingPlayer)
+        //    {
+        //        retStr += string.Format("\nPlayer : **{0}** - Status : **{1}** - Next Run : **{2}**(UTC)", queuePlayer.Name, queuePlayer.Status, queuePlayer.NextRunDate?.ToString("yyyy-MM-dd HH:mm"));
 
-                if (retStr.Length > 1800)
-                {
-                    await ReplyAsync($"{retStr}");
-                    retStr = "";
-                }
-            }
+        //        if (retStr.Length > 1800)
+        //        {
+        //            await ReplyAsync($"{retStr}");
+        //            retStr = "";
+        //        }
+        //    }
 
-            if (failedPlayer.Count() > 0) retStr += "\n**--Failed**";
-            foreach (var queuePlayer in failedPlayer)
-            {
-                retStr += string.Format("\nPlayer : **{0}** - Status : **{1}** - Next Run : **{2}**(UTC)", queuePlayer.Name, queuePlayer.Status, queuePlayer.NextRunDate?.ToString("yyyy-MM-dd HH:mm"));
+        //    if (failedPlayer.Count() > 0) retStr += "\n**--Failed**";
+        //    foreach (var queuePlayer in failedPlayer)
+        //    {
+        //        retStr += string.Format("\nPlayer : **{0}** - Status : **{1}** - Next Run : **{2}**(UTC)", queuePlayer.Name, queuePlayer.Status, queuePlayer.NextRunDate?.ToString("yyyy-MM-dd HH:mm"));
 
-                if (retStr.Length > 1800)
-                {
-                    await ReplyAsync($"{retStr}");
-                    retStr = "";
-                }
-            }
-            if(retStr.Length==0) { await ReplyAsync("Empty queue!!!!"); return; }
-            await ReplyAsync($"{retStr}");
-        }
+        //        if (retStr.Length > 1800)
+        //        {
+        //            await ReplyAsync($"{retStr}");
+        //            retStr = "";
+        //        }
+        //    }
+        //    if(retStr.Length==0) { await ReplyAsync("Empty queue!!!!"); return; }
+        //    await ReplyAsync($"{retStr}");
+        //}
 
-        [Command("queue-remove", RunMode = RunMode.Async)]
-        //[Summary("Remove row from queue(Admin Command).\nUsage : ***$queue-remove {characterFullName}***")]
-        [Summary("Remove row from queue(Admin Command)")]
-        [Remarks("*queue-remove {name}*")]
-        [Alias("qr")]
-        public async Task RemoveQueue(string name)
-        {
-            name = name.Trim().ToLower();
+        //[Command("queue-remove", RunMode = RunMode.Async)]
+        ////[Summary("Remove row from queue(Admin Command).\nUsage : ***$queue-remove {characterFullName}***")]
+        //[Summary("Remove row from queue(Admin Command)")]
+        //[Remarks("*queue-remove {name}*")]
+        //[Alias("qr")]
+        //public async Task RemoveQueue(string name)
+        //{
+        //    name = name.Trim().ToLower();
 
-            string retStr = "";
+        //    string retStr = "";
 
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }
 
-            var result = IResolver.Current.MongoDBRepository.RemoveFromQueue(name).Result;
+        //    var result = IResolver.Current.MongoDBRepository.RemoveFromQueue(name).Result;
 
-            if (result != null)
-            {
-                retStr += $"\nQueue row for '**{name}**' was removed!\n";
-                retStr += string.Format("\nId:**{0}**", result.Id.ToString());
-                retStr += string.Format("\nName:**{0}**", result.Name);
-                retStr += string.Format("\nStatus:**{0}**", result.Status.ToString());
-                retStr += string.Format("\nType:**{0}**", result.Type);
-            }
-            else
-            {
-                retStr = "Not updated. Probably something is wrong with your command!";
-            }
+        //    if (result != null)
+        //    {
+        //        retStr += $"\nQueue row for '**{name}**' was removed!\n";
+        //        retStr += string.Format("\nId:**{0}**", result.Id.ToString());
+        //        retStr += string.Format("\nName:**{0}**", result.Name);
+        //        retStr += string.Format("\nStatus:**{0}**", result.Status.ToString());
+        //        retStr += string.Format("\nType:**{0}**", result.Type);
+        //    }
+        //    else
+        //    {
+        //        retStr = "Not updated. Probably something is wrong with your command!";
+        //    }
 
-            await ReplyAsync($"{retStr}");
-        }
+        //    await ReplyAsync($"{retStr}");
+        //}
 
-        [Command("player-update", RunMode = RunMode.Async)]
-        [Summary("Add a player for reload(Admin Command)")]
-        [Remarks("*player-update {playerUserName}*")]
-        [Alias("pu")]
-        public async Task SetPlayerUpdate(string playerUserName)
-        {
-            string retStr = "";
+        //[Command("player-update", RunMode = RunMode.Async)]
+        //[Summary("Add a player for reload(Admin Command)")]
+        //[Remarks("*player-update {playerUserName}*")]
+        //[Alias("pu")]
+        //public async Task SetPlayerUpdate(string playerUserName)
+        //{
+        //    string retStr = "";
 
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }
 
-            playerUserName = playerUserName.Trim();
+        //    playerUserName = playerUserName.Trim();
 
-            var result = IResolver.Current.MongoDBRepository.SendPlayerToQueue(playerUserName).Result;
-
-
-            if (result != null)
-                retStr = string.Format("\nPlayer {0} added to queue. Please be patient, I need some time to retrieve data!!!", playerUserName);
-            else
-                retStr = string.Format("\nPlayer {0} not added to queue!!!!!");
-
-            await ReplyAsync($"{retStr}");
-        }
-
-        [Command("guild-update", RunMode = RunMode.Async)]
-        [Summary("Set a guild for reload")]
-        [Remarks("*guild-update {guildName}*")]
-        [Alias("gu")]
-        public async Task SetGuildUpdate(string guildName)
-        {
-            string retStr = "";
-
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }
-
-            guildName = guildName.Trim();
-
-            var result = IResolver.Current.MongoDBRepository.SendGuildToQueue(guildName).Result;
+        //    var result = IResolver.Current.MongoDBRepository.SendPlayerToQueue(playerUserName).Result;
 
 
-            if (result != null)
-                retStr = string.Format("\nGuild {0} added to queue. Please be patient, I need tons of time to retrieve data!!!", guildName);
-            else
-                retStr = string.Format("\nGuild {0} not added to queue!!!!!");
+        //    if (result != null)
+        //        retStr = string.Format("\nPlayer {0} added to queue. Please be patient, I need some time to retrieve data!!!", playerUserName);
+        //    else
+        //        retStr = string.Format("\nPlayer {0} not added to queue!!!!!");
 
-            await ReplyAsync($"{retStr}");
-        }
+        //    await ReplyAsync($"{retStr}");
+        //}
 
-        [Command("characterconfig-update", RunMode = RunMode.Async)]
-        [Summary("Reload character config(Admin Command)")]
-        [Remarks("*characterconfig-update*")]
-        [Alias("ccu")]
-        public async Task SetCharacterConfigUpdate()
-        {
-            string retStr = "";
+        //[Command("guild-update", RunMode = RunMode.Async)]
+        //[Summary("Set a guild for reload")]
+        //[Remarks("*guild-update {guildName}*")]
+        //[Alias("gu")]
+        //public async Task SetGuildUpdate(string guildName)
+        //{
+        //    string retStr = "";
 
-            //check if user is in role in order to proceed with the action
-            var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
-            var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
-            if (!userAllowed)
-            {
-                retStr = "\nNot authorized!!!";
-                await ReplyAsync($"{retStr}");
-                return;
-            }            
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }
 
-            var result = IResolver.Current.MongoDBRepository.SendCharacterConfigToQueue().Result;
+        //    guildName = guildName.Trim();
+
+        //    var result = IResolver.Current.MongoDBRepository.SendGuildToQueue(guildName).Result;
 
 
-            if (result != null)
-                retStr = "\nCharacter config update added to queue. Please be patient, I need some time to retrieve data!!!";
-            else
-                retStr = string.Format("\nNot added to queue!!!!!");
+        //    if (result != null)
+        //        retStr = string.Format("\nGuild {0} added to queue. Please be patient, I need tons of time to retrieve data!!!", guildName);
+        //    else
+        //        retStr = string.Format("\nGuild {0} not added to queue!!!!!");
 
-            await ReplyAsync($"{retStr}");
-        }
+        //    await ReplyAsync($"{retStr}");
+        //}
+
+        //[Command("characterconfig-update", RunMode = RunMode.Async)]
+        //[Summary("Reload character config(Admin Command)")]
+        //[Remarks("*characterconfig-update*")]
+        //[Alias("ccu")]
+        //public async Task SetCharacterConfigUpdate()
+        //{
+        //    string retStr = "";
+
+        //    //check if user is in role in order to proceed with the action
+        //    var adminRole = IResolver.Current.ApplicationSettings.GetTripleZeroBotSettings().DiscordSettings.BotAdminRole;
+        //    var userAllowed = DiscordRoles.UserInRole(Context, adminRole);
+        //    if (!userAllowed)
+        //    {
+        //        retStr = "\nNot authorized!!!";
+        //        await ReplyAsync($"{retStr}");
+        //        return;
+        //    }            
+
+        //    var result = IResolver.Current.MongoDBRepository.SendCharacterConfigToQueue().Result;
+
+
+        //    if (result != null)
+        //        retStr = "\nCharacter config update added to queue. Please be patient, I need some time to retrieve data!!!";
+        //    else
+        //        retStr = string.Format("\nNot added to queue!!!!!");
+
+        //    await ReplyAsync($"{retStr}");
+        //}
 
         [Command("mem", RunMode = RunMode.Async)]
         [Summary("Check application diagnostics")]
@@ -468,9 +468,24 @@ namespace TripleZero.Modules
             Process currentProc = Process.GetCurrentProcess();
 
             var threads = currentProc.Threads;
-            long memoryUsed = currentProc.PrivateMemorySize64;
+            long totalBytesOfMemoryUsed = currentProc.WorkingSet64;
+            long privateMemorySize64 = currentProc.PrivateMemorySize64;
+            long nonpagedSystemMemorySize64 = currentProc.NonpagedSystemMemorySize64;
+            long pagedMemorySize64 = currentProc.PagedMemorySize64;
+            long pagedSystemMemorySize64 = currentProc.PagedSystemMemorySize64;
+            long peakPagedMemorySize64 = currentProc.PeakPagedMemorySize64;
+            long peakVirtualMemorySize64 = currentProc.PeakVirtualMemorySize64;
+            long virtualMemorySize64 = currentProc.VirtualMemorySize64;
 
-            retStr += string.Format("\nMemory : {0} - Threads : {1}", memoryUsed.ToString("#,##0,Kb", CultureInfo.InvariantCulture), threads.Count);
+
+            retStr += string.Format("\nMemory : {0} - Threads : {1}\n", totalBytesOfMemoryUsed.ToString("#,##0,Kb", CultureInfo.InvariantCulture), threads.Count);
+            retStr += $"\nPrivateMemorySize64 : {privateMemorySize64.ToString("#,##0,Kb", CultureInfo.InvariantCulture)}";
+            retStr += $"\nNonpagedSystemMemorySize64 : {nonpagedSystemMemorySize64.ToString("#,##0,Kb", CultureInfo.InvariantCulture)}";
+            retStr += $"\nPagedMemorySize64 : {pagedMemorySize64.ToString("#,##0,Kb", CultureInfo.InvariantCulture)}";
+            retStr += $"\nPagedSystemMemorySize64 : {pagedSystemMemorySize64.ToString("#,##0,Kb", CultureInfo.InvariantCulture)}";
+            retStr += $"\nPeakPagedMemorySize64 : {peakPagedMemorySize64.ToString("#,##0,Kb", CultureInfo.InvariantCulture)}";
+            retStr += $"\nPeakVirtualMemorySize64 : {peakVirtualMemorySize64.ToString("#,##0,Kb", CultureInfo.InvariantCulture)}";
+            retStr += $"\nVirtualMemorySize64 : {virtualMemorySize64.ToString("#,##0,Kb", CultureInfo.InvariantCulture)}";
 
             await ReplyAsync($"{retStr}");
         }
@@ -521,7 +536,7 @@ namespace TripleZero.Modules
         {
             try
             {
-                await cacheClient.ClearAllCaches();
+                await _cacheClient.ClearAllCaches();
                 await ReplyAsync($"Caching is gone");
             }
             catch(Exception ex)

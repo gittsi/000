@@ -82,8 +82,8 @@ namespace TripleZero.Bot
             //await commands.AddModuleAsync<GuildModule>();
             //await commands.AddModuleAsync<ArenaModule>();
             await commands.AddModuleAsync<ModsModule>();
-            //await commands.AddModuleAsync<AdminModule>();
-            //await commands.AddModuleAsync<HelpModule>();
+            await commands.AddModuleAsync<AdminModule>();
+            await commands.AddModuleAsync<HelpModule>();
             await commands.AddModuleAsync<FunModule>();
             //await commands.AddModuleAsync<DBStatsModule>();
         }

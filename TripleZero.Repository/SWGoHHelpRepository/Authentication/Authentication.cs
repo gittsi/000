@@ -63,7 +63,7 @@ namespace TripleZero.Repository.SWGoHHelpRepository
                 dataStream.Write(byteArray, 0, byteArray.Length);
                 dataStream.Close();
                 WebResponse response = request.GetResponse();
-                Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                //Console.WriteLine(((HttpWebResponse)response).StatusDescription);
                 dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
                 var loginresponse = reader.ReadToEnd();

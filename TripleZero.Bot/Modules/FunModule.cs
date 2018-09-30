@@ -38,7 +38,7 @@ namespace TripleZero.Bot.Modules
             await message.ModifyAsync(msg => msg.Content = message.Content + ".....");
             await Task.Delay(200);
             await message.ModifyAsync(msg => msg.Content = "Analyzing Data...");
-            await Task.Delay(200);
+            await Task.Delay(1200);
             await message.ModifyAsync(msg => msg.Content = message.Content + ".....");
             await Task.Delay(200);
             await message.ModifyAsync(msg => msg.Content = message.Content + ".....");
@@ -46,7 +46,7 @@ namespace TripleZero.Bot.Modules
             await message.ModifyAsync(msg => msg.Content = message.Content + ".....");
             await Task.Delay(200);
             await message.ModifyAsync(msg => msg.Content = message.Content + ".....");
-            await Task.Delay(200);
+            await Task.Delay(1200);
             await message.DeleteAsync();
             await ReplyAsync("\n```TSiTaS is imba!\nNo need to retrieve any data!```");
         }

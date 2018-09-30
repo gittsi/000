@@ -38,7 +38,7 @@ namespace TripleZero.Modules
         #region "Secondary stats"
         private async void SendSecondaryModReply(Player player, ModStatType modStatType, ModValueType secondaryStatValueType, List<Tuple<string, Mod>> result)
         {
-            //if (player.LoadedFromCache) await ReplyAsync($"{cacheClient.GetCachedDataRepositoryMessage()}");
+            if (player.LoadedFromCache) await ReplyAsync($"{_cacheClient.GetCachedDataRepositoryMessage()}");
 
             string retStr = "";
             if (result != null)
@@ -148,7 +148,7 @@ namespace TripleZero.Modules
         #region "Primary stats"
         private async void SendPrimaryModReply(Player player, ModStatType modStatType, List<Tuple<string, Mod>> result)
         {
-          //  if (player.LoadedFromCache) await ReplyAsync($"{cacheClient.GetCachedDataRepositoryMessage()}");
+            if (player.LoadedFromCache) await ReplyAsync($"{_cacheClient.GetCachedDataRepositoryMessage()}");
 
             string retStr = "";
             if (result != null)
@@ -243,7 +243,7 @@ namespace TripleZero.Modules
 
         private async void SendSecondaryModReplyGuild(Guild guild, ModStatType modStatType, ModValueType secondaryStatValueType, List<Tuple<string,string, Mod>> result)
         {
-            //if (player.LoadedFromCache) await ReplyAsync($"{cacheClient.GetCachedDataRepositoryMessage()}");
+            if (guild.LoadedFromCache) await ReplyAsync($"{_cacheClient.GetCachedDataRepositoryMessage()}");
 
             string retStr = "";
             if (result != null)

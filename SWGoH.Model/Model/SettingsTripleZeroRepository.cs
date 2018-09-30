@@ -28,6 +28,6 @@ namespace SWGoH.Model
     }
     public class RepoCachingSettings
     {
-        public int RepositoryCachingInMinutes { get; set; }
+        public short RepositoryCachingInMinutes { get; set; }
     }
 }

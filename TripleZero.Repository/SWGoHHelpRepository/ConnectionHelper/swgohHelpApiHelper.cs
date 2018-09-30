@@ -138,9 +138,10 @@ namespace TripleZero.Repository.SWGoHHelper
                 return apiResponse;
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;
+                Console.WriteLine(ex.Message.ToString());
+                throw ex;
             }
         }
 

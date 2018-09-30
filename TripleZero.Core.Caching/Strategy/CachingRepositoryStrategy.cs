@@ -19,7 +19,7 @@ namespace TripleZero.Core.Caching.Strategy
         public override bool CacheAdd(string key, object obj, short minutesBeforeExpiration)
         {
             bool isAdded = _cacheFactory.Add(key, obj);
-            _cacheFactory.Expire(key, TimeSpan.FromMinutes(minutesBeforeExpiration));
+            _cacheFactory.Expire(key, ExpirationMode.Absolute, TimeSpan.FromMinutes(minutesBeforeExpiration));
             return isAdded;
         }
         public override bool CacheAdd(string key, object obj)
@@ -31,14 +31,12 @@ namespace TripleZero.Core.Caching.Strategy
             }
             int minutesBeforeExpiration = _settings.CachingSettings.RepositoryCachingInMinutes;
 
-            _cacheFactory.Expire(key, TimeSpan.FromMinutes(minutesBeforeExpiration));             
+            _cacheFactory.Expire(key, ExpirationMode.Absolute, TimeSpan.FromMinutes(minutesBeforeExpiration));             
             return isAdded;
         }
 
         public override object CacheGetFromKey(string key)
         {
-            var ret = _cacheFactory.Get(key);         
-
             return _cacheFactory.Get(key);
         }
 

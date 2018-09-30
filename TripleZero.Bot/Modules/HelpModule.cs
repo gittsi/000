@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using TripleZero.Helper;
+using TripleZero.Bot.Helper;
 using TripleZero.Infrastructure.DI;
 
 namespace TripleZero.Modules

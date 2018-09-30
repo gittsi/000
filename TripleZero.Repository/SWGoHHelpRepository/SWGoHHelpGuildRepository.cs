@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SWGoH.Model;
 using System;
 using System.Dynamic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripleZero.Core.Caching;
 using TripleZero.Repository.Mapping;
@@ -61,7 +62,9 @@ namespace TripleZero.Repository.SWGoHHelp
             if (project != null)
                 obj.project = project;
 
+            Console.WriteLine($"fetching data for {(allycodes.Any() ? allycodes.FirstOrDefault().ToString() : "")}");
             var response = new SWGoHHelpApiHelper().FetchApi(_url, obj, token);
+            Console.WriteLine($"got data for {(allycodes.Any() ? allycodes.FirstOrDefault().ToString() : "")}");
 
             return response;
         }

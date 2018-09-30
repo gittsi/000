@@ -11,12 +11,10 @@
     <Compile Remove="Configuration\SettingsTripleZeroBot.cs" />
     <Compile Remove="Configuration\SettingsTripleZeroRepository.cs" />
     <Compile Remove="Helper\ModuleHelper.cs" />
-    <Compile Remove="Modules\AdminModule.cs" />
     <Compile Remove="Modules\ArenaModule.cs" />
     <Compile Remove="Modules\CharacterModule.cs" />
     <Compile Remove="Modules\DBStatsModule.cs" />
     <Compile Remove="Modules\GuildModule.cs" />
-    <Compile Remove="Modules\HelpModule.cs" />
     <Compile Remove="Modules\PlayerModule.cs" />
   </ItemGroup>
 

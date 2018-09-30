@@ -38,7 +38,7 @@ namespace TripleZero.Core
             //load to cache
             try
             {
-                var b = await _cacheClient.AddToRepositoryCache(functionName, key, guildResult);
+                var b = await _cacheClient.AddToRepositoryCache(functionName, key, guildResult, _settings.CachingSettings.RepositoryCachingInMinutes);
             }
             catch (Exception ex)
             {

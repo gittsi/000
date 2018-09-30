@@ -44,7 +44,7 @@ namespace TripleZero.Bot.Settings
         }
         public SettingsTripleZeroRepository GetTripleZeroRepositorySettings()
         {
-            var boolRepositoryCachingInMinutes = int.TryParse(_SettingsConfigurationRoot.GetSection("Caching_Settings")["RepositoryCachingInMinutes"], out int RepositoryCachingInMinutes);
+            var boolRepositoryCachingInMinutes = short.TryParse(_SettingsConfigurationRoot.GetSection("Caching_Settings")["RepositoryCachingInMinutes"], out short RepositoryCachingInMinutes);
             var boolTokenCachingInMinutes = short.TryParse(_SettingsConfigurationRoot.GetSection("SWGoHHelp_Settings")["TokenCachingInMinutes"], out short TokenCachingInMinutes);
 
 

@@ -70,7 +70,15 @@ namespace TripleZero.Bot
             //await TestPlayerReport("tsitas_66");
             //await TestGuildModule("41s", "gk");
             //await TestCharacterModule("tsitas_66", "cls");
-            await client.GetUser("TSiTaS", "1984").SendMessageAsync(logo.GetLogo());
+            try
+            {
+                await client.GetUser("TSiTaS", "1984").SendMessageAsync(logo.GetLogo());
+            }
+            catch(Exception ex)
+            {
+                Consoler.WriteLineInColor(ex.Message, ConsoleColor.Red);
+            }
+            
             await Task.Delay(-1);
 
 

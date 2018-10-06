@@ -120,6 +120,19 @@ namespace TripleZero.Repository.Mapping
                     .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
                     ;
 
+                    //guild config
+                    cfg.CreateMap<SWGoHAPIRepository.Dto.CharacterDto, CharacterConfig>()
+                    .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
+                    .ForMember(dest => dest.Abilities, src => src.Ignore())
+                    .ForMember(dest => dest.Aliases, src => src.Ignore())
+                    .ForMember(dest => dest.SWGoHUrl, src => src.Ignore())
+                    .ForMember(dest => dest.Id, src => src.Ignore())
+                    .ForMember(dest => dest.Command, src => src.MapFrom(source => source.NameId))
+                    .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Name))
+                    //.ForMember(dest => dest., src => src.MapFrom(source => source.GP))
+
+                    ;
+
                     cfg.AllowNullDestinationValues = true;
                     cfg.AllowNullCollections = true;
                 });

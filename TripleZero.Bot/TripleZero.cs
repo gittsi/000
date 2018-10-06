@@ -11,6 +11,7 @@ using TripleZero.Bot.Modules;
 using SWGoH.Model;
 using TripleZero.Modules;
 using Microsoft.Extensions.Caching.Memory;
+using TripleZero.Core;
 
 namespace TripleZero.Bot
 {
@@ -28,7 +29,7 @@ namespace TripleZero.Bot
         static Logo logo = null;
         private IServiceProvider services = null;
         private CommandService commands = null;
-        //private IMemoryCache memoryCache = null;
+        private ICharacterConfigContext characterConfigContext = null;
 
         static void Main(string[] args)
             => new TripleZero().MainAsync().GetAwaiter().GetResult();
@@ -43,6 +44,7 @@ namespace TripleZero.Bot
                 commands = scope.Resolve<CommandService>();
                 client = scope.Resolve<DiscordSocketClient>();
                 logo = scope.Resolve<Logo>();
+                //characterConfigContext = scope.Resolve<ICharacterConfigContext>();
                 //memoryCache = scope.Resolve<MemoryCache>();
 
                 settingsTripleZeroBot = applicationSettings.GetTripleZeroBotSettings();
@@ -77,9 +79,9 @@ namespace TripleZero.Bot
         {
             client.Log += Log;
             client.MessageReceived += HandleCommandAsync;
-            //await commands.AddModuleAsync<PlayerModule>();
+            await commands.AddModuleAsync<PlayerModule>();
             //await commands.AddModuleAsync<CharacterModule>();
-            //await commands.AddModuleAsync<GuildModule>();
+            await commands.AddModuleAsync<GuildModule>();
             //await commands.AddModuleAsync<ArenaModule>();
             await commands.AddModuleAsync<ModsModule>();
             await commands.AddModuleAsync<AdminModule>();

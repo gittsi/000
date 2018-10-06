@@ -18,7 +18,7 @@ namespace TripleZero.Bot.Infrastructure.DI
             //Resolvers
             //builder.RegisterType<TripleZero.Infrastructure.DI.IResolver>().As<IStartable>().SingleInstance();
             builder.RegisterType<IResolver>().As<IStartable>().SingleInstance();
-            //builder.RegisterType<TripleZero.Core.Caching.Infrastructure.DI.IResolver>().As<IStartable>().SingleInstance();
+            //builder.RegisterType<IResolver>().As<IStartable>().SingleInstance();
             
             //configuration
             builder.RegisterType<ApplicationSettings>().SingleInstance();                        
@@ -26,6 +26,8 @@ namespace TripleZero.Bot.Infrastructure.DI
             builder.RegisterType<Logo>().SingleInstance();
 
             builder.RegisterType<PlayerContext>().As<IPlayerContext>().SingleInstance();
+            builder.RegisterType<GuildContext>().As<IGuildContext>().SingleInstance();
+            builder.RegisterType<CharacterConfigContext>().As<ICharacterConfigContext>().SingleInstance();
 
             builder.RegisterType<MemoryCache>().As<IMemoryCache>().SingleInstance().WithParameter("MemoryCacheOptions", new MemoryCacheOptions());
 

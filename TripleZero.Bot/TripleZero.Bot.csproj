@@ -14,8 +14,6 @@
     <Compile Remove="Modules\ArenaModule.cs" />
     <Compile Remove="Modules\CharacterModule.cs" />
     <Compile Remove="Modules\DBStatsModule.cs" />
-    <Compile Remove="Modules\GuildModule.cs" />
-    <Compile Remove="Modules\PlayerModule.cs" />
   </ItemGroup>
 
   <ItemGroup>

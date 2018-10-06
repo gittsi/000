@@ -63,7 +63,7 @@ namespace TestConsole
             applicationSettings = new ApplicationSettings(new SettingsConfiguration());
             var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
             IMapper mapper = new MappingConfiguration().GetConfigureMapper();
-          
+
             //    var aaaa = new MongoDBContext(repoSettings.MongoDBSettings);
 
             //var repo = new GuildConfigRepository(new MongoDBConnectionHelper(repoSettings.MongoDBSettings),mapper);
@@ -71,15 +71,20 @@ namespace TestConsole
 
             //var repo = new PlayerRepository(new MongoDBConnectionHelper(repoSettings.MongoDBSettings), mapper);
             //var result = repo.Get("saf");
-
-            //var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
-            //var player = context.GetPlayerData(462747278);
-
-            var guildContext = new GuildContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
-            var guild = guildContext.GetGuildData(462747278);
+            var _caching = new TripleZero.Core.Caching.CacheClient(applicationSettings.GetTripleZeroRepositorySettings(), applicationSettings.GetTripleZeroBotSettings());
 
 
-            /////////////initialize autofac
+            var context = new PlayerContext(repoSettings, _caching,mapper);
+            var player = await context.GetPlayerData(462747278);
+
+            //var guildContext = new GuildContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
+            //var guild = guildContext.GetGuildData(462747278);
+
+            var cha = new CharacterConfigContext(_caching, mapper);
+            var result = await cha.GetCharactersConfig();
+            var a = 1;
+                
+                /////////////initialize autofac
             //autoFacContainer = AutofacConfig.ConfigureContainer();
             //using (var scope = autoFacContainer.BeginLifetimeScope())
             //{

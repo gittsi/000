@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SWGoH.Model;
@@ -34,6 +35,17 @@ namespace TripleZero.Core
 
             var guildRepo = new SWGoHHelpGuildRepository(_settings.SWGoHHelpSettings, _cacheClient, _mapper);
             var guildResult = await guildRepo.GetGuild(allyCode);
+
+            var characterConfigContext = new CharacterConfigContext(_cacheClient, _mapper);
+            var characterConfig = await characterConfigContext.GetCharactersConfig();
+            foreach(var player in guildResult.Players)
+            {
+                foreach (var character in player.Characters)
+                {
+                    character.Name = characterConfig.FirstOrDefault(p => p.Command == character.Name).Name;
+                }
+            }
+            
 
             //load to cache
             try

@@ -6,6 +6,7 @@ namespace SWGoH.Model
 {
     public class Unit
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public List<string> Tags { get; set; }
         public string SWGoHUrl { get; set; }

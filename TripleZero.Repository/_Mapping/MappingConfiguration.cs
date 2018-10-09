@@ -62,8 +62,9 @@ namespace TripleZero.Repository.Mapping
                     cfg.CreateMap<Roster, Character>()
                     .ForMember(dest => dest.Gear, src => src.MapFrom(source => source.Gear))
                     .ForMember(dest => dest.StatPower, src => src.Ignore())
+                    .ForMember(dest => dest.Name, src => src.Ignore())
                     .ForMember(dest => dest.Mods, src => src.MapFrom(source => source.Mods))
-                    .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Name))
+                    .ForMember(dest => dest.Id, src => src.MapFrom(source => source.Name))
                     .ForMember(dest => dest.Stars, src => src.MapFrom(source => (int)source.Rarity))
                     .ForMember(dest => dest.Level, src => src.MapFrom(source => (int)source.Level))
                     .ForMember(dest => dest.Abilities, src => src.MapFrom(source => source.Skills))
@@ -77,7 +78,8 @@ namespace TripleZero.Repository.Mapping
 
                     cfg.CreateMap<Roster, Ship>()
                     .ForMember(dest => dest.Crew, src => src.MapFrom(source => source.Crew))
-                    .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Name))
+                    .ForMember(dest => dest.Name, src => src.Ignore())
+                    .ForMember(dest => dest.Id, src => src.MapFrom(source => source.Name))
                     .ForMember(dest => dest.Stars, src => src.MapFrom(source => (int)source.Rarity))
                     .ForMember(dest => dest.Level, src => src.MapFrom(source => (int)source.Level))
                     .ForMember(dest => dest.Abilities, src => src.MapFrom(source => source.Skills))
@@ -88,6 +90,11 @@ namespace TripleZero.Repository.Mapping
                     .ForMember(dest => dest.SWGoHUrl, src => src.Ignore())
                     .ForMember(dest => dest.Power, src => src.Ignore())
                     ;
+
+                    cfg.CreateMap<SWGoHHelpRepository.Dto.Skill, Ability>()
+                   .ForMember(dest => dest.MaxLevel, src =>  src.MapFrom(source => 8))
+                    .ForMember(dest => dest.Level, src => src.MapFrom(source => source.Tier))
+                    .ForMember(dest => dest.Name, src => src.Ignore());
 
                     cfg.CreateMap<PlayerSWGoHHelp, Player>()
                     .ForMember(dest => dest.Id, src => src.Ignore())
@@ -120,10 +127,25 @@ namespace TripleZero.Repository.Mapping
                     .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
                     ;
 
-                    //guild config
+                    cfg.CreateMap<SWGoHHelpRepository.Dto.Crew, SWGoH.Model.Crew>()
+                    .ForMember(dest => dest.Id, src => src.MapFrom(source => source.UnitId))
+                    ;
+
+
                     cfg.CreateMap<SWGoHAPIRepository.Dto.CharacterDto, CharacterConfig>()
                     .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
                     .ForMember(dest => dest.Abilities, src => src.Ignore())
+                    .ForMember(dest => dest.Aliases, src => src.Ignore())
+                    .ForMember(dest => dest.SWGoHUrl, src => src.Ignore())
+                    .ForMember(dest => dest.Id, src => src.Ignore())
+                    .ForMember(dest => dest.Command, src => src.MapFrom(source => source.NameId))
+                    .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Name))
+                    //.ForMember(dest => dest., src => src.MapFrom(source => source.GP))
+
+                    ;
+
+                    cfg.CreateMap<SWGoHAPIRepository.Dto.ShipDto, ShipConfig>()
+                    .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
                     .ForMember(dest => dest.Aliases, src => src.Ignore())
                     .ForMember(dest => dest.SWGoHUrl, src => src.Ignore())
                     .ForMember(dest => dest.Id, src => src.Ignore())

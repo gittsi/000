@@ -38,9 +38,18 @@ namespace TripleZero.Core
 
             var characterConfigContext = new CharacterConfigContext(_cacheClient, _mapper);
             var characterConfig = await characterConfigContext.GetCharactersConfig();
-            foreach(var character in playerResult.Characters)
+
+            var shipConfigContext = new ShipConfigContext(_cacheClient, _mapper);
+            var shipConfig = await shipConfigContext.GetShipsConfig();
+
+            foreach (var character in playerResult.Characters)
             {
-                character.Name = characterConfig.FirstOrDefault(p => p.Command == character.Name).Name;
+                character.Name = characterConfig.FirstOrDefault(p => p.Command == character.Id).Name;
+            }
+
+            foreach (var ship in playerResult.Ships)
+            {
+                ship.Name = shipConfig.FirstOrDefault(p => p.Command == ship.Id).Name;
             }
 
             //load to cache

@@ -3,23 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TripleZero.Bot.Model;
 
 namespace TripleZero.Bot.Helper
 {
-    public class YazClass
-    {
-        public string Name { get; set; }
-        public int Score { get; set; }
-    }
-
-    
-
     public static class YazHelper
     {
-        private static IEnumerable<Character> GetCharsGear(Player player)
-        {
-            
+        public static double GetTotalPoints => 1080.0  + 72.5;
 
+        private static IEnumerable<Character> GetYazGearPremium(Player player)
+        {
             return player.Characters.Where(p =>
             p.Name == "Darth Traya"
             || p.Name == "Darth Nihilus"
@@ -27,9 +20,6 @@ namespace TripleZero.Bot.Helper
             || p.Name == "Count Dooku"
             || p.Name == "Sith Trooper"
             || p.Name == "Rey (Jedi Training)"
-            || p.Name == "R2-D2"
-            || p.Name == "BB-8"
-            || p.Name == "Amilyn Holdo"
             || p.Name == "Bossk"
             || p.Name == "Boba Fett"
             || p.Name == "Jango Fett"
@@ -43,6 +33,29 @@ namespace TripleZero.Bot.Helper
             || p.Name == "Enfys Nest"
             || p.Name == "Han Solo"
             || p.Name == "Chewbacca"
+            || p.Name == "Wampa"
+            || p.Name == "Bastila Shan"
+            || p.Name == "Grand Master Yoda"
+            || p.Name == "Hermit Yoda"
+            || p.Name == "Ezra Bridger"
+            || p.Name == "Grand Admiral Thrawn"
+            || p.Name == "Magmatrooper"
+            || p.Name == "Qi'ra"
+            || p.Name == "Vandor Chewbacca"
+            || p.Name == "L3-37"
+            || p.Name == "Zaalbar"
+
+
+           
+            );
+        }
+
+        private static IEnumerable<Character> GetYazGearNormal(Player player)
+        {
+            return player.Characters.Where(p =>
+             p.Name == "R2-D2"
+            || p.Name == "BB-8"
+            || p.Name == "Amilyn Holdo"
             || p.Name == "Visas Marr"
             || p.Name == "Emperor Palpatine"
             || p.Name == "Darth Vader"
@@ -50,11 +63,6 @@ namespace TripleZero.Bot.Helper
             || p.Name == "Shoretrooper"
             || p.Name == "General Kenobi"
             || p.Name == "Barriss Offee"
-            || p.Name == "Wampa"
-            || p.Name == "Bastila Shan"
-            || p.Name == "Grand Master Yoda"
-            || p.Name == "Hermit Yoda"
-            || p.Name == "Ezra Bridger"
             || p.Name == "Asajj Ventress"
             || p.Name == "Mother Talzin"
             || p.Name == "Old Daka"
@@ -65,14 +73,8 @@ namespace TripleZero.Bot.Helper
             || p.Name == "Snowtrooper"
             || p.Name == "Stormtrooper"
             || p.Name == "Range Trooper"
-            || p.Name == "Grand Admiral Thrawn"
-            || p.Name == "Magmatrooper"
             || p.Name == "Death Trooper"
             || p.Name == "Imperial Probe Droid"
-            || p.Name == "Qi'ra"
-            || p.Name == "Vandor Chewbacca"
-            || p.Name == "L3-37"
-            || p.Name == "Zaalbar"
             || p.Name == "Hera Syndulla"
             || p.Name == "Kanan Jarrus"
             || p.Name == "Sabine Wren"
@@ -91,46 +93,114 @@ namespace TripleZero.Bot.Helper
             );
         }
 
-        private static List<YazClass> GetCharsZetaCount(Player player)
+        private static List<string> GetYazZetaCount()
         {
-            List<YazClass> yazClass = new List<YazClass>();
+            List<string> yazList = new List<string>();
+            yazList.Add("Darth Traya");
+            yazList.Add("Kylo Ren (Unmasked)");
+            yazList.Add("Chewbacca");
+            yazList.Add("Asajj Ventress");
+            yazList.Add("Mother Talzin");
+            yazList.Add("R2-D2");
 
-            var unitName = "Darth Traya";
-            var unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+            return yazList;
 
-            unitName = "Kylo Ren (Unmasked)";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+        }
 
-            unitName = "Chewbacca";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+        private static List<string> GetYazZetaExists()
+        {
+            List<string> yazList = new List<string>();
+            yazList.Add("Rey (Jedi Training)");
+            yazList.Add("Bastila Shan");
+            yazList.Add("Emperor Palpatine");
+            yazList.Add("Han Solo");
+            yazList.Add("Bossk");
+            yazList.Add("BB-8");
+            yazList.Add("General Veers");
+            yazList.Add("Darth Sion");
+            yazList.Add("Commander Luke Skywalker");
+            yazList.Add("Grand Master Yoda");
+            yazList.Add("Vandor Chewbacca");
+            yazList.Add("Enfys Nest");
+            yazList.Add("Kanan Jarrus");
+            yazList.Add("Barriss Offee");
+            yazList.Add("Visas Marr");
+            yazList.Add("Finn");
+            yazList.Add("Sabine Wren");
+            yazList.Add("Hermit Yoda");
+            yazList.Add("Chief Chirpa");
+            yazList.Add("Wicket");
 
-            unitName = "Asajj Ventress";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+            return yazList;
+        }
 
-            unitName = "Mother Talzin";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+        private static List<string> GetShips()
+        {
+            List<string> yazList = new List<string>();
+            yazList.Add("Chimaera");
+            yazList.Add("Executrix");
+            yazList.Add("Geonosian Soldier's Starfighter");
+            yazList.Add("Geonosian Spy's Starfighter");
+            yazList.Add("Sun Fac's Geonosian Starfighter");
+            yazList.Add("TIE Advanced x1");
+            yazList.Add("Imperial TIE Fighter");
+            yazList.Add("Biggs Darklighter's X-wing");
+            yazList.Add("Hound's Tooth");
+            yazList.Add("Plo Koon's Jedi Starfighter");
 
-            unitName = "R2-D2";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+            return yazList;
+        }
+        
+        private static List<Yaz> GetCharsZetaCount(Player player)
+        {
+            List<Yaz> yazClass = new List<Yaz>();
+
+            foreach (var unitName in GetYazZetaCount())
+            {
+                var unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
+                yazClass.Add(new Yaz() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+            }
+            return yazClass;
+        }
+
+
+
+        public static List<Yaz> GetYazometerShips(Player player)
+        {
+            List<Yaz> yazClass = new List<Yaz>();
+            
+            foreach (var unitName in GetShips())
+            {
+                var ship = player.Ships.FirstOrDefault(p => p.Name == unitName);
+                var unit = player.Characters.FirstOrDefault(p => p.Id == ship.Crew.FirstOrDefault().Id);
+                //yazClass.Add(new Yaz() { Name = ship == null ? unitName : ship.Name, Score = ship == null ? 0 : (ship.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
+                var score = 0;
+                if (ship?.Stars == 7) score += 2;
+                if (unit?.Stars == 7) score += 2;
+                if (!ship.Abilities.Any(p => p.Level != p.MaxLevel)) score += 2;
+                if (unit.Gear == 12) score += 2;
+                if (!unit.Skills.Any(p => p.Tier < 8)  || unit.Skills.Any(p=>p.IsZeta)) score += 1;
+                if (unit.Gear == 12 && unit.Equipped.Count >= 3) score += 1;
+
+
+                yazClass.Add(new Yaz() { Name = unitName, Score = score });
+            }
 
             return yazClass;
         }
 
-        public static List<YazClass> GetYazometerToons(Player player)
+
+        public static List<Yaz> GetYazometerToons(Player player)
         {
-            List<YazClass> yazClass = new List<YazClass>();
+            
 
-            var myChars = GetCharsGear(player);
+            var myCharsNormal = GetYazGearNormal(player);
+            double multiplier = 1;
 
-            foreach (var p in myChars)
+            List<Yaz> yazClass = new List<Yaz>();
+            foreach (var p in myCharsNormal)
             {
-                int score = 0;
+                double score = 0;
                 if (p.Gear == 11)
                 {
                     score = p.Stars;
@@ -142,97 +212,42 @@ namespace TripleZero.Bot.Helper
                     score = 8 + (g12 >= 2 ? 1 : 0) + (g12Plus >= 1 ? 1 : 0);
                 }
 
-                yazClass.Add(new YazClass() { Score = score, Name = p.Name });
+                yazClass.Add(new Yaz() { Score = score* multiplier, Name = p.Name });
+            }
+
+            var myCharsPremium = GetYazGearPremium(player);
+            multiplier = 1.25;           
+            foreach (var p in myCharsPremium)
+            {
+                double score = 0;
+                if (p.Gear == 11)
+                {
+                    score = p.Stars;
+                }
+                else if (p.Gear == 12)
+                {
+                    var g12 = p.Equipped.Count(pq => pq.Slot == 0 || pq.Slot == 1 || pq.Slot == 2);
+                    var g12Plus = p.Equipped.Count(pq => pq.Slot == 3 || pq.Slot == 4);
+                    score = 8 + (g12 >= 2 ? 1 : 0) + (g12Plus >= 1 ? 1 : 0);
+                }
+
+                yazClass.Add(new Yaz() { Score = score * multiplier, Name = p.Name });
             }
 
             return yazClass;
         }
 
-        public static List<YazClass> GetYazometerZeta(Player player)
+        public static List<Yaz> GetYazometerZeta(Player player)
         {
-            List<YazClass> yazClass = new List<YazClass>();
+            List<Yaz> yazClass = new List<Yaz>();
 
             yazClass = GetCharsZetaCount(player);
 
-            var unitName = "Rey (Jedi Training)";
-            var unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Bastila Shan";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Emperor Palpatine";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Han Solo";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Bossk";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "BB-8";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "General Veers";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Darth Sion";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Commander Luke Skywalker";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Grand Master Yoda";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Vandor Chewbacca";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Enfys Nest";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Kanan Jarrus";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Barriss Offee";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Visas Marr";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Finn";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Sabine Wren";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Hermit Yoda";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Chief Chirpa";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
-
-            unitName = "Wicket";
-            unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-            yazClass.Add(new YazClass()  { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });           
+            foreach(var unitName in GetYazZetaExists())
+            {
+                var unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
+                yazClass.Add(new Yaz() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
+            }
 
             return yazClass;
         }

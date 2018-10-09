@@ -38,7 +38,21 @@ namespace TripleZero.Modules
             IMapper mapper = null;
             //var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper, new Core.Caching.CacheClient(applicationSettings.GetTripleZeroRepositorySettings(),applicationSettings.GetTripleZeroBotSettings()));
             var context = new GuildContext(repoSettings, _cacheClient, mapper);
-            var guild = await context.GetGuildData(playerUserName);
+
+            Guild guild=null;
+            try
+            {
+                guild = await context.GetGuildData(playerUserName);
+            }
+            catch(Exception ex)
+            {
+                await ReplyAsync($"Error!!!");
+                await messageLoading.DeleteAsync();
+
+
+                return;
+            }
+            
 
             if (guild == null)
             {
@@ -47,20 +61,21 @@ namespace TripleZero.Modules
                 return;
             }
 
-            var dict = new Dictionary<string, decimal>();
+            var dict = new Dictionary<string, double>();
 
             foreach(var player in guild.Players)
             {
-                var yazometer = YazHelper.GetYazometerToons(player);
+                var yazometerGear = YazHelper.GetYazometerToons(player);
                 var yazometerZeta = YazHelper.GetYazometerZeta(player);
+                var yazometerShips = YazHelper.GetYazometerShips(player);
 
-                dict.Add(player.PlayerNameInGame, yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score));
+                dict.Add(player.PlayerNameInGame, yazometerGear.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p=>p.Score));
             }
 
             var retStr = $"```css\nYAZometer Report for guild {guild.Name} \n```";
             foreach (var row in dict.OrderByDescending(p=>p.Value))
             {
-                retStr += $"\n{((row.Value * 100) /980).ToString("#.##")} - {row.Key} ";
+                retStr += $"\n{((row.Value * 100) / YazHelper.GetTotalPoints).ToString("#.##")} - {row.Key} ";
             }
 
 

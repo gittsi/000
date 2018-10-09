@@ -9,6 +9,7 @@ using TripleZero.Core;
 using SWGoH.Model;
 using System.Collections.Generic;
 using TripleZero.Bot.Helper;
+using System;
 
 namespace TripleZero.Modules
 {
@@ -34,14 +35,31 @@ namespace TripleZero.Modules
             string loadingStr = string.Format("```YAZometer for player {0} is loading...```", playerUserName);
             var messageLoading = await ReplyAsync($"{loadingStr}");
 
-            //get player
-            //var player = IResolver.Current.MongoDBRepository.GetPlayer(playerUserName).Result;
-            var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
-            var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
-            IMapper mapper = null;
-            //var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper, new Core.Caching.CacheClient(applicationSettings.GetTripleZeroRepositorySettings(),applicationSettings.GetTripleZeroBotSettings()));
-            var context = new PlayerContext(repoSettings, _cacheClient, mapper);
-            var player = await context.GetPlayerData(playerUserName);
+            Player player;
+
+            
+
+            try
+            {
+                //get player
+                //var player = IResolver.Current.MongoDBRepository.GetPlayer(playerUserName).Result;
+                var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
+                var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
+                IMapper mapper = null;
+                //var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper, new Core.Caching.CacheClient(applicationSettings.GetTripleZeroRepositorySettings(),applicationSettings.GetTripleZeroBotSettings()));
+                var context = new PlayerContext(repoSettings, _cacheClient, mapper);
+
+                player = await context.GetPlayerData(playerUserName);
+            }
+            catch(Exception ex)
+            {
+                await ReplyAsync($"Error!!!");
+                await messageLoading.DeleteAsync();
+
+                
+                return;
+            }
+            
 
             if (player == null)
             {
@@ -52,12 +70,13 @@ namespace TripleZero.Modules
 
             var yazometer = YazHelper.GetYazometerToons(player);
             var yazometerZeta = YazHelper.GetYazometerZeta(player);
+            var yazometerShips = YazHelper.GetYazometerShips(player);
 
 
             var retStr = $"```css\nYAZometer Report for {player.PlayerNameInGame} \n```";
             int count = 1;
             retStr += "**Characters**\n";
-            foreach (var p in yazometer)
+            foreach (var p in yazometer.OrderByDescending(p=>p.Score))
             {                
                 retStr += $"{count}:{p.Name} : {p.Score}\n";
                 count += 1;
@@ -67,15 +86,24 @@ namespace TripleZero.Modules
             retStr = "\n\n";
             int countZeta = 1;
             retStr += "**Zeta**\n";
-            foreach (var p in yazometerZeta)
-            {
-                
+            foreach (var p in yazometerZeta.OrderByDescending(p => p.Score))
+            {                
                 retStr += $"{countZeta} : {p.Name} : {p.Score}\n";
                 countZeta += 1;
             }
             await ReplyAsync($"{retStr}");
 
-            retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)) * 100.0) / 980.0).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)})";
+            retStr = "\n\n";
+            int countShips = 1;
+            retStr += "**Ships**\n";
+            foreach (var p in yazometerShips.OrderByDescending(p => p.Score))
+            {
+                retStr += $"{countShips} : {p.Name} : {p.Score}\n";
+                countShips += 1;
+            }
+            await ReplyAsync($"{retStr}");
+
+            retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} + {yazometerShips.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)})";
 
             await ReplyAsync($"{retStr}");
             await messageLoading.DeleteAsync();

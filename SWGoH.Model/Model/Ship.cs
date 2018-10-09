@@ -6,6 +6,11 @@ namespace SWGoH.Model
 {
     public class Ship : Unit
     {
-        public List<string> Crew { get; set; }
+        public List<Crew> Crew { get; set; }
+    }
+
+    public class Crew
+    {
+        public string Id { get; set; }
     }
 }

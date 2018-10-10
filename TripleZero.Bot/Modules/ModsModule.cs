@@ -94,6 +94,9 @@ namespace TripleZero.Modules
         [Alias("ms")]
         public async Task GetSecondaryStatMods(string playerUserName, string modType, string resultsRows = "20")
         {
+            await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
+            return;
+
             bool rowsIsNumber = int.TryParse(resultsRows, out int rows);
             if (!rowsIsNumber) { await ReplyAsync($"If you want to specify how many results want, you have to put a number as third parameter! '{rows}' is not a number!");  return; }
 
@@ -203,6 +206,9 @@ namespace TripleZero.Modules
         [Alias("mp")]
         public async Task GetPrimaryStatMods(string playerUserName, string modType, string resultsRows = "20")
         {
+            await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
+            return;
+
             bool rowsIsNumber = int.TryParse(resultsRows, out int rows);
             if (!rowsIsNumber) { await ReplyAsync($"If you want to specify how many results want, you have to put a number as third parameter! '{rows}' is not a number!"); return; }
 
@@ -302,6 +308,9 @@ namespace TripleZero.Modules
         [Alias("msg")]
         public async Task GetSecondaryStatModsGuild(string playerUserName, string modType, string resultsRows = "20")
         {
+            await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
+            return;
+
             bool rowsIsNumber = int.TryParse(resultsRows, out int rows);
             if (!rowsIsNumber) { await ReplyAsync($"If you want to specify how many results want, you have to put a number as third parameter! '{rows}' is not a number!"); return; }
 

@@ -32,7 +32,8 @@ namespace TripleZero.Core
                 guild.LoadedFromCache = true;
                 return guild;
             }
-
+            //var dateStart = DateTime.Now;
+            //Console.WriteLine()
             var guildRepo = new SWGoHHelpGuildRepository(_settings.SWGoHHelpSettings, _cacheClient, _mapper);
             var guildResult = await guildRepo.GetGuild(allyCode);
 

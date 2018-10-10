@@ -21,14 +21,14 @@
         [JsonProperty("guildName")]
         public string GuildName { get; set; }
 
-        [JsonProperty("gpFull")]
-        public long GpFull { get; set; }
+        //[JsonProperty("gpFull")]
+        //public long GpFull { get; set; }
 
-        [JsonProperty("gpChar")]
-        public long GpChar { get; set; }
+        //[JsonProperty("gpChar")]
+        //public long GpChar { get; set; }
 
-        [JsonProperty("gpShip")]
-        public long GpShip { get; set; }
+        //[JsonProperty("gpShip")]
+        //public long GpShip { get; set; }
 
         [JsonProperty("roster")]
         public List<Roster> Roster { get; set; }
@@ -78,7 +78,7 @@
         [JsonProperty("defId")]
         public string Name { get; set; }
 
-        [JsonProperty("type")]
+        [JsonProperty("combatType")]
         public RosterType Type { get; set; }
 
         [JsonProperty("rarity")]
@@ -213,14 +213,16 @@
         [JsonProperty("tier")]
         public long Tier { get; set; }
 
-        [JsonProperty("name")]
+        [JsonProperty("nameKey")]
         public string Name { get; set; }
 
         [JsonProperty("isZeta")]
         public bool IsZeta { get; set; }
 
-        [JsonProperty("type")]
-        public SkillType Type { get; set; }
+        public SkillType Type
+        {
+            get { return this.Name.Contains("HARDWARE") ? SkillType.Hardware : SkillType.Basic; }
+        }
     }
 
     public enum PrimaryBonusType

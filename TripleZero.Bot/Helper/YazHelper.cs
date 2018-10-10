@@ -179,7 +179,17 @@ namespace TripleZero.Bot.Helper
                 if (unit?.Stars == 7) score += 2;
                 if (!ship.Abilities.Any(p => p.Level != p.MaxLevel)) score += 2;
                 if (unit.Gear == 12) score += 2;
-                if (!unit.Skills.Any(p => p.Tier < 8)  || unit.Skills.Any(p=>p.IsZeta)) score += 1;
+                if(unit.Name == "Plo Koon" || unit.Name == "Sun Fac" )
+                {
+                    var countSkills = unit.Skills.Count;
+                    var count8 = unit.Skills.Count(p => p.Tier == 8);
+                    var count7 = unit.Skills.Count(p => p.Tier == 7);
+
+                    if(countSkills == count8 + count7  && count7 == 1) score+=1;
+                }
+                else
+                    if (!unit.Skills.Any(p => p.Tier < 8)  || unit.Skills.Any(p=>p.IsZeta)) score += 1;
+
                 if (unit.Gear == 12 && unit.Equipped.Count >= 3) score += 1;
 
 

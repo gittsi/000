@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SWGoH.Model;
 using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,8 +32,8 @@ namespace TripleZero.Repository.SWGoHHelp
 
         public async Task<Guild> GetGuild(int allyCode)
         {
-            var guildJson = await FetchGuild(new int[] { Convert.ToInt32(allyCode) }, null, null, true, false, true, new { desc = 1, name = 1, members = 1, status = 1, required = 1, message = 1, gp = 1, raid = 1, roster = 1, updated = 1 });
-            var guildrDto = JsonConvert.DeserializeObject<GuildSWGoHHelp>(guildJson);
+            var guildJson = await FetchGuild(new int[] { Convert.ToInt32(allyCode) }, null, null, true, null, true, new { desc = 1, roster=1, name = 1, members = 1, status = 1, required = 1, message = 1, gp = 1, raid = 1,  updated = 1 });
+            var guildrDto = JsonConvert.DeserializeObject<List<GuildSWGoHHelp>>(guildJson).FirstOrDefault();
 
             if (guildrDto == null)
                 return null;

@@ -46,7 +46,7 @@ namespace TripleZero.Modules
             }
             catch(Exception ex)
             {
-                await ReplyAsync($"Error!!!");
+                await ReplyAsync($"I wasn't able to retrieve data from API!!!Try again later!!!");
                 await messageLoading.DeleteAsync();
 
 
@@ -77,9 +77,9 @@ namespace TripleZero.Modules
             {
                 retStr += $"\n{((row.Value * 100) / YazHelper.GetTotalPoints).ToString("#.##")} - {row.Key} ";
             }
+            retStr += $"\n**Average score** : {((dict.Sum(p=>p.Value)*100)/(dict.Count * YazHelper.GetTotalPoints)).ToString("#.##") }%";
 
 
-            
             await ReplyAsync($"{retStr}");
             await messageLoading.DeleteAsync();
 

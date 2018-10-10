@@ -53,7 +53,7 @@ namespace TripleZero.Modules
             }
             catch(Exception ex)
             {
-                await ReplyAsync($"Error!!!");
+                await ReplyAsync($" wasn't able to retrieve data from API!!!Try again later!!!");
                 await messageLoading.DeleteAsync();
 
                 

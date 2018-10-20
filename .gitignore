@@ -11,6 +11,7 @@
 *.userprefs
 *.json
 *.pubxml
+publish.bat
 
 # Build results
 [Dd]ebug/

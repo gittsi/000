@@ -9,6 +9,7 @@ namespace SWGoH.Model
         public MongoDBSettings MongoDBSettings { get; set; }
         public RepoCachingSettings CachingSettings { get; set; }
         public SWGoHHelpSettings SWGoHHelpSettings { get; set; }
+        public DiagnosticSettings DiagnosticSettings { get; set; }
     }
     public class MongoDBSettings
     {
@@ -29,5 +30,10 @@ namespace SWGoH.Model
     public class RepoCachingSettings
     {
         public short RepositoryCachingInMinutes { get; set; }
+    }
+
+    public class DiagnosticSettings
+    {
+        public bool ConsolePerformanceWatcher { get; set; }
     }
 }

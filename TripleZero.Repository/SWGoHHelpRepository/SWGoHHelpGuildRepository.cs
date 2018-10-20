@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SWGoH.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,8 +22,11 @@ namespace TripleZero.Repository.SWGoHHelp
         SWGoHHelpSettings _settings;
         IMapper _mapper;
         private CacheClient _cacheClient;
-        public SWGoHHelpGuildRepository(SWGoHHelpSettings settings, CacheClient cacheClient, IMapper mapper)
+        private bool _diagnosticModeOn;
+
+        public SWGoHHelpGuildRepository(SWGoHHelpSettings settings, CacheClient cacheClient, IMapper mapper , bool diagnosticModeOn = false)
         {
+            _diagnosticModeOn = diagnosticModeOn;
             _settings = settings;
             _cacheClient = cacheClient;
             _mapper = mapper;
@@ -32,13 +36,44 @@ namespace TripleZero.Repository.SWGoHHelp
 
         public async Task<Guild> GetGuild(int allyCode)
         {
-            var guildJson = await FetchGuild(new int[] { Convert.ToInt32(allyCode) }, null, null, true, null, true, new { desc = 1, roster=1, name = 1, members = 1, status = 1, required = 1, message = 1, gp = 1, raid = 1,  updated = 1 });
-            var guildrDto = JsonConvert.DeserializeObject<List<GuildSWGoHHelp>>(guildJson).FirstOrDefault();
+            Stopwatch sw = new Stopwatch();
+            if (_diagnosticModeOn)            
+                sw.Start();
 
-            if (guildrDto == null)
+            var guildJson = await FetchGuild(new int[] { Convert.ToInt32(allyCode) }, null, null, true, null, true, new { desc = 1, roster=1, name = 1, members = 1, status = 1, required = 1, message = 1, gp = 1, raid = 1,  updated = 1 });
+            if (_diagnosticModeOn)
+            {
+                sw.Stop();
+                Console.WriteLine($"Get guildJson from SWGoH.Help API : {sw.Elapsed}");
+            }
+
+            if (_diagnosticModeOn)
+            {
+                sw = new Stopwatch();
+                sw.Start();
+            }
+                
+            var guildDto = JsonConvert.DeserializeObject<List<GuildSWGoHHelp>>(guildJson).FirstOrDefault();
+            if (_diagnosticModeOn)
+            {
+                sw.Stop();
+                Console.WriteLine($"Deserialize object from SWGoH.Help to GuildDto : {sw.Elapsed}");
+            }
+
+            if (guildDto == null)
                 return null;
 
-            var guild = _mapper.Map<Guild>(guildrDto);
+            if (_diagnosticModeOn)
+            {
+                sw = new Stopwatch();
+                sw.Start();
+            }
+            var guild = _mapper.Map<Guild>(guildDto);
+            if (_diagnosticModeOn)
+            {
+                sw.Stop();
+                Console.WriteLine($"Map GuildDto to Guild : {sw.Elapsed}");
+            }
 
             return guild;
         }

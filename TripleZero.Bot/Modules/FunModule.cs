@@ -19,7 +19,7 @@ namespace TripleZero.Bot.Modules
 
             int roll = rand1.Next(0, 100);
 
-            await ReplyAsync($"{this.Context.User.Username} rolled {roll}!!!");
+            await ReplyAsync($"{this.Context.User.Username} rolled {roll}!!!!!");
         }
 
         [Command("imba", RunMode = RunMode.Async)]

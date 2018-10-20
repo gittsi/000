@@ -11,6 +11,8 @@ using TripleZero.Bot.Settings;
 using AutoMapper;
 using TripleZero.Core;
 using TripleZero.Bot.Helper;
+using System.Diagnostics;
+using Discord;
 
 namespace TripleZero.Modules
 {
@@ -41,16 +43,16 @@ namespace TripleZero.Modules
 
             Guild guild=null;
             try
-            {
+            {                
                 guild = await context.GetGuildData(playerUserName);
             }
             catch(Exception ex)
             {
                 await ReplyAsync($"I wasn't able to retrieve data from API!!!Try again later!!!");
                 await messageLoading.DeleteAsync();
+                await this.Context.Client.GetUser("TSiTaS", "1984").SendMessageAsync($"{this.Context.User.Username} : '{this.Context.Message}' resulted to : {ex.Message}" );
 
-
-                return;
+                throw ex;
             }
             
 
@@ -63,13 +65,21 @@ namespace TripleZero.Modules
 
             var dict = new Dictionary<string, double>();
 
-            foreach(var player in guild.Players)
+            Stopwatch sw = new Stopwatch();
+            if (applicationSettings.GetTripleZeroBotSettings().GeneralSettings.ConsolePerformanceWatcher)
+                sw.Start();
+            foreach (var player in guild.Players)
             {
                 var yazometerGear = YazHelper.GetYazometerToons(player);
                 var yazometerZeta = YazHelper.GetYazometerZeta(player);
                 var yazometerShips = YazHelper.GetYazometerShips(player);
 
                 dict.Add(player.PlayerNameInGame, yazometerGear.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p=>p.Score));
+            }
+            if (applicationSettings.GetTripleZeroBotSettings().GeneralSettings.ConsolePerformanceWatcher)
+            {
+                sw.Stop();
+                Console.WriteLine($"Yazometer calculations : {sw.Elapsed}");
             }
 
             var retStr = $"```css\nYAZometer Report for guild {guild.Name} \n```";

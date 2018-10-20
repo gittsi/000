@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -23,6 +24,10 @@ namespace TripleZero.Core
 
         public async Task<Guild> GetGuildData(int allyCode)
         {
+            Stopwatch sw = new Stopwatch();
+            if (_settings.DiagnosticSettings.ConsolePerformanceWatcher)
+                sw.Start();  
+
             string functionName = "GetGuildRepo";
             string key = allyCode.ToString();
             var objCache = _cacheClient.GetDataFromRepositoryCache(functionName, key);
@@ -30,18 +35,52 @@ namespace TripleZero.Core
             {
                 var guild = (Guild)objCache;
                 guild.LoadedFromCache = true;
+
+                if (_settings.DiagnosticSettings.ConsolePerformanceWatcher)
+                {
+                    sw.Stop();
+                    Console.WriteLine($"Get Guild from cache : {sw.Elapsed}");
+                }
+
                 return guild;
             }
-            //var dateStart = DateTime.Now;
-            //Console.WriteLine()
-            var guildRepo = new SWGoHHelpGuildRepository(_settings.SWGoHHelpSettings, _cacheClient, _mapper);
+
+
+            var guildRepo = new SWGoHHelpGuildRepository(_settings.SWGoHHelpSettings, _cacheClient, _mapper,_settings.DiagnosticSettings.ConsolePerformanceWatcher);
             var guildResult = await guildRepo.GetGuild(allyCode);
 
             var characterConfigContext = new CharacterConfigContext(_cacheClient, _mapper);
+
+            if (_settings.DiagnosticSettings.ConsolePerformanceWatcher)
+            {
+                sw = new Stopwatch();
+                sw.Start();
+            }
             var characterConfig = await characterConfigContext.GetCharactersConfig();
+            if (_settings.DiagnosticSettings.ConsolePerformanceWatcher)
+            {
+                sw.Stop();
+                Console.WriteLine($"Get character config : {sw.Elapsed}");
+            }
 
             var shipConfigContext = new ShipConfigContext(_cacheClient, _mapper);
+            if (_settings.DiagnosticSettings.ConsolePerformanceWatcher)
+            {
+                sw = new Stopwatch();
+                sw.Start();
+            }
             var shipConfig = await shipConfigContext.GetShipsConfig();
+            if (_settings.DiagnosticSettings.ConsolePerformanceWatcher)
+            {
+                sw.Stop();
+                Console.WriteLine($"Get ship config : {sw.Elapsed}");
+            }
+
+            if (_settings.DiagnosticSettings.ConsolePerformanceWatcher)
+            {
+                sw = new Stopwatch();
+                sw.Start();
+            }
             foreach (var player in guildResult.Players)
             {
                 foreach (var character in player.Characters)
@@ -54,7 +93,12 @@ namespace TripleZero.Core
                     ship.Name = shipConfig.FirstOrDefault(p => p.Command == ship.Id).Name;
                 }
             }
-            
+            if (_settings.DiagnosticSettings.ConsolePerformanceWatcher)
+            {
+                sw.Stop();
+                Console.WriteLine($"Map character and ship name : {sw.Elapsed}");
+            }
+
 
             //load to cache
             try

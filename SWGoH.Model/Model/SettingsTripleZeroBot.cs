@@ -15,6 +15,7 @@ namespace SWGoH.Model
         public string ApplicationName { get; set; }
         public string Environment { get; set; }
         public string JsonSettingsVersion { get; set; }
+        public bool ConsolePerformanceWatcher { get; set; }
     }
     public class DiscordSettings
     {

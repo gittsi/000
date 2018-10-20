@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SWGoH.Model;
+using System;
 
 namespace TripleZero.Bot.Settings
 {
@@ -24,6 +25,8 @@ namespace TripleZero.Bot.Settings
                     Environment = _SettingsConfigurationRoot.GetSection("General_Settings")["Environment"]
                     ,
                     JsonSettingsVersion = _SettingsConfigurationRoot.GetSection("General_Settings")["JsonSettingsVersion"]
+                    ,
+                    ConsolePerformanceWatcher = Convert.ToBoolean(_SettingsConfigurationRoot.GetSection("General_Settings")["ConsolePerformanceWatcher"])
                 },
                 //discord settings
                 DiscordSettings = new DiscordSettings()
@@ -71,6 +74,11 @@ namespace TripleZero.Bot.Settings
                 CachingSettings = new RepoCachingSettings()
                 {                    
                     RepositoryCachingInMinutes = RepositoryCachingInMinutes
+                }
+                ,
+                DiagnosticSettings = new DiagnosticSettings()
+                {
+                    ConsolePerformanceWatcher = this.GetTripleZeroBotSettings().GeneralSettings.ConsolePerformanceWatcher
                 }
             };
             return appSettings;

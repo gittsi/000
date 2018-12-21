@@ -1,0 +1,11 @@
+{
+    "teams": [{
+            "teamName": "First Order",
+            "toons": ["Kylo Ren (Unmasked)", "Kylo Ren", "First Order Officer", "Barriss Offee", "First Order Executioner"]
+        },
+        {
+            "teamName": "RJT",
+            "toons": ["Rey (Jedi Training)", "Rey (Scavenger)", "BB-8", "Amilyn Holdo", "R2-D2"]
+        }
+    ]
+}

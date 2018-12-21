@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SWGoH.Model\SWGoH.Model.csproj" />
+    <ProjectReference Include="..\TeamComparisonGA\GrandArenaHelper.csproj" />
     <ProjectReference Include="..\TripleZero.Core\TripleZero.Core.csproj" />
   </ItemGroup>
 

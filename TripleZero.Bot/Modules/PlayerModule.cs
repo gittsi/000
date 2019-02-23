@@ -13,13 +13,13 @@ using System;
 
 namespace TripleZero.Modules
 {
-    
+
 
     [Name("Player")]
     [Summary("Player Commands")]
     public class PlayerModule : ModuleBase<SocketCommandContext>
     {
-        
+
 
 
         private CacheClient _cacheClient = IResolver.Current.CacheClient;
@@ -37,7 +37,7 @@ namespace TripleZero.Modules
 
             Player player;
 
-            
+
 
             try
             {
@@ -51,15 +51,15 @@ namespace TripleZero.Modules
 
                 player = await context.GetPlayerData(playerUserName);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await ReplyAsync($" wasn't able to retrieve data from API!!!Try again later!!!");
                 await messageLoading.DeleteAsync();
 
-                
+
                 return;
             }
-            
+
 
             if (player == null)
             {
@@ -70,14 +70,14 @@ namespace TripleZero.Modules
 
             var yazometer = YazHelper.GetYazometerToons(player);
             var yazometerZeta = YazHelper.GetYazometerZeta(player);
-            var yazometerShips = YazHelper.GetYazometerShips(player);
+            //var yazometerShips = YazHelper.GetYazometerShips(player);
 
 
             var retStr = $"```css\nYAZometer Report for {player.PlayerNameInGame} \n```";
             int count = 1;
             retStr += "**Characters**\n";
             foreach (var p in yazometer.OrderByDescending(p=>p.Score))
-            {                
+            {
                 retStr += $"{count}:{p.Name} : {p.Score}\n";
                 count += 1;
             }
@@ -87,23 +87,24 @@ namespace TripleZero.Modules
             int countZeta = 1;
             retStr += "**Zeta**\n";
             foreach (var p in yazometerZeta.OrderByDescending(p => p.Score))
-            {                
+            {
                 retStr += $"{countZeta} : {p.Name} : {p.Score}\n";
                 countZeta += 1;
             }
             await ReplyAsync($"{retStr}");
 
-            retStr = "\n\n";
-            int countShips = 1;
-            retStr += "**Ships**\n";
-            foreach (var p in yazometerShips.OrderByDescending(p => p.Score))
-            {
-                retStr += $"{countShips} : {p.Name} : {p.Score}\n";
-                countShips += 1;
-            }
-            await ReplyAsync($"{retStr}");
+            //retStr = "\n\n";
+            //int countShips = 1;
+            //retStr += "**Ships**\n";
+            //foreach (var p in yazometerShips.OrderByDescending(p => p.Score))
+            //{
+            //    retStr += $"{countShips} : {p.Name} : {p.Score}\n";
+            //    countShips += 1;
+            //}
+            //await ReplyAsync($"{retStr}");
 
-            retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} + {yazometerShips.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)})";
+            //retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} + {yazometerShips.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)})";
+            retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)} out of {YazHelper.GetTotalPoints})";
 
             await ReplyAsync($"{retStr}");
             await messageLoading.DeleteAsync();

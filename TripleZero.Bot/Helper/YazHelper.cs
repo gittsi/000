@@ -7,90 +7,99 @@ using TripleZero.Bot.Model;
 
 namespace TripleZero.Bot.Helper
 {
-    public static class YazHelper
+    [Obsolete("Older version!!!")]
+    public static class YazHelperOLD
     {
-        public static double GetTotalPoints => 1080.0  + 72.5;
-
-        private static IEnumerable<Character> GetYazGearPremium(Player player)
+        public static double GetTotalPoints => GetPremium().Count*12.5 + GetNormal().Count*10 + GetLow().Count*8 + GetShips().Count*10 + 350 ;
+       
+        private static List<string> GetPremium()
         {
-            return player.Characters.Where(p =>
-            p.Name == "Darth Traya"
-            || p.Name == "Darth Nihilus"
-            || p.Name == "Darth Sion"
-            || p.Name == "Count Dooku"
-            || p.Name == "Sith Trooper"
-            || p.Name == "Rey (Jedi Training)"
-            || p.Name == "Bossk"
-            || p.Name == "Boba Fett"
-            || p.Name == "Jango Fett"
-            || p.Name == "Dengar"
-            || p.Name == "Kylo Ren (Unmasked)"
-            || p.Name == "Kylo Ren"
-            || p.Name == "First Order Stormtrooper"
-            || p.Name == "First Order Officer"
-            || p.Name == "First Order Executioner"
-            || p.Name == "Commander Luke Skywalker"
-            || p.Name == "Enfys Nest"
-            || p.Name == "Han Solo"
-            || p.Name == "Chewbacca"
-            || p.Name == "Wampa"
-            || p.Name == "Bastila Shan"
-            || p.Name == "Grand Master Yoda"
-            || p.Name == "Hermit Yoda"
-            || p.Name == "Ezra Bridger"
-            || p.Name == "Grand Admiral Thrawn"
-            || p.Name == "Magmatrooper"
-            || p.Name == "Qi'ra"
-            || p.Name == "Vandor Chewbacca"
-            || p.Name == "L3-37"
-            || p.Name == "Zaalbar"
+            var list = new List<string>();
+            list.Add("Darth Traya");
+            list.Add("Darth Nihilus");
+            list.Add("Darth Sion");
+            list.Add("Count Dooku");
+            list.Add("Sith Trooper");
+            list.Add("Rey (Jedi Training)");
+            list.Add("Bossk");
+            list.Add("Boba Fett");
+            list.Add("Jango Fett");
+            list.Add("Dengar");
+            list.Add("Kylo Ren (Unmasked)");
+            list.Add("Kylo Ren");
+            list.Add("First Order Stormtrooper");
+            list.Add("First Order Officer");
+            list.Add("First Order Executioner");
+            list.Add("Commander Luke Skywalker");
+            list.Add("Enfys Nest");
+            list.Add("Han Solo");
+            list.Add("Chewbacca");
+            list.Add("Wampa");
+            list.Add("Bastila Shan");
+            list.Add("Grand Master Yoda");
+            list.Add("Hermit Yoda");
+            list.Add("Ezra Bridger");
+            list.Add("Grand Admiral Thrawn");
+            list.Add("Magmatrooper");
+            list.Add("Qi'ra");
+            list.Add("Vandor Chewbacca");
+            list.Add("L3-37");
+            list.Add("Zaalbar");
+            list.Add("Jedi Knight Revan");
+            list.Add("Jolee Bindo");
 
-
-           
-            );
+            return list;
         }
 
-        private static IEnumerable<Character> GetYazGearNormal(Player player)
+        private static List<string> GetNormal()
         {
-            return player.Characters.Where(p =>
-             p.Name == "R2-D2"
-            || p.Name == "BB-8"
-            || p.Name == "Amilyn Holdo"
-            || p.Name == "Visas Marr"
-            || p.Name == "Emperor Palpatine"
-            || p.Name == "Darth Vader"
-            || p.Name == "Grand Moff Tarkin"
-            || p.Name == "Shoretrooper"
-            || p.Name == "General Kenobi"
-            || p.Name == "Barriss Offee"
-            || p.Name == "Asajj Ventress"
-            || p.Name == "Mother Talzin"
-            || p.Name == "Old Daka"
-            || p.Name == "Talia"
-            || p.Name == "Nightsister Zombie"
-            || p.Name == "General Veers"
-            || p.Name == "Colonel Starck"
-            || p.Name == "Snowtrooper"
-            || p.Name == "Stormtrooper"
-            || p.Name == "Range Trooper"
-            || p.Name == "Death Trooper"
-            || p.Name == "Imperial Probe Droid"
-            || p.Name == "Hera Syndulla"
-            || p.Name == "Kanan Jarrus"
-            || p.Name == "Sabine Wren"
-            || p.Name == "Chopper"
-            || p.Name == "Garazeb \"Zeb\" Orrelios"
-            || p.Name == "Chief Chirpa"
-            || p.Name == "Wicket"
-            || p.Name == "Ewok Elder"
-            || p.Name == "Paploo"
-            || p.Name == "Logray"
-            || p.Name == "Finn"
-            || p.Name == "Poe Dameron"
-            || p.Name == "Rey (Scavenger)"
-            || p.Name == "Resistance Pilot"
-            || p.Name == "Resistance Trooper"
-            );
+            var list = new List<string>();
+            list.Add("R2-D2");
+            list.Add("BB-8");
+            list.Add("Amilyn Holdo");
+            list.Add("Visas Marr");
+            list.Add("Emperor Palpatine");
+            list.Add("Darth Vader");
+            list.Add("Grand Moff Tarkin");
+            list.Add("Shoretrooper");
+            list.Add("General Kenobi");
+            list.Add("Barriss Offee");
+            list.Add("Asajj Ventress");
+            list.Add("Mother Talzin");
+            list.Add("Old Daka");
+            list.Add("Talia");
+            list.Add("Nightsister Zombie");
+            list.Add("General Veers");
+            list.Add("Colonel Starck");
+            list.Add("Snowtrooper");
+            list.Add("Stormtrooper");
+            list.Add("Range Trooper");
+            list.Add("Death Trooper");
+            list.Add("Imperial Probe Droid");
+            list.Add("Hera Syndulla");
+            list.Add("Kanan Jarrus");
+            list.Add("Sabine Wren");
+            list.Add("Chopper");
+            list.Add("Garazeb \"Zeb\" Orrelios");
+
+            return list;
+        }
+
+        private static List<string> GetLow()
+        {
+            var list = new List<string>();
+            list.Add("Chief Chirpa");
+            list.Add("Wicket");
+            list.Add("Ewok Elder");
+            list.Add("Paploo");
+            list.Add("Logray");
+            list.Add("Finn");
+            list.Add("Poe Dameron");
+            list.Add("Rey (Scavenger)");
+            list.Add("Resistance Pilot");
+            list.Add("Resistance Trooper");
+
+            return list;
         }
 
         private static List<string> GetYazZetaCount()
@@ -130,6 +139,8 @@ namespace TripleZero.Bot.Helper
             yazList.Add("Hermit Yoda");
             yazList.Add("Chief Chirpa");
             yazList.Add("Wicket");
+            yazList.Add("Jedi Knight Revan");
+            yazList.Add("Jolee Bindo");
 
             return yazList;
         }
@@ -147,9 +158,27 @@ namespace TripleZero.Bot.Helper
             yazList.Add("Biggs Darklighter's X-wing");
             yazList.Add("Hound's Tooth");
             yazList.Add("Plo Koon's Jedi Starfighter");
+            yazList.Add("Xanadu Blood");
 
             return yazList;
         }
+
+        private static IEnumerable<Character> GetYazGearPremium(Player player)
+        {
+            return player.Characters.Where(p =>GetPremium().Contains(p.Name));
+        }
+
+        private static IEnumerable<Character> GetYazGearNormal(Player player)
+        {
+            return player.Characters.Where(p => GetNormal().Contains(p.Name));            
+        }
+
+        private static IEnumerable<Character> GetYazGearLow(Player player)
+        {
+            return player.Characters.Where(p => GetLow().Contains(p.Name));
+        }
+
+        
         
         private static List<Yaz> GetCharsZetaCount(Player player)
         {
@@ -172,14 +201,14 @@ namespace TripleZero.Bot.Helper
             foreach (var unitName in GetShips())
             {
                 var ship = player.Ships.FirstOrDefault(p => p.Name == unitName);
-                var unit = player.Characters.FirstOrDefault(p => p.Id == ship.Crew.FirstOrDefault().Id);
+                var unit = player.Characters.FirstOrDefault(p => p.Id == ship?.Crew?.FirstOrDefault().Id);
                 //yazClass.Add(new Yaz() { Name = ship == null ? unitName : ship.Name, Score = ship == null ? 0 : (ship.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
                 var score = 0;
                 if (ship?.Stars == 7) score += 2;
                 if (unit?.Stars == 7) score += 2;
-                if (!ship.Abilities.Any(p => p.Level != p.MaxLevel)) score += 2;
-                if (unit.Gear == 12) score += 2;
-                if(unit.Name == "Plo Koon" || unit.Name == "Sun Fac" )
+                if (!ship?.Abilities?.Any(p => p?.Level != p?.MaxLevel) == true ) score += 2;
+                if (unit?.Gear == 12) score += 2;
+                if(unit?.Name == "Plo Koon" || unit?.Name == "Sun Fac" )
                 {
                     var countSkills = unit.Skills.Count;
                     var count8 = unit.Skills.Count(p => p.Tier == 8);
@@ -188,9 +217,9 @@ namespace TripleZero.Bot.Helper
                     if(countSkills == count8 + count7  && count7 == 1) score+=1;
                 }
                 else
-                    if (!unit.Skills.Any(p => p.Tier < 8)  || unit.Skills.Any(p=>p.IsZeta)) score += 1;
+                    if (!unit?.Skills?.Any(p => p?.Tier < 8) == true  || unit?.Skills?.Any(p=>p.IsZeta) == true) score += 1;
 
-                if (unit.Gear == 12 && unit.Equipped.Count >= 3) score += 1;
+                if (unit?.Gear == 12 && unit?.Equipped?.Count >= 3) score += 1;
 
 
                 yazClass.Add(new Yaz() { Name = unitName, Score = score });
@@ -228,6 +257,25 @@ namespace TripleZero.Bot.Helper
             var myCharsPremium = GetYazGearPremium(player);
             multiplier = 1.25;           
             foreach (var p in myCharsPremium)
+            {
+                double score = 0;
+                if (p.Gear == 11)
+                {
+                    score = p.Stars;
+                }
+                else if (p.Gear == 12)
+                {
+                    var g12 = p.Equipped.Count(pq => pq.Slot == 0 || pq.Slot == 1 || pq.Slot == 2);
+                    var g12Plus = p.Equipped.Count(pq => pq.Slot == 3 || pq.Slot == 4);
+                    score = 8 + (g12 >= 2 ? 1 : 0) + (g12Plus >= 1 ? 1 : 0);
+                }
+
+                yazClass.Add(new Yaz() { Score = score * multiplier, Name = p.Name });
+            }
+
+            var myCharsLow = GetYazGearLow(player);
+            multiplier = 0.8;
+            foreach (var p in myCharsLow)
             {
                 double score = 0;
                 if (p.Gear == 11)

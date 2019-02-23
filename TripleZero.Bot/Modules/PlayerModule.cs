@@ -78,7 +78,7 @@ namespace TripleZero.Modules
             retStr += "**Characters**\n";
             foreach (var p in yazometer.OrderByDescending(p=>p.Score))
             {
-                retStr += $"{count}:{p.Name} : {p.Score}\n";
+                retStr += $"{count}:{p.ToonName} : {p.Score}\n";
                 count += 1;
             }
             await ReplyAsync($"{retStr}");
@@ -88,8 +88,144 @@ namespace TripleZero.Modules
             retStr += "**Zeta**\n";
             foreach (var p in yazometerZeta.OrderByDescending(p => p.Score))
             {
-                retStr += $"{countZeta} : {p.Name} : {p.Score}\n";
+                retStr += $"{countZeta} : {p.ToonName} : {p.Score}\n";
                 countZeta += 1;
+            }
+            await ReplyAsync($"{retStr}");
+
+            //retStr = "\n\n";
+            //int countShips = 1;
+            //retStr += "**Ships**\n";
+            //foreach (var p in yazometerShips.OrderByDescending(p => p.Score))
+            //{
+            //    retStr += $"{countShips} : {p.Name} : {p.Score}\n";
+            //    countShips += 1;
+            //}
+            //await ReplyAsync($"{retStr}");
+
+            //retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} + {yazometerShips.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)})";
+            retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)} out of {YazHelper.GetTotalPoints})";
+
+            await ReplyAsync($"{retStr}");
+            await messageLoading.DeleteAsync();
+
+
+
+        }
+
+        [Command("yazometergroup", RunMode = RunMode.Async)]
+        [Summary("Get full YAZ report for a player group by faction and priority")]
+        [Remarks("*yazometergroup {playerUserName}*")]
+        [Alias("yaz2")]
+        public async Task GetYaz2ForPlayer(string playerUserName)
+        {
+            playerUserName = playerUserName.ToLower().Trim();
+
+            string loadingStr = string.Format("```YAZometer for player {0} is loading...```", playerUserName);
+            var messageLoading = await ReplyAsync($"{loadingStr}");
+
+            Player player;
+
+
+
+            try
+            {
+                //get player
+                //var player = IResolver.Current.MongoDBRepository.GetPlayer(playerUserName).Result;
+                var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
+                var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
+                IMapper mapper = null;
+                //var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper, new Core.Caching.CacheClient(applicationSettings.GetTripleZeroRepositorySettings(),applicationSettings.GetTripleZeroBotSettings()));
+                var context = new PlayerContext(repoSettings, _cacheClient, mapper);
+
+                player = await context.GetPlayerData(playerUserName);
+            }
+            catch (Exception ex)
+            {
+                await ReplyAsync($" wasn't able to retrieve data from API!!!Try again later!!!");
+                await messageLoading.DeleteAsync();
+
+
+                return;
+            }
+
+
+            if (player == null)
+            {
+                await ReplyAsync($"I couldn't find player : {playerUserName}...");
+                await messageLoading.DeleteAsync();
+                return;
+            }
+
+            var yazometer = YazHelper.GetYazometerToons(player).OrderByDescending(p => p.MaxScore).ThenBy(p => p.FactionName).ThenByDescending(p => p.Score);
+            var yazometerZeta = YazHelper.GetYazometerZeta(player);
+            //var yazometerShips = YazHelper.GetYazometerShips(player);
+
+
+            var retStr = $"```css\nYAZometer Report for {player.PlayerNameInGame} \n```";
+            int count = 1;
+            retStr += "```**Characters**```";
+            var groupName = "";
+            var factionName = "";
+            foreach (var p in yazometer)
+            {
+                if (retStr.Length > 1800)
+                {
+                    await ReplyAsync($"{retStr}");
+                    retStr = "";
+                }
+
+                if (groupName != p.GroupName)
+                {
+                    var toons = yazometer.Where(pq => pq.GroupName == groupName);
+                    var maxScore = 0.0;
+                    var groupScore = 0.0;
+
+                    groupName = p.GroupName;
+                    if (groupName != "")
+                    {
+                        maxScore = toons.Count() * toons.FirstOrDefault().MaxScore;
+                        groupScore = toons.Sum(pq => pq.Score);
+                        //retStr += $"";
+                    }
+
+                    retStr += $"\n```{groupName} | {groupScore}/{maxScore} : {((groupScore / maxScore) * 100.0).ToString("#.##")} %```";
+                }
+
+                if (factionName != p.FactionName)
+                {
+                    var toons = yazometer.Where(pq => pq.FactionName == factionName);
+                    var maxScore = 0.0;
+                    var factionScore = 0.0;
+
+                    factionName = p.FactionName;
+
+                    if (factionName != "")
+                    {
+                        maxScore = toons.Count() * toons.FirstOrDefault().MaxScore;
+                        factionScore = toons.Sum(pq => pq.Score);
+                        //retStr += $"";
+                    }                    
+                    retStr += $"**- {factionName} | {factionScore}/{maxScore} : {((factionScore/maxScore) * 100.0).ToString("#.##")} %**\n";
+                }
+
+                retStr += $"{p.ToonName} : {p.Score}\n";
+                count += 1;
+            }
+            //await ReplyAsync($"{retStr}");
+
+            int countZeta = 1;
+            retStr += "```**Zeta**```";
+            foreach (var p in yazometerZeta.OrderBy(p => p.MaxScore))
+            {
+                retStr += $"{countZeta} : {p.ToonName} : {p.Score}\n";
+                countZeta += 1;
+
+                if (retStr.Length > 1800)
+                {
+                    await ReplyAsync($"{retStr}");
+                    retStr = "";
+                }
             }
             await ReplyAsync($"{retStr}");
 

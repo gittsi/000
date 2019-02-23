@@ -187,7 +187,7 @@ namespace TripleZero.Bot.Helper
             foreach (var unitName in GetYazZetaCount())
             {
                 var unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-                yazClass.Add(new Yaz() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+                yazClass.Add(new Yaz() { ToonName = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
             }
             return yazClass;
         }
@@ -222,7 +222,7 @@ namespace TripleZero.Bot.Helper
                 if (unit?.Gear == 12 && unit?.Equipped?.Count >= 3) score += 1;
 
 
-                yazClass.Add(new Yaz() { Name = unitName, Score = score });
+                yazClass.Add(new Yaz() { ToonName = unitName, Score = score });
             }
 
             return yazClass;
@@ -251,7 +251,7 @@ namespace TripleZero.Bot.Helper
                     score = 8 + (g12 >= 2 ? 1 : 0) + (g12Plus >= 1 ? 1 : 0);
                 }
 
-                yazClass.Add(new Yaz() { Score = score* multiplier, Name = p.Name });
+                yazClass.Add(new Yaz() { Score = score* multiplier, ToonName = p.Name });
             }
 
             var myCharsPremium = GetYazGearPremium(player);
@@ -270,7 +270,7 @@ namespace TripleZero.Bot.Helper
                     score = 8 + (g12 >= 2 ? 1 : 0) + (g12Plus >= 1 ? 1 : 0);
                 }
 
-                yazClass.Add(new Yaz() { Score = score * multiplier, Name = p.Name });
+                yazClass.Add(new Yaz() { Score = score * multiplier, ToonName = p.Name });
             }
 
             var myCharsLow = GetYazGearLow(player);
@@ -289,7 +289,7 @@ namespace TripleZero.Bot.Helper
                     score = 8 + (g12 >= 2 ? 1 : 0) + (g12Plus >= 1 ? 1 : 0);
                 }
 
-                yazClass.Add(new Yaz() { Score = score * multiplier, Name = p.Name });
+                yazClass.Add(new Yaz() { Score = score * multiplier, ToonName = p.Name });
             }
 
             return yazClass;
@@ -304,7 +304,7 @@ namespace TripleZero.Bot.Helper
             foreach(var unitName in GetYazZetaExists())
             {
                 var unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-                yazClass.Add(new Yaz() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
+                yazClass.Add(new Yaz() { ToonName = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
             }
 
             return yazClass;

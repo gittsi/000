@@ -35,119 +35,119 @@ namespace TripleZero.Bot.Helper
         public static double TotalPointBonusToons => GetBonusToons().Count * 4;
 
         #region Mandatory Toons
-        private static List<string> GetMandatorySith()
+        private static List<KeyValuePair<string, string>> GetMandatorySith()
         {
-            var list = new List<string>();
-            list.Add("Darth Traya");
-            list.Add("Darth Nihilus");
-            list.Add("Darth Sion");
-            list.Add("Bastila Shan (Fallen)");
-            list.Add("Sith Trooper");
-            //list.Add("Count Dooku");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Darth Traya","Sith"));
+            list.Add(new KeyValuePair<string, string>("Darth Nihilus", "Sith"));
+            list.Add(new KeyValuePair<string, string>("Darth Sion", "Sith"));
+            list.Add(new KeyValuePair<string, string>("Bastila Shan (Fallen)", "Sith"));
+            list.Add(new KeyValuePair<string, string>("Sith Trooper", "Sith"));
+            //list.Add(new KeyValuePair<string, string>("Count Dooku");
             return list;
         }
 
-        private static List<string> GetMandatoryJedi()
+        private static List<KeyValuePair<string, string>> GetMandatoryJedi()
         {
-            var list = new List<string>();
-            list.Add("Jedi Knight Revan");
-            list.Add("Jolee Bindo");
-            list.Add("Grand Master Yoda");
-            list.Add("General Kenobi");
-            list.Add("Hermit Yoda");
-            list.Add("Bastila Shan");
-            list.Add("Barriss Offee");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Jedi Knight Revan", "Jedi"));
+            list.Add(new KeyValuePair<string, string>("Jolee Bindo", "Jedi"));
+            list.Add(new KeyValuePair<string, string>("Grand Master Yoda", "Jedi"));
+            list.Add(new KeyValuePair<string, string>("General Kenobi", "Jedi"));
+            list.Add(new KeyValuePair<string, string>("Hermit Yoda", "Jedi"));
+            list.Add(new KeyValuePair<string, string>("Bastila Shan", "Jedi"));
+            list.Add(new KeyValuePair<string, string>("Barriss Offee", "Jedi"));
             return list;
         }
 
-        private static List<string> GetMandatoryResistance()
+        private static List<KeyValuePair<string, string>> GetMandatoryResistance()
         {
-            var list = new List<string>();
-            list.Add("Rey (Jedi Training)");
-            list.Add("R2-D2");
-            list.Add("BB-8");
-            //list.Add("Amilyn Holdo");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Rey (Jedi Training)", "Resistance"));
+            list.Add(new KeyValuePair<string, string>("R2-D2", "Resistance"));
+            list.Add(new KeyValuePair<string, string>("BB-8", "Resistance"));
+            //list.Add(new KeyValuePair<string, string>("Amilyn Holdo");
             return list;
         }
 
-        private static List<string> GetMandatoryRebels()
+        private static List<KeyValuePair<string, string>> GetMandatoryRebels()
         {
-            var list = new List<string>();
-            list.Add("Commander Luke Skywalker");
-            list.Add("Han Solo");
-            list.Add("Chewbacca");
-            list.Add("Obi-Wan Kenobi (Old Ben)");
-            list.Add("C-3PO");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Commander Luke Skywalker", "Rebels"));
+            list.Add(new KeyValuePair<string, string>("Han Solo", "Rebels"));
+            list.Add(new KeyValuePair<string, string>("Chewbacca", "Rebels"));
+            list.Add(new KeyValuePair<string, string>("Obi-Wan Kenobi (Old Ben)", "Rebels"));
+            list.Add(new KeyValuePair<string, string>("C-3PO", "Rebels"));
             return list;
         }
 
-        private static List<string> GetMandatoryBountyHunters()
+        private static List<KeyValuePair<string, string>> GetMandatoryBountyHunters()
         {
-            var list = new List<string>();
-            list.Add("Bossk");
-            list.Add("Jango Fett");
-            list.Add("Dengar");
-            list.Add("Boba Fett");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Bossk", "Bounty Hunters"));
+            list.Add(new KeyValuePair<string, string>("Jango Fett", "Bounty Hunters"));
+            list.Add(new KeyValuePair<string, string>("Dengar", "Bounty Hunters"));
+            list.Add(new KeyValuePair<string, string>("Boba Fett", "Bounty Hunters"));
             return list;
         }
 
-        private static List<string> GetMandatoryEmpire()
+        private static List<KeyValuePair<string, string>> GetMandatoryEmpire()
         {
-            var list = new List<string>();
-            list.Add("Emperor Palpatine");
-            list.Add("Darth Vader");
-            list.Add("Grand Admiral Thrawn");
-            list.Add("Shoretrooper");
-            list.Add("Death Trooper");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Emperor Palpatine", "Empire"));
+            list.Add(new KeyValuePair<string, string>("Darth Vader", "Empire"));
+            list.Add(new KeyValuePair<string, string>("Grand Admiral Thrawn", "Empire"));
+            list.Add(new KeyValuePair<string, string>("Shoretrooper", "Empire"));
+            list.Add(new KeyValuePair<string, string>("Death Trooper", "Empire"));
             return list;
         }
 
-        private static List<string> GetMandatoryNightSisters()
+        private static List<KeyValuePair<string, string>> GetMandatoryNightSisters()
         {
-            var list = new List<string>();
-            list.Add("Asajj Ventress");
-            list.Add("Mother Talzin");
-            list.Add("Old Daka");
-            list.Add("Nightsister Spirit");
-            list.Add("Nightsister Zombie");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Asajj Ventress", "NightSisters"));
+            list.Add(new KeyValuePair<string, string>("Mother Talzin", "NightSisters"));
+            list.Add(new KeyValuePair<string, string>("Old Daka", "NightSisters"));
+            list.Add(new KeyValuePair<string, string>("Nightsister Spirit", "NightSisters"));
+            list.Add(new KeyValuePair<string, string>("Nightsister Zombie", "NightSisters"));
             return list;
         }
 
-        private static List<string> GetMandatoryScoundrels()
+        private static List<KeyValuePair<string, string>> GetMandatoryScoundrels()
         {
-            var list = new List<string>();
-            list.Add("Qi'ra");
-            list.Add("Vandor Chewbacca");
-            list.Add("L3-37");
-            list.Add("Enfys Nest");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Qi'ra", "Scoundrels"));
+            list.Add(new KeyValuePair<string, string>("Vandor Chewbacca", "Scoundrels"));
+            list.Add(new KeyValuePair<string, string>("L3-37", "Scoundrels"));
+            list.Add(new KeyValuePair<string, string>("Enfys Nest", "Scoundrels"));
             return list;
         }
 
-        private static List<string> GetMandatoryOldRepublic()
+        private static List<KeyValuePair<string, string>> GetMandatoryOldRepublic()
         {
-            var list = new List<string>();
-            list.Add("Zaalbar");
-            list.Add("Mission Vao");
-            list.Add("Carth Onasi");
-            list.Add("Canderous Ordo");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Zaalbar", "Old Republic"));
+            list.Add(new KeyValuePair<string, string>("Mission Vao", "Old Republic"));
+            list.Add(new KeyValuePair<string, string>("Carth Onasi", "Old Republic"));
+            list.Add(new KeyValuePair<string, string>("Canderous Ordo", "Old Republic"));
             return list;
         }
 
-        private static List<string> GetMandatoryOthers()
+        private static List<KeyValuePair<string, string>> GetMandatoryOthers()
         {
-            var list = new List<string>();
-            list.Add("Wampa");
-            list.Add("General Grievous");
-            list.Add("B2 Super Battle Droid");
-            list.Add("CT-7567 \"Rex\"");
-            list.Add("Chirrut Îmwe");
-            list.Add("Baze Malbus");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Wampa", "Rest Mandatory"));
+            list.Add(new KeyValuePair<string, string>("General Grievous", "Rest Mandatory"));
+            list.Add(new KeyValuePair<string, string>("B2 Super Battle Droid", "Rest Mandatory"));
+            list.Add(new KeyValuePair<string, string>("CT-7567 \"Rex\"", "Rest Mandatory"));
+            list.Add(new KeyValuePair<string, string>("Chirrut Îmwe", "Rest Mandatory"));
+            list.Add(new KeyValuePair<string, string>("Baze Malbus", "Rest Mandatory"));
             return list;
         }
 
-        private static List<string> GetMandatoryToons()
+        private static List<KeyValuePair<string, string>> GetMandatoryToons()
         {
-            var list = new List<string>();
+            var list = new List<KeyValuePair<string, string>>();
             //Sith
             list.AddRange(GetMandatorySith());
 
@@ -193,54 +193,55 @@ namespace TripleZero.Bot.Helper
         #endregion
 
         #region Legacy Toons
-        private static List<string> GetLegacyFirstOrder()
+        private static List<KeyValuePair<string, string>> GetLegacyFirstOrder()
         {
-            var list = new List<string>();
-            list.Add("Kylo Ren (Unmasked)");
-            list.Add("Kylo Ren");
-            list.Add("First Order Stormtrooper");
-            list.Add("First Order Officer");
-            list.Add("First Order Executioner");
+            var list = new List<KeyValuePair<string, string>>();
+
+            list.Add(new KeyValuePair<string, string>("Kylo Ren (Unmasked)", "First Order"));
+            list.Add(new KeyValuePair<string, string>("Kylo Ren", "First Order"));
+            list.Add(new KeyValuePair<string, string>("First Order Stormtrooper", "First Order"));
+            list.Add(new KeyValuePair<string, string>("First Order Officer", "First Order"));
+            list.Add(new KeyValuePair<string, string>("First Order Executioner", "First Order"));
             return list;
         }
 
-        private static List<string> GetLegacyImperials()
+        private static List<KeyValuePair<string, string>> GetLegacyImperials()
         {
-            var list = new List<string>();
-            list.Add("General Veers");
-            list.Add("Colonel Starck");
-            list.Add("Snowtrooper");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("General Veers","Imperials"));
+            list.Add(new KeyValuePair<string, string>("Colonel Starck", "Imperials"));
+            list.Add(new KeyValuePair<string, string>("Snowtrooper", "Imperials"));
             //list.Add("Stormtrooper");
-            list.Add("Range Trooper");
-            list.Add("Magmatrooper");
+            list.Add(new KeyValuePair<string, string>("Range Trooper", "Imperials"));
+            list.Add(new KeyValuePair<string, string>("Magmatrooper", "Imperials"));
             return list;
         }
 
-        private static List<string> GetLegacyPhoenix()
+        private static List<KeyValuePair<string, string>> GetLegacyPhoenix()
         {
-            var list = new List<string>();
-            list.Add("Ezra Bridger");
-            list.Add("Hera Syndulla");
-            list.Add("Kanan Jarrus");
-            list.Add("Sabine Wren");
-            list.Add("Garazeb \"Zeb\" Orrelios");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Ezra Bridger", "Phoenix"));
+            list.Add(new KeyValuePair<string, string>("Hera Syndulla", "Phoenix"));
+            list.Add(new KeyValuePair<string, string>("Kanan Jarrus", "Phoenix"));
+            list.Add(new KeyValuePair<string, string>("Sabine Wren", "Phoenix"));
+            list.Add(new KeyValuePair<string, string>("Garazeb \"Zeb\" Orrelios", "Phoenix"));
             return list;
         }
 
-        private static List<string> GetLegacyResistance()
+        private static List<KeyValuePair<string, string>> GetLegacyResistance()
         {
-            var list = new List<string>();
-            list.Add("Finn");
-            list.Add("Poe Dameron");
-            list.Add("Rey (Scavenger)");
-            list.Add("Resistance Pilot");
-            list.Add("Resistance Trooper");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Finn", "Resistance Legacy"));
+            list.Add(new KeyValuePair<string, string>("Poe Dameron", "Resistance Legacy"));
+            list.Add(new KeyValuePair<string, string>("Rey (Scavenger)", "Resistance Legacy"));
+            list.Add(new KeyValuePair<string, string>("Resistance Pilot", "Resistance Legacy"));
+            list.Add(new KeyValuePair<string, string>("Resistance Trooper", "Resistance Legacy"));
             return list;
         }
 
-        private static List<string> GetLegacyToons()
+        private static List<KeyValuePair<string, string>> GetLegacyToons()
         {
-            var list = new List<string>();
+            var list = new List<KeyValuePair<string, string>>();
 
             //FO
             list.AddRange(GetLegacyFirstOrder());
@@ -259,49 +260,49 @@ namespace TripleZero.Bot.Helper
         #endregion
 
         #region Bonus Toons
-        private static List<string> GetBonusClones()
+        private static List<KeyValuePair<string, string>> GetBonusClones()
         {
-            var list = new List<string>();
-            list.Add("CC-2224 \"Cody\"");
-            list.Add("Clone Sergeant - Phase I");
-            list.Add("CT-21-0408 \"Echo\"");
-            list.Add("CT-5555 \"Fives\"");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("CC-2224 \"Cody\"", "Clones"));
+            list.Add(new KeyValuePair<string, string>("Clone Sergeant - Phase I", "Clones"));
+            list.Add(new KeyValuePair<string, string>("CT-21-0408 \"Echo\"", "Clones"));
+            list.Add(new KeyValuePair<string, string>("CT-5555 \"Fives\"", "Clones"));
             return list;
         }
-        private static List<string> GetBonusEwoks()
+        private static List<KeyValuePair<string, string>> GetBonusEwoks()
         {
-            var list = new List<string>();
-            list.Add("Chief Chirpa");
-            list.Add("Wicket");
-            list.Add("Ewok Elder");
-            list.Add("Paploo");
-            list.Add("Logray");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Chief Chirpa", "Ewoks"));
+            list.Add(new KeyValuePair<string, string>("Wicket", "Ewoks"));
+            list.Add(new KeyValuePair<string, string>("Ewok Elder", "Ewoks"));
+            list.Add(new KeyValuePair<string, string>("Paploo", "Ewoks"));
+            list.Add(new KeyValuePair<string, string>("Logray", "Ewoks"));
 
             return list;
         }
-        private static List<string> GetBonusJawa()
+        private static List<KeyValuePair<string, string>> GetBonusJawa()
         {
-            var list = new List<string>();
-            list.Add("Chief Nebit");
-            list.Add("Jawa");
-            list.Add("Jawa Engineer");
-            list.Add("Java Scavenger");
-            list.Add("Dathcha");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Chief Nebit", "Jawas"));
+            list.Add(new KeyValuePair<string, string>("Jawa", "Jawas"));
+            list.Add(new KeyValuePair<string, string>("Jawa Engineer", "Jawas"));
+            list.Add(new KeyValuePair<string, string>("Java Scavenger", "Jawas"));
+            list.Add(new KeyValuePair<string, string>("Dathcha", "Jawas"));
 
             return list;
         }
-        private static List<string> GetBonusOthers()
+        private static List<KeyValuePair<string, string>> GetBonusOthers()
         {
-            var list = new List<string>();
-            list.Add("Mace Windu");
-            list.Add("CountDooku");
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Mace Windu", "Rest Bonus"));
+            list.Add(new KeyValuePair<string, string>("Count Dooku", "Rest Bonus"));
 
             return list;
         }
 
-        private static List<string> GetBonusToons()
+        private static List<KeyValuePair<string, string>> GetBonusToons()
         {
-            var list = new List<string>();
+            var list = new List<KeyValuePair<string, string>>();
 
             //Clones
             list.AddRange(GetBonusClones());
@@ -422,17 +423,17 @@ namespace TripleZero.Bot.Helper
 
         private static IEnumerable<Character> GetYazGearMandatory(Player player)
         {
-            return player.Characters.Where(p => GetMandatoryToons().Contains(p.Name));
+            return player.Characters.Where(p => GetMandatoryToons().Exists(v => v.Key == p.Name));
         }
 
         private static IEnumerable<Character> GetYazGearLegacy(Player player)
         {
-            return player.Characters.Where(p => GetLegacyToons().Contains(p.Name));
+            return player.Characters.Where(p => GetLegacyToons().Exists(v=>v.Key == p.Name));
         }
 
         private static IEnumerable<Character> GetYazGearBonus(Player player)
         {
-            return player.Characters.Where(p => GetBonusToons().Contains(p.Name));
+            return player.Characters.Where(p => GetBonusToons().Exists(v => v.Key == p.Name));
         }
 
 
@@ -444,30 +445,38 @@ namespace TripleZero.Bot.Helper
             foreach (var unitName in GetYazZetaCount())
             {
                 var unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-                yazClass.Add(new Yaz() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
+                yazClass.Add(new Yaz() { ToonName = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : unit.Skills.Count(p => p.HasZeta) * 10 });
             }
             return yazClass;
         }
 
-        public static List<GroupYaz> GetToonsBreakDown(Player player)
-        {
-            List<GroupYaz> toonsBreakDown = new List<GroupYaz>();
+        //public static List<GroupYaz> GetToonsBreakDown(Player player)
+        //{
+        //    List<GroupYaz> toonsBreakDown = new List<GroupYaz>();
 
-            GroupYaz mandatoryToons = new GroupYaz()
-            {
-                GroupName = "Mandatory Toons"                
-            };
-            GroupYaz legacyToons = new GroupYaz()
-            {
-                GroupName = "Legacy Toons"
-            };
-            GroupYaz bonusToons = new GroupYaz()
-            {
-                GroupName = "Bonus Toons"
-            };
+        //    GroupYaz mandatoryToons = new GroupYaz()
+        //    {
+        //        GroupName = "Mandatory Toons"                
+        //    };
+        //    GroupYaz legacyToons = new GroupYaz()
+        //    {
+        //        GroupName = "Legacy Toons"
+        //    };
+        //    GroupYaz bonusToons = new GroupYaz()
+        //    {
+        //        GroupName = "Bonus Toons"
+        //    };
 
-            return toonsBreakDown;
-        }
+        //    var mandatoryFactions = new List<Faction>();
+        //    mandatoryFactions.Add(new Faction()
+        //    {
+        //        FactionName = "Sith",
+        //        ToonsInGroup= GetMandatorySith(),
+
+        //    })
+
+        //    return toonsBreakDown;
+        //}
 
 
         public static List<Yaz> GetYazometerToons(Player player)
@@ -489,7 +498,7 @@ namespace TripleZero.Bot.Helper
                     score = 8 + (g12 == 3 ? 1 : 0) + (g12Plus == 2 ? 1 : 0);
                 }
 
-                yazClass.Add(new Yaz() { Score = score, Name = p.Name });
+                yazClass.Add(new Yaz() { Score = score, ToonName = p.Name, FactionName = GetMandatoryToons().FirstOrDefault(v => v.Key == p.Name).Value, GroupName = "Mandatory", MaxScore = 10 });
             }
 
             var myCharsLegacy = GetYazGearLegacy(player);
@@ -503,9 +512,9 @@ namespace TripleZero.Bot.Helper
                 else if (p.Gear == 12)
                 {
                     score = 3;
-                }
+                }                
 
-                yazClass.Add(new Yaz() { Score = score, Name = p.Name });
+                yazClass.Add(new Yaz() { Score = score, ToonName = p.Name , FactionName = GetLegacyToons().FirstOrDefault(v => v.Key == p.Name).Value , GroupName ="Legacy", MaxScore=3 });
             }
 
             var myCharsBonus = GetYazGearBonus(player);
@@ -525,7 +534,7 @@ namespace TripleZero.Bot.Helper
                     score = 1;
                 }
 
-                yazClass.Add(new Yaz() { Score = score, Name = p.Name });
+                yazClass.Add(new Yaz() { Score = score, ToonName = p.Name, FactionName = GetBonusToons().FirstOrDefault(v => v.Key == p.Name).Value, GroupName = "Bonus", MaxScore = 4 });
             }
 
             return yazClass;
@@ -540,7 +549,7 @@ namespace TripleZero.Bot.Helper
             foreach (var unitName in GetYazZetaExists())
             {
                 var unit = player.Characters.FirstOrDefault(p => p.Name == unitName);
-                yazClass.Add(new Yaz() { Name = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
+                yazClass.Add(new Yaz() { ToonName = unit == null ? unitName : unit.Name, Score = unit == null ? 0 : (unit.Skills.Any(p => p.HasZeta) ? 1 : 0) * 10 });
             }
 
             return yazClass;

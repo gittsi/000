@@ -31,7 +31,7 @@ namespace TripleZero.Repository.SWGoHHelp
             _cacheClient = cacheClient;
             _mapper = mapper;
             if (_mapper == null) _mapper = new MappingConfiguration().GetConfigureMapper();
-            _url = settings.Protocol + "://" + settings.Host + settings.Port + "/swgoh/guild/";
+            _url = settings.Protocol + "://" + settings.Host + settings.Port + "/swgoh/guilds/";
         }
 
         public async Task<Guild> GetGuild(int allyCode)
@@ -40,7 +40,7 @@ namespace TripleZero.Repository.SWGoHHelp
             if (_diagnosticModeOn)            
                 sw.Start();
 
-            var guildJson = await FetchGuild(new int[] { Convert.ToInt32(allyCode) }, null, null, true, null, true, new { desc = 1, roster=1, name = 1, members = 1, status = 1, required = 1, message = 1, gp = 1, raid = 1,  updated = 1 });
+            var guildJson = await FetchGuild(new int[] { Convert.ToInt32(allyCode) }, null, null, true, true, false, null);
             if (_diagnosticModeOn)
             {
                 sw.Stop();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,6 +49,15 @@ namespace TripleZero.Core
 
             var guildRepo = new SWGoHHelpGuildRepository(_settings.SWGoHHelpSettings, _cacheClient, _mapper,_settings.DiagnosticSettings.ConsolePerformanceWatcher);
             var guildResult = await guildRepo.GetGuild(allyCode);
+
+            var playerContext = new PlayerContext(_settings, _cacheClient, _mapper);
+            var newPlayers = new List<Player>();
+            foreach(var player in guildResult.Players)
+            {
+                var playerResult = await playerContext.GetPlayerData(player.AllyCode);
+                newPlayers.Add(playerResult);
+            }
+            guildResult.Players = newPlayers;
 
             var characterConfigContext = new CharacterConfigContext(_cacheClient, _mapper);
 

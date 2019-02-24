@@ -99,6 +99,7 @@ namespace TripleZero.Repository.Mapping
                     cfg.CreateMap<PlayerSWGoHHelp, Player>()
                     .ForMember(dest => dest.Id, src => src.Ignore())
                     .ForMember(dest => dest.GuildName, src => src.MapFrom(source => source.GuildName))
+                    .ForMember(dest => dest.AllyCode, src => src.MapFrom(source => source.AllyCode))
                     .ForMember(dest => dest.PlayerNameInGame, src => src.MapFrom(source => source.Name))
                     .ForMember(dest => dest.PlayerName, src => src.Ignore())
                     .ForMember(dest => dest.RosterUpdateDate, src => src.MapFrom(source => ConvertFromUnixTimestamp(source.Updated)))

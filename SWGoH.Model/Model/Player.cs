@@ -10,6 +10,7 @@ namespace SWGoH.Model
         public string GuildName { get; set; }
         public string PlayerName { get; set; }
         public string PlayerNameInGame { get; set; }
+        public string AllyCode { get; set; }
         public DateTime RosterUpdateDate { get; set; }
         public DateTime? DBUpdateDate { get; set; }
         public int GalacticPowerCharacters { get; set; }

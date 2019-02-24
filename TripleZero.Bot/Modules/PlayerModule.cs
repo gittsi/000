@@ -24,11 +24,11 @@ namespace TripleZero.Modules
 
         private CacheClient _cacheClient = IResolver.Current.CacheClient;
 
-        [Command("yazometer", RunMode = RunMode.Async)]
-        [Summary("Get full YAZ report for a player")]
-        [Remarks("*yazometer {playerUserName}*")]
-        [Alias("yaz")]
-        public async Task GetYazForPlayer(string playerUserName)
+        [Command("yazometerold", RunMode = RunMode.Async)]
+        [Summary("Get full YAZ report(old) for a player")]
+        [Remarks("*yazometerold {playerUserName}*")]
+        [Alias("yazold")]
+        public async Task GetYazOldForPlayer(string playerUserName)
         {
             playerUserName = playerUserName.ToLower().Trim();
 
@@ -113,11 +113,11 @@ namespace TripleZero.Modules
 
         }
 
-        [Command("yazometergroup", RunMode = RunMode.Async)]
-        [Summary("Get full YAZ report for a player group by faction and priority")]
-        [Remarks("*yazometergroup {playerUserName}*")]
-        [Alias("yaz2")]
-        public async Task GetYaz2ForPlayer(string playerUserName)
+        [Command("yazometer", RunMode = RunMode.Async)]
+        [Summary("Get full YAZ report for a player")]
+        [Remarks("*yazometer {playerUserName}*")]
+        [Alias("yaz")]
+        public async Task GetYazForPlayer(string playerUserName)
         {
             playerUserName = playerUserName.ToLower().Trim();
 
@@ -125,8 +125,6 @@ namespace TripleZero.Modules
             var messageLoading = await ReplyAsync($"{loadingStr}");
 
             Player player;
-
-
 
             try
             {
@@ -164,19 +162,20 @@ namespace TripleZero.Modules
 
             var retStr = $"```css\nYAZometer Report for {player.PlayerNameInGame} \n```";
             int count = 1;
-            retStr += "```**Characters**```";
+            retStr += "\n```**Characters**```";
             var groupName = "";
             var factionName = "";
             foreach (var p in yazometer)
-            {
+            {                
                 if (retStr.Length > 1800)
                 {
                     await ReplyAsync($"{retStr}");
                     retStr = "";
-                }
+                }                
 
                 if (groupName != p.GroupName)
                 {
+                    if (factionName != "") retStr += "\n";
                     var toons = yazometer.Where(pq => pq.GroupName == groupName);
                     var maxScore = 0.0;
                     var groupScore = 0.0;
@@ -188,8 +187,8 @@ namespace TripleZero.Modules
                         groupScore = toons.Sum(pq => pq.Score);
                         //retStr += $"";
                     }
-
-                    retStr += $"\n```{groupName} | {groupScore}/{maxScore} : {((groupScore / maxScore) * 100.0).ToString("#.##")} %```";
+                    
+                    retStr += $"```{groupName} | {groupScore}/{maxScore} : {((groupScore / maxScore) * 100.0).ToString("#.##")}%```";
                 }
 
                 if (factionName != p.FactionName)
@@ -206,7 +205,7 @@ namespace TripleZero.Modules
                         factionScore = toons.Sum(pq => pq.Score);
                         //retStr += $"";
                     }                    
-                    retStr += $"**- {factionName} | {factionScore}/{maxScore} : {((factionScore/maxScore) * 100.0).ToString("#.##")} %**\n";
+                    retStr += $"**- {factionName} | {factionScore}/{maxScore} : {((factionScore/maxScore) * 100.0).ToString("#.##")}%**\n";
                 }
 
                 retStr += $"{p.ToonName} : {p.Score}\n";
@@ -215,8 +214,9 @@ namespace TripleZero.Modules
             //await ReplyAsync($"{retStr}");
 
             int countZeta = 1;
-            retStr += "```**Zeta**```";
-            foreach (var p in yazometerZeta.OrderBy(p => p.MaxScore))
+            var sumScoreZeta = yazometerZeta.Sum(s => s.Score);
+            retStr += $"\n```**Zeta** | {sumScoreZeta}/{YazHelper.TotalPointsZeta} : {((sumScoreZeta / YazHelper.TotalPointsZeta) * 100.0).ToString("#.##")}%```";
+            foreach (var p in yazometerZeta.OrderByDescending(p => p.Score))
             {
                 retStr += $"{countZeta} : {p.ToonName} : {p.Score}\n";
                 countZeta += 1;
@@ -240,7 +240,7 @@ namespace TripleZero.Modules
             //await ReplyAsync($"{retStr}");
 
             //retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} + {yazometerShips.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) + yazometerShips.Sum(p => p.Score)})";
-            retStr = $"\n\n**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}%** ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)} out of {YazHelper.GetTotalPoints})";
+            retStr = $"\n\n```**TOTAL SCORE : {(((yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)) * 100.0) / YazHelper.GetTotalPoints).ToString("#.##")}% ({yazometer.Sum(p => p.Score)} + {yazometerZeta.Sum(p => p.Score)} = {yazometer.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score)}/{YazHelper.GetTotalPoints})**```";
 
             await ReplyAsync($"{retStr}");
             await messageLoading.DeleteAsync();

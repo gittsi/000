@@ -13,6 +13,7 @@ using TripleZero.Core;
 using Microsoft.Extensions.Caching.Memory;
 using TripleZero.Infrastructure.DI;
 using TripleZero.Core.Caching;
+using Discord;
 //using TripleZero.Helper;
 //using TripleZero.Core.Caching;
 
@@ -94,8 +95,8 @@ namespace TripleZero.Modules
         [Alias("ms")]
         public async Task GetSecondaryStatMods(string playerUserName, string modType, string resultsRows = "20")
         {
-            await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
-            return;
+            //await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
+            //return;
 
             bool rowsIsNumber = int.TryParse(resultsRows, out int rows);
             if (!rowsIsNumber) { await ReplyAsync($"If you want to specify how many results want, you have to put a number as third parameter! '{rows}' is not a number!");  return; }
@@ -133,18 +134,28 @@ namespace TripleZero.Modules
             IMapper mapper = null;
             //var context = new PlayerContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper, new Core.Caching.CacheClient(applicationSettings.GetTripleZeroRepositorySettings(),applicationSettings.GetTripleZeroBotSettings()));
             var context = new PlayerContext(repoSettings,_cacheClient ,mapper);
-            var player = await context.GetPlayerData(playerUserName);
-
-            if (player == null)
+            try
             {
-                await ReplyAsync($"I couldn't find player : {playerUserName}...");
-                await messageLoading.DeleteAsync();
-                return;
-            }            
+                var player = await context.GetPlayerData(playerUserName);
 
-            var result = await GetSpecificSecondaryMods(player, secondaryStatType, secondaryStatValueType, rows);
-            SendSecondaryModReply(player, secondaryStatType, secondaryStatValueType, result);
-            await messageLoading.DeleteAsync();
+                if (player == null)
+                {
+                    await ReplyAsync($"I couldn't find player : {playerUserName}...");
+                    await messageLoading.DeleteAsync();
+                    return;
+                }
+
+                var result = await GetSpecificSecondaryMods(player, secondaryStatType, secondaryStatValueType, rows);
+                SendSecondaryModReply(player, secondaryStatType, secondaryStatValueType, result);
+            }
+            catch (Exception ex)
+            {
+                await this.Context.Client.GetUser("TSiTaS", "1984").SendMessageAsync($"{this.Context.User.Username} : '{this.Context.Message}' resulted to : {ex.Message}");
+            }
+            finally
+            {
+                await messageLoading.DeleteAsync();
+            }            
         }
         #endregion
 
@@ -206,8 +217,8 @@ namespace TripleZero.Modules
         [Alias("mp")]
         public async Task GetPrimaryStatMods(string playerUserName, string modType, string resultsRows = "20")
         {
-            await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
-            return;
+            //await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
+            //return;
 
             bool rowsIsNumber = int.TryParse(resultsRows, out int rows);
             if (!rowsIsNumber) { await ReplyAsync($"If you want to specify how many results want, you have to put a number as third parameter! '{rows}' is not a number!"); return; }
@@ -232,18 +243,29 @@ namespace TripleZero.Modules
             var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
             IMapper mapper = null;
             var context = new PlayerContext(repoSettings, _cacheClient, mapper);
-            var player = await context.GetPlayerData(playerUserName);
-
-            if (player == null)
+            try
             {
-                await ReplyAsync($"I couldn't find player : {playerUserName}...");
-                await messageLoading.DeleteAsync();
-                return;
-            }
+                var player = await context.GetPlayerData(playerUserName);
 
-            var result = await GetSpecificPrimaryMods(player, primaryStatType, rows);
-            SendPrimaryModReply(player, primaryStatType, result);
-            await messageLoading.DeleteAsync();
+                if (player == null)
+                {
+                    await ReplyAsync($"I couldn't find player : {playerUserName}...");
+                    await messageLoading.DeleteAsync();
+                    return;
+                }
+
+                var result = await GetSpecificPrimaryMods(player, primaryStatType, rows);
+                SendPrimaryModReply(player, primaryStatType, result);
+            }
+            catch (Exception ex)
+            {
+                await this.Context.Client.GetUser("TSiTaS", "1984").SendMessageAsync($"{this.Context.User.Username} : '{this.Context.Message}' resulted to : {ex.Message}");
+
+            }
+            finally
+            {
+                await messageLoading.DeleteAsync();
+            }            
         }
         #endregion
 
@@ -308,8 +330,8 @@ namespace TripleZero.Modules
         [Alias("msg")]
         public async Task GetSecondaryStatModsGuild(string playerUserName, string modType, string resultsRows = "20")
         {
-            await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
-            return;
+            //await ReplyAsync($"Sorry, API changed and cannot retrieve mods currently...");
+            //return;
 
             bool rowsIsNumber = int.TryParse(resultsRows, out int rows);
             if (!rowsIsNumber) { await ReplyAsync($"If you want to specify how many results want, you have to put a number as third parameter! '{rows}' is not a number!"); return; }
@@ -346,18 +368,30 @@ namespace TripleZero.Modules
             var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
             IMapper mapper = null;
             var context = new GuildContext(repoSettings, _cacheClient, mapper);
-            var guild = await context.GetGuildData(playerUserName);
 
-            if (guild == null)
+            try
             {
-                await ReplyAsync($"I couldn't find player : {playerUserName}...");
-                await messageLoading.DeleteAsync();
-                return;
-            }
+                var guild = await context.GetGuildData(playerUserName);
 
-            var result = await GetSpecificSecondaryModsGuild(guild, secondaryStatType, secondaryStatValueType, rows);
-            SendSecondaryModReplyGuild(guild, secondaryStatType, secondaryStatValueType, result);
-            await messageLoading.DeleteAsync();
+                if (guild == null)
+                {
+                    await ReplyAsync($"I couldn't find player : {playerUserName}...");
+                    await messageLoading.DeleteAsync();
+                    return;
+                }
+
+                var result = await GetSpecificSecondaryModsGuild(guild, secondaryStatType, secondaryStatValueType, rows);
+                SendSecondaryModReplyGuild(guild, secondaryStatType, secondaryStatValueType, result);
+            }
+            catch (Exception ex)
+            {
+                await this.Context.Client.GetUser("TSiTaS", "1984").SendMessageAsync($"{this.Context.User.Username} : '{this.Context.Message}' resulted to : {ex.Message}");
+            }
+            finally
+            {
+                await messageLoading.DeleteAsync();
+            }          
+            
         }
 
     }

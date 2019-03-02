@@ -25,8 +25,11 @@ namespace TripleZero.Repository.Mapping
                 var config = new MapperConfiguration(cfg =>
                 {
 
-                    cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, ModStat>().ConvertUsing<PrimaryModConverter>();
-                    cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, List<ModStat>>().ConvertUsing<SecondaryModConverter>();
+                    //cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, ModStat>().ConvertUsing<PrimaryModConverter>();
+                    //cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, List<ModStat>>().ConvertUsing<SecondaryModConverter>();
+
+                    cfg.CreateMap<SWGoHHelpRepository.Dto.ModPrimaryStats, SWGoH.Model.ModStat>().ConvertUsing<PrimaryModConverter>();
+                    cfg.CreateMap<SWGoHHelpRepository.Dto.ModSecondaryStats, ModStat>().ConvertUsing<SecondaryModConverter>();
 
                     cfg.CreateMap<Slot, ModSlot>().ConvertUsing(value =>
                     {
@@ -49,12 +52,20 @@ namespace TripleZero.Repository.Mapping
                         }
                     });
 
+                    //cfg.CreateMap<SWGoHHelpRepository.Dto.ModPrimaryStats, SWGoH.Model.ModStat>()
+                    //.ForMember(dest => dest.StatType, src => src.MapFrom(source => source.PrimaryBonusType))
+                    //.ForMember(dest => dest.Name, src => src.MapFrom(source => source.Id))
+                    //.ForMember(dest => dest.PrimaryStat, src => src.MapFrom(source => source.ModPrimaryStats))
+                    //.ForMember(dest => dest.SecondaryStat, src => src.MapFrom(source => source.ModSecondaryStats))
+                    //.ForMember(dest => dest.Rarity, src => src.MapFrom(source => source.Pips))
+                    //.ForMember(dest => dest.Type, src => src.MapFrom(source => source.Slot))
+                    //;
 
                     cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, SWGoH.Model.Mod>()
                     .ForMember(dest => dest.Level, src => src.MapFrom(source => source.Level))
                     .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Id))
-                    .ForMember(dest => dest.PrimaryStat, src => src.MapFrom(source => source))
-                    .ForMember(dest => dest.SecondaryStat, src => src.MapFrom(source => source))
+                    .ForMember(dest => dest.PrimaryStat, src => src.MapFrom(source => source.ModPrimaryStats))
+                    .ForMember(dest => dest.SecondaryStat, src => src.MapFrom(source => source.ModSecondaryStats))
                     .ForMember(dest => dest.Rarity, src => src.MapFrom(source => source.Pips))
                     .ForMember(dest => dest.Type, src => src.MapFrom(source => source.Slot))
                     ;
@@ -171,9 +182,9 @@ namespace TripleZero.Repository.Mapping
             }
         }
 
-        public class PrimaryModConverter : ITypeConverter<SWGoHHelpRepository.Dto.Mod, ModStat>
+        public class PrimaryModConverter : ITypeConverter<ModPrimaryStats, ModStat>
         {
-            public ModStat Convert(SWGoHHelpRepository.Dto.Mod source, ModStat destination, ResolutionContext context)
+            public ModStat Convert(ModPrimaryStats source, ModStat destination, ResolutionContext context)
             {
                 var perc = 1000000.0;
                 var flat = 100000000;
@@ -224,27 +235,31 @@ namespace TripleZero.Repository.Mapping
                 if (isFlat)
                 {
                     modStat.ValueType = ModValueType.Flat;
-                    modStat.Value = System.Convert.ToInt64(source.PrimaryBonusValue) / flat;
+                    
+                    //modStat.Value = System.Convert.ToInt64(source.ModPrimaryStats.Value) / flat;
                 }
                 else
                 {
                     modStat.ValueType = ModValueType.Percentage;
-                    modStat.Value = System.Convert.ToInt64(source.PrimaryBonusValue) / perc;
+                    
+                    //modStat.Value = System.Convert.ToInt64(source.ModPrimaryStats.Value) / perc;
                 }
+                modStat.Value = source.Value.Value;
 
                 return modStat;
             }
         }
 
-        public class SecondaryModConverter : ITypeConverter<SWGoHHelpRepository.Dto.Mod, List<ModStat>>
+        public class SecondaryModConverter : ITypeConverter<ModSecondaryStats, ModStat>
         {
-            public List<ModStat> Convert(SWGoHHelpRepository.Dto.Mod source, List<ModStat> destination, ResolutionContext context)
+            public ModStat Convert(ModSecondaryStats source, ModStat destination, ResolutionContext context)
             {
-                List<ModStat> modsStat = new List<ModStat>();
-                modsStat.Add(GetModStat(source.SecondaryType1, source.SecondaryValue1));
-                modsStat.Add(GetModStat(source.SecondaryType2, source.SecondaryValue2));
-                modsStat.Add(GetModStat(source.SecondaryType3, source.SecondaryValue3));
-                modsStat.Add(GetModStat(source.SecondaryType4, source.SecondaryValue4));
+                ModStat modsStat = new ModStat();
+                modsStat = GetModStat(source.SecondaryBonusType, source.Value);
+                //modsStat.Add(GetModStat(source.ModSecondaryStats[0].SecondaryBonusType , source.ModSecondaryStats[0].Value));
+                //modsStat.Add(GetModStat(source.ModSecondaryStats[1].SecondaryBonusType, source.ModSecondaryStats[1].Value));
+                //modsStat.Add(GetModStat(source.ModSecondaryStats[2].SecondaryBonusType, source.ModSecondaryStats[2].Value));
+                //modsStat.Add(GetModStat(source.ModSecondaryStats[3].SecondaryBonusType, source.ModSecondaryStats[3].Value));
 
 
                 //if (isFlat)
@@ -262,7 +277,7 @@ namespace TripleZero.Repository.Mapping
             }
         }
 
-        public static ModStat GetModStat(SecondaryType sType, string value)
+        public static ModStat GetModStat(SecondaryBonusType sType, double? value)
         {
             var perc = 1000000.0;
             var flat = 100000000;
@@ -272,61 +287,61 @@ namespace TripleZero.Repository.Mapping
 
             switch (sType)
             {
-                case SecondaryType.CriticalChance:
+                case SecondaryBonusType.CriticalChance:
                     modStat.StatType = ModStatType.CriticalChance;
                     break;
-                case SecondaryType.Potency:
+                case SecondaryBonusType.Potency:
                     modStat.StatType = ModStatType.Potency;
                     break;
-                case SecondaryType.SecondaryTypeDefense:
+                case SecondaryBonusType.SecondaryTypeDefense:
                     modStat.StatType = ModStatType.Defense;
                     break;
-                case SecondaryType.SecondaryTypeHealth:
+                case SecondaryBonusType.SecondaryTypeHealth:
                     modStat.StatType = ModStatType.Health;
                     break;
-                case SecondaryType.SecondaryTypeOffense:
+                case SecondaryBonusType.SecondaryTypeOffense:
                     modStat.StatType = ModStatType.Offense;
                     break;
-                case SecondaryType.SecondaryTypeProtection:
+                case SecondaryBonusType.SecondaryTypeProtection:
                     modStat.StatType = ModStatType.Protection;
                     break;
-                case SecondaryType.Tenacity:
+                case SecondaryBonusType.Tenacity:
                     modStat.StatType = ModStatType.Tenacity;
                     break;
 
-                case SecondaryType.Defense:
+                case SecondaryBonusType.Defense:
                     modStat.StatType = ModStatType.Defense;
                     isFlat = true;
                     break;
-                case SecondaryType.Health:
+                case SecondaryBonusType.Health:
                     modStat.StatType = ModStatType.Health;
                     isFlat = true;
                     break;
-                case SecondaryType.Offense:
+                case SecondaryBonusType.Offense:
                     modStat.StatType = ModStatType.Offense;
                     isFlat = true;
                     break;
-                case SecondaryType.Protection:
+                case SecondaryBonusType.Protection:
                     modStat.StatType = ModStatType.Protection;
                     isFlat = true;
                     break;
-                case SecondaryType.Speed:
+                case SecondaryBonusType.Speed:
                     modStat.StatType = ModStatType.Speed;
                     isFlat = true;
                     break;
                 default:
                     break;
             }
-
+            modStat.Value = value.Value;
             if (isFlat)
             {
                 modStat.ValueType = ModValueType.Flat;
-                modStat.Value = System.Convert.ToInt64(value) / flat;
+                
             }
             else
             {
                 modStat.ValueType = ModValueType.Percentage;
-                modStat.Value = System.Convert.ToInt64(value) / perc;
+                //modStat.Value = System.Convert.ToInt64(value) / perc;
             }
 
             return modStat;

@@ -157,6 +157,26 @@
         public long Slot { get; set; }
     }
 
+    public class ModPrimaryStats
+    {
+        [JsonProperty("unitStat")]
+        public PrimaryBonusType PrimaryBonusType { get; set; }
+        [JsonProperty("value")]
+        public double? Value { get; set; }
+        [JsonProperty("roll")]
+        public int? Roll { get; set; }
+    }
+
+    public class ModSecondaryStats
+    {
+        [JsonProperty("unitStat")]
+        public SecondaryBonusType SecondaryBonusType { get; set; }
+        [JsonProperty("value")]
+        public double? Value { get; set; }
+        [JsonProperty("roll")]
+        public int? Roll { get; set; }
+    }
+
     public partial class Mod
     {
         [JsonProperty("id")]
@@ -177,35 +197,42 @@
         [JsonProperty("pips")]
         public long Pips { get; set; }
 
-        [JsonProperty("primaryBonusType")]
-        public PrimaryBonusType PrimaryBonusType { get; set; }
+        [JsonProperty("primaryStat")]
+        public ModPrimaryStats ModPrimaryStats { get; set; }
 
-        [JsonProperty("primaryBonusValue")]
-        public string PrimaryBonusValue { get; set; }
+        [JsonProperty("secondaryStat")]
+        public List<ModSecondaryStats> ModSecondaryStats { get; set; }
 
-        [JsonProperty("secondaryType_1")]
-        public SecondaryType SecondaryType1 { get; set; }
 
-        [JsonProperty("secondaryValue_1")]
-        public string SecondaryValue1 { get; set; }
+        //[JsonProperty("primaryBonusType")]
+        //public PrimaryBonusType PrimaryBonusType { get; set; }
 
-        [JsonProperty("secondaryType_2")]
-        public SecondaryType SecondaryType2 { get; set; }
+        //[JsonProperty("primaryBonusValue")]
+        //public string PrimaryBonusValue { get; set; }
 
-        [JsonProperty("secondaryValue_2")]
-        public string SecondaryValue2 { get; set; }
+        //[JsonProperty("secondaryType_1")]
+        //public SecondaryType SecondaryType1 { get; set; }
 
-        [JsonProperty("secondaryType_3")]
-        public SecondaryType SecondaryType3 { get; set; }
+        //[JsonProperty("secondaryValue_1")]
+        //public string SecondaryValue1 { get; set; }
 
-        [JsonProperty("secondaryValue_3")]
-        public string SecondaryValue3 { get; set; }
+        //[JsonProperty("secondaryType_2")]
+        //public SecondaryType SecondaryType2 { get; set; }
 
-        [JsonProperty("secondaryType_4")]
-        public SecondaryType SecondaryType4 { get; set; }
+        //[JsonProperty("secondaryValue_2")]
+        //public string SecondaryValue2 { get; set; }
 
-        [JsonProperty("secondaryValue_4")]
-        public string SecondaryValue4 { get; set; }
+        //[JsonProperty("secondaryType_3")]
+        //public SecondaryType SecondaryType3 { get; set; }
+
+        //[JsonProperty("secondaryValue_3")]
+        //public string SecondaryValue3 { get; set; }
+
+        //[JsonProperty("secondaryType_4")]
+        //public SecondaryType SecondaryType4 { get; set; }
+
+        //[JsonProperty("secondaryValue_4")]
+        //public string SecondaryValue4 { get; set; }
     }
 
     public partial class Skill
@@ -240,7 +267,7 @@
         Protection = 56
     };
 
-    public enum SecondaryType
+    public enum SecondaryBonusType
     {
         Health = 1, //41900000000
         Speed = 5, //	1200000000
@@ -401,7 +428,7 @@
 
     internal class SecondaryTypeConverter : JsonConverter
     {
-        public override bool CanConvert(Type t) => t == typeof(SecondaryType) || t == typeof(SecondaryType?);
+        public override bool CanConvert(Type t) => t == typeof(SecondaryBonusType) || t == typeof(SecondaryBonusType?);
 
         public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
         {
@@ -411,31 +438,31 @@
             switch (value)
             {
                 case "Critical Chance":
-                    return SecondaryType.CriticalChance;
+                    return SecondaryBonusType.CriticalChance;
                 case "Defense":
-                    return SecondaryType.SecondaryTypeDefense;
+                    return SecondaryBonusType.SecondaryTypeDefense;
                 case "Defense %":
-                    return SecondaryType.Defense;
+                    return SecondaryBonusType.Defense;
                 case "Health":
-                    return SecondaryType.Health;
+                    return SecondaryBonusType.Health;
                 case "Health %":
-                    return SecondaryType.SecondaryTypeHealth;
+                    return SecondaryBonusType.SecondaryTypeHealth;
                 case "Offense":
-                    return SecondaryType.Offense;
+                    return SecondaryBonusType.Offense;
                 case "Offense %":
-                    return SecondaryType.SecondaryTypeOffense;
+                    return SecondaryBonusType.SecondaryTypeOffense;
                 case "Potency":
-                    return SecondaryType.Potency;
+                    return SecondaryBonusType.Potency;
                 case "Protection":
-                    return SecondaryType.Protection;
+                    return SecondaryBonusType.Protection;
                 case "Protection %":
-                    return SecondaryType.SecondaryTypeProtection;
+                    return SecondaryBonusType.SecondaryTypeProtection;
                 case "Speed":
-                    return SecondaryType.Speed;
+                    return SecondaryBonusType.Speed;
                 case "Tenacity":
-                    return SecondaryType.Tenacity;
+                    return SecondaryBonusType.Tenacity;
                 default:
-                    return SecondaryType.Tenacity;
+                    return SecondaryBonusType.Tenacity;
             }
             throw new Exception("Cannot unmarshal type SecondaryType");
         }
@@ -447,43 +474,43 @@
                 serializer.Serialize(writer, null);
                 return;
             }
-            var value = (SecondaryType)untypedValue;
+            var value = (SecondaryBonusType)untypedValue;
             switch (value)
             {
-                case SecondaryType.CriticalChance:
+                case SecondaryBonusType.CriticalChance:
                     serializer.Serialize(writer, "Critical Chance");
                     return;
-                case SecondaryType.SecondaryTypeDefense:
+                case SecondaryBonusType.SecondaryTypeDefense:
                     serializer.Serialize(writer, "Defense");
                     return;
-                case SecondaryType.Defense:
+                case SecondaryBonusType.Defense:
                     serializer.Serialize(writer, "Defense %");
                     return;
-                case SecondaryType.Health:
+                case SecondaryBonusType.Health:
                     serializer.Serialize(writer, "Health");
                     return;
-                case SecondaryType.SecondaryTypeHealth:
+                case SecondaryBonusType.SecondaryTypeHealth:
                     serializer.Serialize(writer, "Health %");
                     return;
-                case SecondaryType.Offense:
+                case SecondaryBonusType.Offense:
                     serializer.Serialize(writer, "Offense");
                     return;
-                case SecondaryType.SecondaryTypeOffense:
+                case SecondaryBonusType.SecondaryTypeOffense:
                     serializer.Serialize(writer, "Offense %");
                     return;
-                case SecondaryType.Potency:
+                case SecondaryBonusType.Potency:
                     serializer.Serialize(writer, "Potency");
                     return;
-                case SecondaryType.Protection:
+                case SecondaryBonusType.Protection:
                     serializer.Serialize(writer, "Protection");
                     return;
-                case SecondaryType.SecondaryTypeProtection:
+                case SecondaryBonusType.SecondaryTypeProtection:
                     serializer.Serialize(writer, "Protection %");
                     return;
-                case SecondaryType.Speed:
+                case SecondaryBonusType.Speed:
                     serializer.Serialize(writer, "Speed");
                     return;
-                case SecondaryType.Tenacity:
+                case SecondaryBonusType.Tenacity:
                     serializer.Serialize(writer, "Tenacity");
                     return;
             }

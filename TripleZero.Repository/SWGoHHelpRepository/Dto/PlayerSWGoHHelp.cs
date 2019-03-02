@@ -13,7 +13,7 @@
         public string Name { get; set; }
 
         [JsonProperty("level")]
-        public long Level { get; set; }
+        public long? Level { get; set; }
 
         [JsonProperty("allyCode")]
         public long AllyCode { get; set; }
@@ -52,7 +52,7 @@
     public partial class Char
     {
         [JsonProperty("rank")]
-        public long Rank { get; set; }
+        public long? Rank { get; set; }
 
         [JsonProperty("squad")]
         public List<Squad> Squad { get; set; }
@@ -82,10 +82,10 @@
         public RosterType Type { get; set; }
 
         [JsonProperty("rarity")]
-        public long Rarity { get; set; }
+        public long? Rarity { get; set; }
 
         [JsonProperty("level")]
-        public long Level { get; set; }
+        public long? Level { get; set; }
 
         [JsonProperty("gp")]
         public double Gp { get; set; }
@@ -94,7 +94,7 @@
         public long Xp { get; set; }
 
         [JsonProperty("gear")]
-        public long Gear { get; set; }
+        public long? Gear { get; set; }
 
         [JsonProperty("equipped")]
         public List<Equipped> Equipped { get; set; }

@@ -13,6 +13,7 @@ namespace TripleZero.Repository.Dto
 {
     internal partial class GuildDto
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public DateTime LastSwGohUpdated { get; set; }
         public DateTime LastClassUpdated { get; set; }

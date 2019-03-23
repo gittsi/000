@@ -45,7 +45,7 @@ namespace TripleZero.Repository.MongoDBRepository
 
         public async Task<T> GetById(string collectionName, string id)
         {
-            var filter = Builders<TDto>.Filter.Eq("_id", ObjectId.Parse(id));
+            var filter = Builders<TDto>.Filter.Eq("_id", id);
             var data = await this.GetByFilter(collectionName, filter);
 
             return data.FirstOrDefault();

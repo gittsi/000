@@ -6,8 +6,9 @@ namespace TripleZero.Repository.Dto
 {   
     public class QueueDto
     {
-        public ObjectId? Id { get; set; }
-        public string ObjectId { get; set; }
+        //public ObjectId? Id { get; set; }
+        public string Id { get; set; }
+        public string ItemId { get; set; }
         public string Name { get; set; }               
         public string InsertedDate { get; set; }        
         public string ProcessingStartDate { get; set; }        

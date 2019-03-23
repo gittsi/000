@@ -8,7 +8,7 @@ namespace SWGoH.Model
     public class Queue
     {
         public string Id { get; set; }
-        public string ObjectId { get; set; }
+        public string ItemId { get; set; }
         public string Name { get; set; }       
         public DateTime InsertedDate { get; set; }        
         public DateTime? NextRunDate { get; set; }

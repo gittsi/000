@@ -10,7 +10,7 @@ namespace TripleZero.Repository.MongoDBRepository
     {
         string CollectionName { get; }
         Task<List<Queue>> GetAll();
-        Task<Queue> GetNextInQueue();
+        Task<Queue> GetNextInQueue(string processingBy);
         Task<bool> ChangeQueueStatus(Queue queue);
     }
 }

@@ -17,9 +17,8 @@ namespace TripleZero.Worker.Settings
         {
             var builder = new ConfigurationBuilder()
             .SetBasePath(string.Concat(Directory.GetCurrentDirectory(), "/JsonAppSettings"))
-            .AddJsonFile("configBot.json", optional: false, reloadOnChange: true)//bot settings
-            .AddJsonFile("configRepository.json", optional: false, reloadOnChange: true);//repository settings
-
+            .AddJsonFile("config.json", optional: false, reloadOnChange: true);
+           
             Configuration = builder.Build();
 
             return Configuration;

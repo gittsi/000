@@ -8,8 +8,8 @@ namespace SWGoH.Model
     {
         public string Name { get; set; }
         public List<string> Aliases { get; set; }
-        public int SWGoHId { get; set; }
-        public string SWGoHUrl { get; set; }
+        public string DefaultPlayerAllyCode { get; set; }
         public override bool LoadedFromCache { get => base.LoadedFromCache; set => base.LoadedFromCache = value; }
+        public bool AutoQueue { get; set; }
     }
 }

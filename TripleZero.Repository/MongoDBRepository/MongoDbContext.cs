@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripleZero.Repository.Dto;
 
-namespace TripleZeroApi.Repository
+namespace TripleZeroApi.Repository.MongoDBRepository
 {
     public class MongoDBContext
     {
@@ -43,21 +43,25 @@ namespace TripleZeroApi.Repository
                 {
                     mongoSettings.SslSettings = new SslSettings { EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12 };
                 }
-                //var mongoClient = new MongoClient(settings);
+                ////var mongoClient = new MongoClient(settings);
 
-                var mongoClient = new MongoClient(ConnectionString);
+                //var mongoClient = new MongoClient(_settings.ConnectionString);
 
-                _database = mongoClient.GetDatabase(DatabaseName);
+                //_database = mongoClient.GetDatabase(_settings.DB);
 
-                _database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait();
+                //_database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait();
 
-                var dsgfd = mongoClient.ListDatabases();
-                var asfgasgf = _database.ListCollections();
+                ////var dsgfd = mongoClient.ListDatabases();
+                ////var asfgasgf = _database.ListCollections();
 
-                var a = _database.GetCollection<GuildConfigDto>("Config.Guild");
+                //var a = _database.GetCollection<GuildConfigDto>("Config.Guild");
+                //var b = _database.GetCollection<BsonDocument>("Config.Guild");
 
 
-                var asgvaf = a.Find("Config.Guild");
+                //var results = a.AsQueryable<GuildConfigDto>().ToList();
+
+
+                //var asgvaf = a.Find("Config.Guild");
             }
             catch (Exception ex)
             {

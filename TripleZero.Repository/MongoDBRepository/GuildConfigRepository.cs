@@ -1,51 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using SWGoH.Model;
 using TripleZero.Repository.Dto;
-using TripleZeroApi.Repository;
 
 namespace TripleZero.Repository.MongoDBRepository
 {
-    public class GuildConfigRepository : IGuildConfigRepository
+    public class GuildConfigRepository :  DocumentRepository<GuildConfig,GuildConfigDto>, IGuildConfigRepository 
     {
         MongoDBConnectionHelper _mongoDBConnectionHelper;
         IMapper _mapper;
-        public GuildConfigRepository(MongoDBConnectionHelper mongoDBConnectionHelper, IMapper mapper)
+        IMongoDatabase _db;
+
+        public GuildConfigRepository(MongoDBConnectionHelper mongoDBConnectionHelper, IMapper mapper) : base(mongoDBConnectionHelper, mapper)
         {
             _mongoDBConnectionHelper = mongoDBConnectionHelper;
             _mapper = mapper;
+            _db = _mongoDBConnectionHelper.GetMongoDbDatabase();
         }
 
         public string CollectionName => "Config.Guild";
 
         public async Task<List<GuildConfig>> GetAll()
         {
-            try
-            {
-                var db = _mongoDBConnectionHelper.GetMongoDbDatabase();
-                var collection = db.GetCollection<GuildConfigDto>(CollectionName);
-                var result = collection.FindAsync<GuildConfigDto>(new BsonDocument()).Result;
-                
-                var guildConfigDto = new List<GuildConfigDto>();
-                while (await result.MoveNextAsync())
-                {
-                    guildConfigDto.AddRange(result.Current);
-                }
+            return await new DocumentRepository<GuildConfig,GuildConfigDto>(_mongoDBConnectionHelper, _mapper).GetAll(this.CollectionName);
+        }
 
-                var guildConfig = _mapper.Map<List<GuildConfig>>(guildConfigDto);
+        public async Task<GuildConfig> GetGuildConfigByAlias(string alias)
+        {
+            var filter = Builders<GuildConfigDto>.Filter.Eq("Aliases", alias);
+            var result = await new DocumentRepository<GuildConfig, GuildConfigDto>(_mongoDBConnectionHelper, _mapper).GetByFilter(this.CollectionName,filter);
+            return result.FirstOrDefault();            
+        }
 
-                return guildConfig;
-            }
-            catch(Exception ex)
-            {
-                return null;
-            }
+        public async Task<GuildConfig> GetGuildConfigById(string id)
+        {
+            var result = await new DocumentRepository<GuildConfig, GuildConfigDto>(_mongoDBConnectionHelper, _mapper).GetById(this.CollectionName, id);
+            return result;            
         }
     }
 }

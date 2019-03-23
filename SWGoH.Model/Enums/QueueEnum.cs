@@ -4,17 +4,6 @@ using System.Text;
 
 namespace SWGoH.Model.Enums
 {
-    public enum Command
-    {
-        UpdatePlayer = 1,
-        UpdateGuild = 2,
-        UpdateGuildWithNoChars = 3,
-        UpdatePlayers = 4,
-        GetNewCharacters = 5,
-        Help = 6,
-        UnKnown = 7,
-        Test = 8,
-    }
     public enum QueueStatus
     {
         PendingProcess = 0,
@@ -23,13 +12,13 @@ namespace SWGoH.Model.Enums
     }
     public enum QueueType
     {
-        Player = 0,
-        Guild = 1
+        Player = 1,
+        Guild = 2
     }
 
-    public enum Priority
+    public enum QueuePriority
     {
-        DailyUpdate = 1,
+        AutoUpdate = 1,
         ManualLoad = 2
     }
 }

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace TripleZero.Repository.MongoDBRepository
 {
-    public interface IGuildConfigRepository
+    public interface IQueueRepository
     {
         string CollectionName { get; }
-        Task<List<GuildConfig>> GetAll();
-        Task<GuildConfig> GetGuildConfigByAlias(string alias);
+        Task<List<Queue>> GetAll();
+        Task<Queue> GetNextInQueue();
+        Task<bool> ChangeQueueStatus(Queue queue);
     }
 }

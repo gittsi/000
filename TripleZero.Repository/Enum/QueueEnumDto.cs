@@ -4,32 +4,21 @@ using System.Text;
 
 namespace TripleZero.Repository.EnumDto
 {
-    internal enum QueueCommand
-    {
-        UpdatePlayer = 1,
-        UpdateGuild = 2,
-        UpdateGuildWithNoChars = 3,
-        UpdatePlayers = 4,
-        GetNewCharacters = 5,
-        Help = 6,
-        UnKnown = 7,
-        Test = 8,
-        GetNewCharactersAndAbilities = 9
-    }
-    internal enum QueueStatus
+    public enum QueueStatus
     {
         PendingProcess = 0,
         Processing = 1,
         Failed = 101
     }
-    internal enum QueueType
+    public enum QueueType
     {
-        Player = 0,
-        Guild = 1
+        Player = 1,
+        Guild = 2
     }
-    internal enum PriorityEnum
+
+    public enum QueuePriority
     {
-        DailyUpdate = 1,
+        AutoUpdate = 1,
         ManualLoad = 2
     }
 }

@@ -61,6 +61,14 @@ namespace TripleZero.Repository.Mapping
                     //.ForMember(dest => dest.Type, src => src.MapFrom(source => source.Slot))
                     //;
 
+                    cfg.CreateMap<Queue, QueueDto>()
+                    .ForMember(dest => dest.Id, src => src.MapFrom(source =>  source.Id))
+                    ;
+
+                    cfg.CreateMap<QueueDto, Queue>()
+                    .ForMember(dest => dest.Id, src => src.MapFrom(source => source.Id))
+                    ;
+
                     cfg.CreateMap<SWGoHHelpRepository.Dto.Mod, SWGoH.Model.Mod>()
                     .ForMember(dest => dest.Level, src => src.MapFrom(source => source.Level))
                     .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Id))
@@ -139,6 +147,7 @@ namespace TripleZero.Repository.Mapping
                     //guild config
                     cfg.CreateMap<GuildConfigDto, GuildConfig>()
                     .ForMember(dest => dest.LoadedFromCache, src => src.Ignore())
+                    .ForMember(dest => dest.DefaultPlayerAllyCode, src => src.MapFrom(source => source.DPAllyCode))
                     ;
 
                     cfg.CreateMap<SWGoHHelpRepository.Dto.Crew, SWGoH.Model.Crew>()

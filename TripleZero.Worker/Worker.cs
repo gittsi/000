@@ -1,8 +1,14 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using TripleZero.Repository.Mapping;
+using TripleZero.Repository.MongoDBRepository;
 using TripleZero.Worker.Helper;
+using TripleZero.Worker.Settings;
+using TripleZeroApi.Repository.MongoDBRepository;
 
 namespace TripleZero.Worker
 {
@@ -14,6 +20,9 @@ namespace TripleZero.Worker
              => new Worker().MainAsync().GetAwaiter().GetResult();
         public async Task MainAsync()
         {
+            await GetMongoDBGuildConfigAsync();
+Console.ReadKey();
+
             worker.DoWork += Worker_DoWork;
             worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
             worker.ProgressChanged += Worker_ProgressChanged;
@@ -70,6 +79,44 @@ namespace TripleZero.Worker
             Console.WriteLine("Done now...");
 
             worker.RunWorkerAsync();
+        }
+
+        private async Task GetMongoDBGuildConfigAsync()
+        {
+            var repoSettings = new ApplicationSettings(new SettingsConfiguration()).GetSettingsWorker();
+
+            //var aaaa = new MongoDBContext(repoSettings.MongoDBSettings);
+
+            IMapper mapper = new MappingConfiguration().GetConfigureMapper();
+
+            var bbb = new GuildConfigRepository(new MongoDBConnectionHelper(repoSettings.MongoDBSettings), mapper);
+            var queueRepo = new QueueRepository(new MongoDBConnectionHelper(repoSettings.MongoDBSettings), mapper);
+
+            //var result2 = await bbb.GetAll();
+            // var result = bbb.GetGuildConfigByAlias("fsa");
+
+            //var idse = await bbb.GetGuildConfigById("59fddf8ef36d2831457fa0cb");
+            //var idse1 = await bbb.GetGuildConfigById("59fddf8ef36d2831457fa0c1");
+
+            //var result3 = await bbb.GetGuildConfigByAlias("41st");
+
+            //var rereer = await bbb.GetGuildConfigByAlias("41");
+            try
+            {
+                
+                var queue = await queueRepo.GetNextInQueue();
+                var list = await queueRepo.GetAll();
+                
+                await queueRepo.SetQueuesUnProcessed(list);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            
+
+            var agfsdgsdg = 1;
         }
     }
 }

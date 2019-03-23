@@ -1,4 +1,5 @@
 ﻿using SWGoH.Model;
+using SWGoH.Model.Settings.TripleZeroBot;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;

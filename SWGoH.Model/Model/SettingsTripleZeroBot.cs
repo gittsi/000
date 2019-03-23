@@ -1,22 +1,16 @@
-﻿using System;
+﻿using SWGoH.Model.Model.Settings;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SWGoH.Model
+namespace SWGoH.Model.Settings.TripleZeroBot
 {
     public class SettingsTripleZeroBot
     {
         public GeneralSettings GeneralSettings { get; set; }
         public DiscordSettings DiscordSettings { get; set; }        
         public CachingSettings CachingSettings { get; set; }
-    }
-    public class GeneralSettings
-    {
-        public string ApplicationName { get; set; }
-        public string Environment { get; set; }
-        public string JsonSettingsVersion { get; set; }
-        public bool ConsolePerformanceWatcher { get; set; }
-    }
+    }    
     public class DiscordSettings
     {
         public string Token { get; set; }

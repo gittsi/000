@@ -1,6 +1,8 @@
 ﻿
 using Autofac;
 using SWGoH.Model;
+using SWGoH.Model.Settings.TripleZeroBot;
+using SWGoH.Model.Settings.TripleZeroRepository;
 using TripleZero.Bot.Settings;
 using TripleZero.Core.Caching;
 using TripleZero.Core.Caching.Strategy;

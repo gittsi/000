@@ -1,4 +1,6 @@
 ﻿using SWGoH.Model;
+using SWGoH.Model.Settings.TripleZeroBot;
+using SWGoH.Model.Settings.TripleZeroRepository;
 using System;
 using System.Collections.Generic;
 using System.Text;

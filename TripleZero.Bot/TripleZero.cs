@@ -12,6 +12,7 @@ using SWGoH.Model;
 using TripleZero.Modules;
 using Microsoft.Extensions.Caching.Memory;
 using TripleZero.Core;
+using SWGoH.Model.Settings.TripleZeroBot;
 
 namespace TripleZero.Bot
 {

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SWGoH.Model;
+using SWGoH.Model.Model.Settings;
 using System;
 using System.IO;
 using System.Net;

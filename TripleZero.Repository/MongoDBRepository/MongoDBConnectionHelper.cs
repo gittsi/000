@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using SWGoH.Model;
+using SWGoH.Model.Model.Settings;
 using System;
 using System.Collections.Generic;
 using System.Text;

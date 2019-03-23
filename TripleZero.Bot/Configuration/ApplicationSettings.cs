@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SWGoH.Model;
+using SWGoH.Model.Model.Settings;
+using SWGoH.Model.Settings.TripleZeroBot;
+using SWGoH.Model.Settings.TripleZeroRepository;
 using System;
 
 namespace TripleZero.Bot.Settings

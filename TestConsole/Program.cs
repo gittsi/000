@@ -74,11 +74,11 @@ namespace TestConsole
             var _caching = new TripleZero.Core.Caching.CacheClient(applicationSettings.GetTripleZeroRepositorySettings(), applicationSettings.GetTripleZeroBotSettings());
 
 
-            var context = new PlayerContext(repoSettings, _caching,mapper);
-            var player = await context.GetPlayerData(462747278);
+            //var context = new PlayerContext(repoSettings, _caching,mapper);
+            //var player = await context.GetPlayerData(462747278);
 
-            //var guildContext = new GuildContext(repoSettings, new MemoryCache(new MemoryCacheOptions()), mapper);
-            //var guild = guildContext.GetGuildData(462747278);
+            var guildContext = new GuildContext(repoSettings, new TripleZero.Core.Caching.CacheClient(repoSettings,applicationSettings.GetTripleZeroBotSettings()) , mapper);
+            var guild = guildContext.GetGuildData(462747278).Result;
 
             var cha = new CharacterConfigContext(_caching, mapper);
             var result = await cha.GetCharactersConfig();

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
 using SWGoH.Model;
+using SWGoH.Model.Model.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

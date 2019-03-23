@@ -10,6 +10,7 @@ using TripleZero.Repository.SWGoHHelpRepository.Dto;
 using TripleZero.Repository.SWGoHHelper;
 using TripleZero.Core.Caching;
 using System.Threading.Tasks;
+using SWGoH.Model.Model.Settings;
 
 namespace TripleZero.Repository.SWGoHHelpRepository
 {

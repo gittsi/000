@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SWGoH.Model;
+using SWGoH.Model.Settings.TripleZeroRepository;
 using TripleZero.Core.Caching;
 using TripleZero.Repository.SWGoHHelpRepository;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CacheManager.Core;
 using SWGoH.Model;
+using SWGoH.Model.Settings.TripleZeroBot;
 
 namespace TripleZero.Core.Caching.Strategy
 {

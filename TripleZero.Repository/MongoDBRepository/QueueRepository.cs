@@ -77,6 +77,19 @@ namespace TripleZero.Repository.MongoDBRepository
             }
         }
 
+        public async Task<bool> DeleteFromQueue(Queue queue)
+        {
+            try
+            {
+                var result = await _collection.DeleteOneAsync(a => a.Id == queue.Id);
+                return result.DeletedCount>0;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public async Task SetQueuesUnProcessed(IEnumerable<Queue> queues)
         {
             foreach (Queue queue in queues)

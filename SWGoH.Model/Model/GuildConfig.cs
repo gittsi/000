@@ -12,5 +12,6 @@ namespace SWGoH.Model
         public string DefaultPlayerAllyCode { get; set; }
         public override bool LoadedFromCache { get => base.LoadedFromCache; set => base.LoadedFromCache = value; }
         public bool AutoQueue { get; set; }
+        public short RetrieveEveryXMinutes { get; set; }
     }
 }

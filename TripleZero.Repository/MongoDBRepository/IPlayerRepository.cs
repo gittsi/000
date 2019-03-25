@@ -9,6 +9,8 @@ namespace TripleZero.Repository.MongoDBRepository
     public interface IPlayerRepository
     {
         string CollectionName { get; }
-        Task<Player> Get(string searchString);
+        Task<List<Player>> GetAll();
+        Task<Player> GetByName(string name);
+        Task<Player> GetByAllyCode(string allyCode);
     }
 }

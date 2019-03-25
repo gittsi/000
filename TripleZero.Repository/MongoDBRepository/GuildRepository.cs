@@ -60,7 +60,7 @@ namespace TripleZero.Repository.MongoDBRepository
                 //var updateQuery = Builders<GuildDto>.Update. //var options = Builders<QueueDto>.Sort.Descending(_ => _.Priority).Ascending(_ => _.NextRunDate);
                 //var o = new FindOneAndUpdateOptions() { }
                 var options = new UpdateOptions { IsUpsert = true };
-                var result = await _collection.ReplaceOneAsync<GuildDto>(doc=>doc.Id == guildDto.Id, guildDto, options);
+                var result = await _collection.ReplaceOneAsync(doc=>doc.Id == guildDto.Id, guildDto, options);
 
                 var isUpdated = result.UpsertedId == null ? result.ModifiedCount>0 : result.UpsertedId.AsString.Length > 0;
 

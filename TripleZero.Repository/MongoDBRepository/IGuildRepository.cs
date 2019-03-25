@@ -12,6 +12,5 @@ namespace TripleZero.Repository.MongoDBRepository
         Task<List<Guild>> GetAll();
         Task<Guild> GetGuildByAlias(string alias);
         Task<Guild> GetGuildByName(string name);
-
     }
 }

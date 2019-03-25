@@ -41,7 +41,7 @@ namespace TripleZero.Worker
 
         static async void Worker_GuildWorker(object sender, DoWorkEventArgs e)
         {
-            var delay = 5000;
+            var delay = 30000;
 
             try
             {
@@ -60,7 +60,7 @@ namespace TripleZero.Worker
 
         static async void Worker_QueueWorker(object sender, DoWorkEventArgs e)
         {
-            var delay = 13300;
+            var delay = 50;
 
             try
             {

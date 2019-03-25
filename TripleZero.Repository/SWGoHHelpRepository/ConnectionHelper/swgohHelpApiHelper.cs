@@ -107,6 +107,8 @@ namespace TripleZero.Repository.SWGoHHelper
 
         public string FetchApi(string url, object param, string token)
         {
+            Console.WriteLine($": Accessing SWGoH API");
+
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,37 +11,63 @@ using TripleZero.Repository.Dto;
 
 namespace TripleZero.Repository.MongoDBRepository
 {
-    public class PlayerRepository : IPlayerRepository
+    public class PlayerRepository : DocumentRepository<Player, PlayerDto>, IPlayerRepository
     {
         MongoDBConnectionHelper _mongoDBConnectionHelper;
         IMapper _mapper;
-        public PlayerRepository(MongoDBConnectionHelper mongoDBConnectionHelper, IMapper mapper)
+        IMongoDatabase _db;
+
+        public PlayerRepository(MongoDBConnectionHelper mongoDBConnectionHelper, IMapper mapper) : base(mongoDBConnectionHelper, mapper)
         {
             _mongoDBConnectionHelper = mongoDBConnectionHelper;
             _mapper = mapper;
+            _db = _mongoDBConnectionHelper.GetMongoDbDatabase();
         }
 
         public string CollectionName => "Player";
+        private IMongoCollection<PlayerDto> _collection => _db.GetCollection<PlayerDto>(CollectionName);
 
-        public async Task<Player> Get(string searchString)
+        public async Task<List<Player>> GetAll()
         {
-            try
-            {
-                var db = _mongoDBConnectionHelper.GetMongoDbDatabase();
-                var collection = db.GetCollection<PlayerDto>(CollectionName);
-                var result = collection.FindAsync<PlayerDto>(new BsonDocument()).Result;
+            return await new DocumentRepository<Player, PlayerDto>(_mongoDBConnectionHelper, _mapper).GetAll(this.CollectionName);
+        }
 
-                var playerDto = new PlayerDto();
-                playerDto = result.FirstOrDefault();
+        public async Task<Player> GetByAllyCode(string allyCode)
+        {
+            var filter = Builders<PlayerDto>.Filter.Eq("AllyCode", allyCode);
+            var result = await new DocumentRepository<Player, PlayerDto>(_mongoDBConnectionHelper, _mapper).GetByFilter(this.CollectionName, filter);
+            return result.FirstOrDefault();
+        }
 
-                var player = _mapper.Map<Player>(playerDto);
+        public async Task<Player> GetByName(string name)
+        {
+            var filter = Builders<PlayerDto>.Filter.Eq("Name", name);
+            var result = await new DocumentRepository<Player, PlayerDto>(_mongoDBConnectionHelper, _mapper).GetByFilter(this.CollectionName, filter);
+            return result.FirstOrDefault();
+        }
 
-                return player;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+        public async Task<bool> Upsert(Player player)
+        {
+            player.DBUpdateDate = DateTime.UtcNow;
+
+            var playerDto = _mapper.Map<PlayerDto>(player);
+            //var filter = Builders<GuildDto>.Filter.Eq("id", guildDto.Id);                
+            //var updateQuery = Builders<GuildDto>.Update. //var options = Builders<QueueDto>.Sort.Descending(_ => _.Priority).Ascending(_ => _.NextRunDate);
+            //var o = new FindOneAndUpdateOptions() { }
+            var options = new UpdateOptions { IsUpsert = true };
+            var result = await _collection.ReplaceOneAsync<PlayerDto>(doc => doc.AllyCode == playerDto.AllyCode, playerDto, options);
+
+            var isUpdated = result.UpsertedId == null ? result.ModifiedCount > 0 : result.UpsertedId.AsString.Length > 0;
+
+            //if(isUpdated)
+            //{
+            //    guildDto.LastUpdated = DateTime.UtcNow.ToString();
+            //    await _collection.ReplaceOneAsync<GuildDto>(doc => doc.Id == guildDto.Id, guildDto, options);
+            //}
+
+            //await _collection.InsertOneAsync(guildDto);
+            return isUpdated;
+
         }
     }
 }

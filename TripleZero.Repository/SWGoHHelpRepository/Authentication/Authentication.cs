@@ -29,6 +29,8 @@ namespace TripleZero.Repository.SWGoHHelpRepository
 
         public async Task<string> GetToken()
         {
+            Console.WriteLine($": Accessing SWGoH API authentication");
+
             var token = "";
             string functionName = "SWGoHHelp";
             string key = "token";

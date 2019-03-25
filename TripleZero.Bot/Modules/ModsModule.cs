@@ -44,7 +44,7 @@ namespace TripleZero.Modules
             string retStr = "";
             if (result != null)
             {
-                retStr += $"```css\n{modStatType.GetDescription()} secondary mods for player {player.PlayerName} - {player.PlayerNameInGame} \n```";
+                retStr += $"```css\n{modStatType.GetDescription()} secondary mods for player {player.PlayerName}\n```";
                 retStr += string.Format("```Last update : {0}(UTC)```\n", player.RosterUpdateDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 retStr += string.Format("Returned mods : {0}", result.Count());
@@ -167,7 +167,7 @@ namespace TripleZero.Modules
             string retStr = "";
             if (result != null)
             {
-                retStr += $"```css\n{modStatType.GetDescription()} primary mods for player {player.PlayerName} - {player.PlayerNameInGame} \n```";
+                retStr += $"```css\n{modStatType.GetDescription()} primary mods for player {player.PlayerName}\n```";
                 retStr += string.Format("```Last update : {0}(UTC)```\n", player.RosterUpdateDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 retStr += string.Format("Returned mods : {0}", result.Count());
@@ -316,7 +316,7 @@ namespace TripleZero.Modules
                               from Stats in Mod.SecondaryStat.Where(p => p.StatType == modStatType && p.ValueType == modValueType)
                               select new
                               {
-                                  PlayerName = Player.PlayerNameInGame,
+                                  PlayerName = Player.PlayerName,
                                   Character.Name,
                                   Mod
                               }

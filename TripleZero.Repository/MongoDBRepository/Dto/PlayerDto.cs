@@ -10,21 +10,19 @@ namespace TripleZero.Repository.Dto
         [BsonIgnoreIfNull]
         public string Id { get; set; }
         [BsonIgnoreIfNull]
-        public string GuildName { get; set; }
+        public string GuildName { get; set; }        
         [BsonIgnoreIfNull]
         public string PlayerName { get; set; }
-        [BsonIgnoreIfNull]
-        public string PlayerNameInGame { get; set; }
         [BsonIgnoreIfNull]
         public string AllyCode { get; set; }
         [BsonIgnoreIfNull]
         public string LastSWGoHUpdated { get; set; }
         [BsonIgnoreIfNull]
         public string LastUpdated { get; set; }
-        [BsonIgnoreIfDefault]
-        public int GPcharacters { get; set; }
-        [BsonIgnoreIfDefault]
-        public int GPships { get; set; }
+        //[BsonIgnoreIfDefault]
+        //public int GPcharacters { get; set; }
+        //[BsonIgnoreIfDefault]
+        //public int GPships { get; set; }
         [BsonIgnoreIfNull]
         public List<CharacterDto> Characters { get; set; }
         [BsonIgnoreIfNull]

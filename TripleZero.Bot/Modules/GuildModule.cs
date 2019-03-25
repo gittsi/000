@@ -74,7 +74,7 @@ namespace TripleZero.Modules
                 var yazometerZeta = YazHelper.GetYazometerZeta(player);
                 //var yazometerShips = YazHelper.GetYazometerShips(player);
 
-                dict.Add(player.PlayerNameInGame, yazometerGear.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) /*+ yazometerShips.Sum(p=>p.Score)*/);
+                dict.Add(player.PlayerName, yazometerGear.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) /*+ yazometerShips.Sum(p=>p.Score)*/);
             }
             if (applicationSettings.GetTripleZeroBotSettings().GeneralSettings.ConsolePerformanceWatcher)
             {

@@ -173,14 +173,14 @@ namespace TripleZero.Worker
                         {
                             //TODO we have to queue him
                             var message = playerDB == null ? "new player!!!" : $"{playerDB.RosterUpdateDate.ToString("yyyy-MM-dd HH:mm:ss")} vs {playerSWGoH.RosterUpdateDate.ToString("yyyy-MM-dd HH:mm:ss")} ";
-                            Consoler.WriteLineInColor($"{logStringInit} : Sending player {playerSWGoH.PlayerNameInGame} to queue : {message}", ConsoleColor.DarkMagenta);
+                            Consoler.WriteLineInColor($"{logStringInit} : Sending player {playerSWGoH.PlayerName} to queue : {message}", ConsoleColor.DarkMagenta);
                             var newQueue = new Queue()
                             {
                                 Id = Guid.NewGuid().ToString(),
                                 InsertedDate = DateTime.UtcNow,
                                 ItemId = playerSWGoH.AllyCode,
-                                Name = playerSWGoH.PlayerNameInGame,
-                                NextRunDate = DateTime.UtcNow,
+                                Name = playerSWGoH.PlayerName,
+                                NextRunDate = DateTime.UtcNow.AddMinutes(1),
                                 Priority = QueuePriority.AutoUpdate,
                                 Type = QueueType.Player,
                                 Status = QueueStatus.PendingProcess
@@ -221,16 +221,17 @@ namespace TripleZero.Worker
                 Consoler.WriteLineInColor($"{logStringInit} : Accessing SWGoH API", ConsoleColor.Magenta);
                 var playerRepoSWGoh = new SWGoHHelpPlayerRepository(_settings.SWGoHHelpSettings, null, _mapper);
                 var player = await playerRepoSWGoh.GetPlayer(allyCode);
-                Consoler.WriteLineInColor($"{logStringInit} : Fetched data for player {player.PlayerNameInGame} from allyCode {allyCode}", ConsoleColor.Green);
+                Consoler.WriteLineInColor($"{logStringInit} : Fetched data for player {player.PlayerName} from allyCode {allyCode}", ConsoleColor.Green);
 
                 if(player == null) throw new Exception($"Failed to get player for allyCode {allyCode}");
 
                 var playerRepo = new PlayerRepository(new MongoDBConnectionHelper(_settings.MongoDBSettings), _mapper);
+                if (player.Id == null) player.Id = Guid.NewGuid().ToString();
                 var upsertResult = await playerRepo.Upsert(player);
                 if (upsertResult)
-                    Consoler.WriteLineInColor($"{logStringInit} : Saved player {player.PlayerNameInGame}", ConsoleColor.Cyan);
+                    Consoler.WriteLineInColor($"{logStringInit} : Saved player {player.PlayerName}", ConsoleColor.Cyan);
                 else
-                    Consoler.WriteLineInColor($"{logStringInit} : Failed to save player {player.PlayerNameInGame}", ConsoleColor.Red);
+                    Consoler.WriteLineInColor($"{logStringInit} : Failed to save player {player.PlayerName}", ConsoleColor.Red);
             }
             catch (Exception ex)
             {

@@ -73,7 +73,7 @@ namespace TripleZero.Modules
             //var yazometerShips = YazHelper.GetYazometerShips(player);
 
 
-            var retStr = $"```css\nYAZometer Report for {player.PlayerNameInGame} \n```";
+            var retStr = $"```css\nYAZometer Report for {player.PlayerName} \n```";
             int count = 1;
             retStr += "**Characters**\n";
             foreach (var p in yazometer.OrderByDescending(p=>p.Score))
@@ -160,7 +160,7 @@ namespace TripleZero.Modules
             //var yazometerShips = YazHelper.GetYazometerShips(player);
 
 
-            var retStr = $"```css\nYAZometer Report for {player.PlayerNameInGame} \n```";
+            var retStr = $"```css\nYAZometer Report for {player.PlayerName} \n```";
             int count = 1;
             retStr += "\n```**Characters**```";
             var groupName = "";

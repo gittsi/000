@@ -21,15 +21,6 @@
         [JsonProperty("guildName")]
         public string GuildName { get; set; }
 
-        //[JsonProperty("gpFull")]
-        //public long GpFull { get; set; }
-
-        //[JsonProperty("gpChar")]
-        //public long GpChar { get; set; }
-
-        //[JsonProperty("gpShip")]
-        //public long GpShip { get; set; }
-
         [JsonProperty("roster")]
         public List<Roster> Roster { get; set; }
 
@@ -163,8 +154,8 @@
         public PrimaryBonusType PrimaryBonusType { get; set; }
         [JsonProperty("value")]
         public double? Value { get; set; }
-        [JsonProperty("roll")]
-        public int? Roll { get; set; }
+        //[JsonProperty("roll")]
+        //public int? Roll { get; set; }
     }
 
     public class ModSecondaryStats
@@ -185,8 +176,8 @@
         [JsonProperty("slot")]
         public Slot Slot { get; set; }
 
-        [JsonProperty("setId")]
-        public long SetId { get; set; }
+        //[JsonProperty("setId")]
+        //public long SetId { get; set; }
 
         [JsonProperty("set")]
         public Set Set { get; set; }

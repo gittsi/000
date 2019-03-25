@@ -9,10 +9,10 @@ namespace SWGoH.Model
         public string Id { get; set; }
         public string Name { get; set; }
         public List<string> Tags { get; set; }
-        public string SWGoHUrl { get; set; }
+        //public string SWGoHUrl { get; set; }
         public int Stars { get; set; }
         public int Level { get; set; }        
-        public int Power { get; set; }
+        //public int Power { get; set; }
         public bool IsUnlocked
         {
             get
@@ -25,9 +25,9 @@ namespace SWGoH.Model
         }
         
         public List<Ability> Abilities { get; set; }
-        public GeneralStats GeneralStats { get; set; }
-        public OffenseStats OffenseStats { get; set; }
-        public Survivability Survivability { get; set; }
+        //public GeneralStats GeneralStats { get; set; }
+        //public OffenseStats OffenseStats { get; set; }
+        //public Survivability Survivability { get; set; }
     }
     public class Ability
     {

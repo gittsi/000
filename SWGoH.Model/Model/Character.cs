@@ -7,7 +7,7 @@ namespace SWGoH.Model
     public class Character : Unit
     {
         public int Gear { get; set; }
-        public int StatPower { get; set; }
+        public double GP { get; set; }
         public List<Mod> Mods { get; set; }
         public List<Equipped> Equipped { get; set; }
         public List<Skill> Skills { get; set; }

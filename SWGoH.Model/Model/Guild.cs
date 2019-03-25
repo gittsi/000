@@ -6,6 +6,7 @@ namespace SWGoH.Model
 {
     public class Guild : Cache
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public DateTime SWGoHUpdateDate { get; set; }
         public DateTime EntryUpdateDate { get; set; }

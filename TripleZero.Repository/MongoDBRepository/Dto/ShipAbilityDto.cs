@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace TripleZero.Repository.Dto
 {
-    internal class ShipAbilityDto
+    public class ShipAbilityDto
     {
         public string Name { get; set; }
         [BsonElement("Lvl")]

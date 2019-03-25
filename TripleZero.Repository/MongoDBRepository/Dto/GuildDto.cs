@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,15 +12,20 @@ using System.Threading.Tasks;
 
 namespace TripleZero.Repository.Dto
 {
-    internal partial class GuildDto
+    public partial class GuildDto
     {
+        [BsonIgnoreIfNull]
         public string Id { get; set; }
         public string Name { get; set; }
-        public DateTime LastSwGohUpdated { get; set; }
-        public DateTime LastClassUpdated { get; set; }
+        public string LastSWGoHUpdated { get; set; }
+        public string LastUpdated { get; set; }
+        [BsonIgnoreIfDefault]
         public int GP { get; set; }
+        [BsonIgnoreIfDefault]
         public int GPaverage { get; set; }
+        [BsonIgnoreIfNull]
         public List<string> PlayerNames { get; set; }
+        [BsonIgnoreIfNull]
         public List<PlayerDto> Players { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TripleZero.Repository.EnumDto
 {
-    internal enum ModValueType
+    public enum ModValueType
     {
         [Description("none")]
         None = -1,
@@ -14,7 +14,7 @@ namespace TripleZero.Repository.EnumDto
         [Description("percentage")]
         Percentage = 1
     }
-    internal enum ModStatType
+    public enum ModStatType
     {
         [Description("none")]
         None = 0,
@@ -41,7 +41,7 @@ namespace TripleZero.Repository.EnumDto
         [Description("rotection")]
         Protection = 11
     }
-    internal enum ModSlot
+    public enum ModSlot
     {
         [Description("none")]
         None = 0,
@@ -58,7 +58,7 @@ namespace TripleZero.Repository.EnumDto
         [Description("cross")]
         Multiplexer = 6
     }
-    internal enum ModSet
+    public enum ModSet
     {
         [Description("none")]
         None = 0,

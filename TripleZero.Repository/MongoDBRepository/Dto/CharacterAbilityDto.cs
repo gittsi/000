@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace TripleZero.Repository.Dto
 {
-    internal class CharacterAbilityDto
+    public class CharacterAbilityDto
     {
         public string Name { get; set; }
         [BsonElement("Lvl")]

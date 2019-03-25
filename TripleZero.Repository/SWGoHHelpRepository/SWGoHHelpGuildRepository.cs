@@ -35,6 +35,16 @@ namespace TripleZero.Repository.SWGoHHelp
             _url = settings.Protocol + "://" + settings.Host + settings.Port + "/swgoh/guilds/";
         }
 
+        //public SWGoHHelpGuildRepository(SWGoHHelpSettings settings, IMapper mapper)
+        //{
+        //    _diagnosticModeOn = false;
+        //    _settings = settings;
+        //    _cacheClient = new CacheClient(new ApplicationSettings );
+        //    _mapper = mapper;
+        //    if (_mapper == null) _mapper = new MappingConfiguration().GetConfigureMapper();
+        //    _url = settings.Protocol + "://" + settings.Host + settings.Port + "/swgoh/guilds/";
+        //}
+
         public async Task<Guild> GetGuild(int allyCode)
         {
             Stopwatch sw = new Stopwatch();

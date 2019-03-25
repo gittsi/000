@@ -7,7 +7,7 @@ using System.Text;
 
 namespace TripleZero.Repository.Dto
 {
-    internal class UnitDto
+    public class UnitDto
     {
         public List<string> Tags { get; set; }
 

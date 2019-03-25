@@ -6,7 +6,7 @@ using TripleZero.Repository.Repository.Dto;
 
 namespace TripleZero.Repository.Dto
 {
-    internal class CharacterDto : UnitDto
+    public class CharacterDto : UnitDto
     {
         [JsonProperty("Ge")]
         [BsonElement("Ge")]

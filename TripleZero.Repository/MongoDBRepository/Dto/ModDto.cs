@@ -8,7 +8,7 @@ using TripleZero.Repository.EnumDto;
 
 namespace TripleZero.Repository.Repository.Dto
 {
-    internal class ModDto
+    public class ModDto
     {
         public string Name { get; set; }
         [DefaultValue(15)]
@@ -31,7 +31,7 @@ namespace TripleZero.Repository.Repository.Dto
         public List<ModStatDto> SecondaryStat { get; set; }
     }
 
-    internal class ModStatDto
+    public class ModStatDto
     {
         public ModValueType ValueType { get; set; }
         public ModStatType StatType { get; set; }

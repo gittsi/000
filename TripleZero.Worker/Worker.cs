@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SWGoH.Model;
+using SWGoH.Model.Settings.Worker;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,11 +17,16 @@ namespace TripleZero.Worker
     public class Worker
     {
         private static BackgroundWorker worker = new BackgroundWorker();
+        private SettingsWorker _settings;
+        private IMapper _mapper;
 
         static void Main(string[] args)
              => new Worker().MainAsync().GetAwaiter().GetResult();
         public async Task MainAsync()
         {
+            _settings = new ApplicationSettings(new SettingsConfiguration()).GetSettingsWorker();
+            _mapper = new MappingConfiguration().GetConfigureMapper();
+
             worker.DoWork += Worker_GuildWorker;
             worker.DoWork += Worker_QueueWorker;
 

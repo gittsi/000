@@ -7,7 +7,7 @@ using System.Text;
 
 namespace TripleZero.Repository.Dto
 {
-    internal class ShipDto : UnitDto
+    public class ShipDto : UnitDto
     {        
         public List<ShipAbilityDto> Abilities { get; set; }
         public List<string> Crew { get; set; }        

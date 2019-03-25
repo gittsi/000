@@ -37,7 +37,7 @@ namespace TripleZero.Repository.MongoDBRepository
 
         public async Task<Queue> GetByItemId(string itemId)
         {
-            var filter = Builders<QueueDto>.Filter.Eq("ItemId", itemId);
+            var filter = Builders<QueueDto>.Filter.Eq("itemId", itemId);
             var data = await new DocumentRepository<Queue, QueueDto>(_mongoDBConnectionHelper, _mapper).GetByFilter(this.CollectionName,filter);
             
             return data.FirstOrDefault();
@@ -45,7 +45,7 @@ namespace TripleZero.Repository.MongoDBRepository
 
         public async Task<Queue> GetNextInQueue(string processingBy)
         {            
-            var filter = Builders<QueueDto>.Filter.Eq("Status", 0);
+            var filter = Builders<QueueDto>.Filter.Eq("status", 0);
             filter = filter & Builders<QueueDto>.Filter.Lt(_=> _.NextRunDate , DateTime.UtcNow.ToString());
             var updateQuery = Builders<QueueDto>.Update.Set(e => e.Status, EnumDto.QueueStatus.Processing).Set(e=>e.ProcessingBy, processingBy).Set(e=>e.ProcessingStartDate , DateTime.UtcNow.ToString() );
             //var options = Builders<QueueDto>.Sort.Descending(_ => _.Priority).Ascending(_ => _.NextRunDate);
@@ -95,7 +95,7 @@ namespace TripleZero.Repository.MongoDBRepository
             foreach (Queue queue in queues)
             {
                 var filter = Builders<QueueDto>.Filter.Eq("_id", queue.Id);
-                var update = Builders<QueueDto>.Update.Set("Status", 0).Set(_=>_.ProcessingStartDate, null).Set(_ => _.ProcessingBy, null);
+                var update = Builders<QueueDto>.Update.Set("status", 0).Set(_=>_.ProcessingStartDate, null).Set(_ => _.ProcessingBy, null);
 
                 var result = await _collection.UpdateOneAsync(filter, update);
 

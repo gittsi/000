@@ -32,7 +32,7 @@ namespace TripleZero.Repository.SWGoHHelpRepository
             var token = "";
             string functionName = "SWGoHHelp";
             string key = "token";
-            var objCache = _cacheClient.GetDataFromRepositoryCache(functionName, key);
+            var objCache = _cacheClient?.GetDataFromRepositoryCache(functionName, key);
             if (objCache != null)
             {
                 token = (string)objCache;
@@ -78,7 +78,7 @@ namespace TripleZero.Repository.SWGoHHelpRepository
                 //load to cache
                 try
                 {
-                    var b = await _cacheClient.AddToRepositoryCache(functionName, key, token, _settings.TokenCachingInMinutes);
+                    var b = await _cacheClient?.AddToRepositoryCache(functionName, key, token, _settings.TokenCachingInMinutes);
                 }
                 catch (Exception ex)
                 {

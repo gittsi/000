@@ -23,10 +23,10 @@ namespace TripleZero.Repository.Dto
         [BsonElement("TI")]
         public long Tier { get; set; }
 
-        [BsonElement("nm")]
+        [BsonElement("Nm")]
         public string Name { get; set; }
 
-        [BsonElement("isZ")]
+        [BsonElement("IsZ")]
         public bool IsZeta { get; set; }
     }
 }

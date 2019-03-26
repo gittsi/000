@@ -17,7 +17,7 @@ namespace TripleZero.Repository.Dto
         public List<CharacterAbilityDto> Abilities { get; set; }        
 
         public List<ModDto> Mods { get; set; }
-
+        [BsonIgnoreIfNull]
         public List<string> CharacterTags { get; set; }
     }
 }

@@ -33,8 +33,14 @@ namespace TripleZero.Repository.Repository.Dto
 
     public class ModStatDto
     {
+        [JsonProperty("VT")]
+        [BsonElement("VT")]
         public ModValueType ValueType { get; set; }
+        [JsonProperty("ST")]
+        [BsonElement("ST")]
         public ModStatType StatType { get; set; }
+        [JsonProperty("V")]
+        [BsonElement("V")]
         public double Value { get; set; }
     }
 }

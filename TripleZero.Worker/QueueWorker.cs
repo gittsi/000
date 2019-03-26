@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using SWGoH.Model;
 using SWGoH.Model.Enums;
 using SWGoH.Model.Settings.Worker;
@@ -19,20 +20,29 @@ namespace TripleZero.Worker
 {
     public class QueueWorker
     {
-        private CacheClient _cacheClient;
+        private MemoryCache _myCache;
         private SettingsWorker _settings;
         private IMapper _mapper;
-        public QueueWorker(SettingsWorker settings, IMapper mapper)
+        public QueueWorker(SettingsWorker settings, CacheClient cacheClient, IMapper mapper)
         {
             _settings = settings;            
             _mapper = mapper;
         }
 
-        public QueueWorker()
+        public QueueWorker(SettingsWorker settings, MemoryCache myCache, IMapper mapper)
         {
-            _settings = new ApplicationSettings(new SettingsConfiguration()).GetSettingsWorker();
-            _mapper = new MappingConfiguration().GetConfigureMapper();
+            _settings = settings;
+            _mapper = mapper;
+            _myCache = myCache;
         }
+
+        //public QueueWorker()
+        //{
+        //    _settings = new ApplicationSettings(new SettingsConfiguration()).GetSettingsWorker();
+        //    _mapper = new MappingConfiguration().GetConfigureMapper();
+        //    _myCache = new MemoryCache(new MemoryCacheOptions());
+
+        //}
 
         //public QueueWorker()
         //{
@@ -180,7 +190,7 @@ namespace TripleZero.Worker
                                 InsertedDate = DateTime.UtcNow,
                                 ItemId = playerSWGoH.AllyCode,
                                 Name = playerSWGoH.PlayerName,
-                                NextRunDate = DateTime.UtcNow.AddMinutes(1),
+                                NextRunDate = DateTime.UtcNow,
                                 Priority = QueuePriority.AutoUpdate,
                                 Type = QueueType.Player,
                                 Status = QueueStatus.PendingProcess
@@ -219,14 +229,14 @@ namespace TripleZero.Worker
             {
                 Consoler.WriteLineInColor($"{logStringInit} : Fetching player data from API via allyCode {allyCode}", ConsoleColor.Green);
                 Consoler.WriteLineInColor($"{logStringInit} : Accessing SWGoH API", ConsoleColor.Magenta);
-                var playerRepoSWGoh = new SWGoHHelpPlayerRepository(_settings.SWGoHHelpSettings, null, _mapper);
+                var playerRepoSWGoh = new SWGoHHelpPlayerRepository(_settings.SWGoHHelpSettings, _myCache  , _mapper);
                 var player = await playerRepoSWGoh.GetPlayer(allyCode);
                 Consoler.WriteLineInColor($"{logStringInit} : Fetched data for player {player.PlayerName} from allyCode {allyCode}", ConsoleColor.Green);
 
                 if(player == null) throw new Exception($"Failed to get player for allyCode {allyCode}");
 
                 var playerRepo = new PlayerRepository(new MongoDBConnectionHelper(_settings.MongoDBSettings), _mapper);
-                if (player.Id == null) player.Id = Guid.NewGuid().ToString();
+                if (player.Id == null) player.Id = player.AllyCode;
                 var upsertResult = await playerRepo.Upsert(player);
                 if (upsertResult)
                     Consoler.WriteLineInColor($"{logStringInit} : Saved player {player.PlayerName}", ConsoleColor.Cyan);

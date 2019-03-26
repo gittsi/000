@@ -115,8 +115,8 @@ namespace TripleZero.Repository.Mapping
 
                     cfg.CreateMap<Roster, Character>()
                     .ForMember(dest => dest.Gear, src => src.MapFrom(source => source.Gear))
-                    .ForMember(dest => dest.GP, src => src.Ignore())
-                    .ForMember(dest => dest.Name, src => src.Ignore())
+                    .ForMember(dest => dest.GP, src => src.MapFrom(source => source.Gp))
+                    .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Name))
                     .ForMember(dest => dest.Mods, src => src.MapFrom(source => source.Mods))
                     .ForMember(dest => dest.Id, src => src.MapFrom(source => source.Name))
                     .ForMember(dest => dest.GP, src => src.MapFrom(source => source.Gp))
@@ -133,7 +133,7 @@ namespace TripleZero.Repository.Mapping
 
                     cfg.CreateMap<Roster, Ship>()
                     .ForMember(dest => dest.Crew, src => src.MapFrom(source => source.Crew))
-                    .ForMember(dest => dest.Name, src => src.Ignore())
+                    .ForMember(dest => dest.Name, src => src.MapFrom(source => source.Name))
                     .ForMember(dest => dest.Id, src => src.MapFrom(source => source.Name))
                     .ForMember(dest => dest.Stars, src => src.MapFrom(source => (int)source.Rarity))
                     .ForMember(dest => dest.Level, src => src.MapFrom(source => (int)source.Level))

@@ -11,6 +11,7 @@ using TripleZero.Repository.SWGoHHelper;
 using TripleZero.Core.Caching;
 using System.Threading.Tasks;
 using SWGoH.Model.Model.Settings;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TripleZero.Repository.SWGoHHelpRepository
 {
@@ -21,10 +22,21 @@ namespace TripleZero.Repository.SWGoHHelpRepository
         SWGoHHelpSettings _settings;
         IMapper _mapper;
         private CacheClient _cacheClient;
+        private MemoryCache _myCache;
+
         public SWGoHHelpPlayerRepository(SWGoHHelpSettings settings, CacheClient cacheClient, IMapper mapper)
         {
             _settings = settings;
             _cacheClient = cacheClient;
+            _mapper = mapper;
+            if (_mapper == null) _mapper = new MappingConfiguration().GetConfigureMapper();
+            _url = settings.Protocol + "://" + settings.Host + settings.Port + "/swgoh/player/";
+        }
+
+        public SWGoHHelpPlayerRepository(SWGoHHelpSettings settings, MemoryCache myCache, IMapper mapper)
+        {
+            _settings = settings;
+            _myCache = myCache;
             _mapper = mapper;
             if (_mapper == null) _mapper = new MappingConfiguration().GetConfigureMapper();
             _url = settings.Protocol + "://" + settings.Host + settings.Port + "/swgoh/player/";
@@ -45,7 +57,10 @@ namespace TripleZero.Repository.SWGoHHelpRepository
 
         private async Task<string> FetchPlayer(int[] allycodes, string language = null, bool? enums = null, object project = null)
         {
-            var helper = new Authentication(_settings, _cacheClient);
+            Authentication helper = null;
+
+            if(_cacheClient!= null) helper = new Authentication(_settings, _cacheClient);
+            if (_myCache != null) helper = new Authentication(_settings, _myCache);
             var token = await helper.GetToken();
 
             dynamic obj = new ExpandoObject();

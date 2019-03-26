@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using SWGoH.Model;
 using SWGoH.Model.Settings.Worker;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using TripleZero.Core.Caching;
 using TripleZero.Repository.Mapping;
 using TripleZero.Repository.MongoDBRepository;
 using TripleZero.Worker.Helper;
@@ -19,6 +21,7 @@ namespace TripleZero.Worker
         private static BackgroundWorker worker = new BackgroundWorker();
         private SettingsWorker _settings;
         private IMapper _mapper;
+        private MemoryCache _myCache;
 
         static void Main(string[] args)
              => new Worker().MainAsync().GetAwaiter().GetResult();
@@ -26,9 +29,10 @@ namespace TripleZero.Worker
         {
             _settings = new ApplicationSettings(new SettingsConfiguration()).GetSettingsWorker();
             _mapper = new MappingConfiguration().GetConfigureMapper();
+            _myCache = new MemoryCache(new MemoryCacheOptions());
 
             worker.DoWork += Worker_GuildWorker;
-            worker.DoWork += Worker_QueueWorker;
+            worker.DoWork += (sender, e) => Worker_QueueWorker(sender,e, _settings , _myCache, _mapper);
 
             worker.RunWorkerAsync();
             Console.ReadKey();
@@ -58,16 +62,16 @@ namespace TripleZero.Worker
             }
         }
 
-        static async void Worker_QueueWorker(object sender, DoWorkEventArgs e)
+        static async void Worker_QueueWorker(object sender, DoWorkEventArgs e, SettingsWorker settings, MemoryCache myCache, IMapper mapper)
         {
-            var delay = 50;
+            var delay = 250;
 
             try
             {
-                var queueWorker = new QueueWorker();
+                var queueWorker = new QueueWorker(settings, myCache, mapper);
                 await queueWorker.Run();
                 Thread.Sleep(delay);
-                Worker_QueueWorker(sender, e);
+                Worker_QueueWorker(sender, e, settings, myCache, mapper);
             }
             catch (Exception ex)
             {

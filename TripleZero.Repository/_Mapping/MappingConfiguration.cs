@@ -69,8 +69,8 @@ namespace TripleZero.Repository.Mapping
                    .ForMember(dest => dest.Id, src => src.MapFrom(source => source.Id))
                    .ForMember(dest => dest.GP, src => src.MapFrom(source => source.GalacticPower))
                    .ForMember(dest => dest.GPaverage, src => src.MapFrom(source => source.GalacticPowerAverage))
-                   .ForMember(dest => dest.LastUpdated, src => src.MapFrom(source => source.EntryUpdateDate))
-                   .ForMember(dest => dest.LastSWGoHUpdated, src => src.MapFrom(source => source.SWGoHUpdateDate))
+                   .ForMember(dest => dest.LastUpdated, src => src.MapFrom(source => source.EntryUpdateDate.ToString("yyyy-MM-dd HH:mm:ss")))
+                   .ForMember(dest => dest.LastSWGoHUpdated, src => src.MapFrom(source => source.SWGoHUpdateDate.ToString("yyyy-MM-dd HH:mm:ss")))
                    .ForMember(dest => dest.PlayerNames, src => src.Ignore())
                    ;
 
@@ -87,8 +87,8 @@ namespace TripleZero.Repository.Mapping
                    .ForMember(dest => dest.Id, src => src.MapFrom(source => source.Id))
                    //.ForMember(dest => dest.GPcharacters, src => src.MapFrom(source => source.GalacticPowerCharacters))
                    //.ForMember(dest => dest.GPships, src => src.MapFrom(source => source.GalacticPowerShips))
-                   .ForMember(dest => dest.LastUpdated, src => src.MapFrom(source => source.DBUpdateDate))
-                   .ForMember(dest => dest.LastSWGoHUpdated, src => src.MapFrom(source => source.RosterUpdateDate))
+                   .ForMember(dest => dest.LastUpdated, src => src.MapFrom(source => source.DBUpdateDate.Value.ToString("yyyy-MM-dd HH:mm:ss")))
+                   .ForMember(dest => dest.LastSWGoHUpdated, src => src.MapFrom(source => source.RosterUpdateDate.ToString("yyyy-MM-dd HH:mm:ss")))
                    ;
 
                     cfg.CreateMap<PlayerDto, Player>()

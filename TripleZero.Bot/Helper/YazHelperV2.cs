@@ -12,12 +12,13 @@ namespace TripleZero.Bot.Helper
         public static double GetTotalPoints => TotalPointsMandaToryToons + TotalPointLegacyToons + TotalPointBonusToons + TotalPointsZeta ;
 
         //Zeta
-        public static double TotalPointsZeta = 300;
+        public static double TotalPointsZeta = 340;
 
         //mandatory
         public static double TotalPointsMandaToryToons => GetMandatoryToons().Count * 10;
 
         public static double GetSithTotalPoints => GetMandatorySith().Count * 10;
+        public static double GetSithEmpireTotalPoints => GetMandatorySithEmpire().Count * 10;
         public static double GetJediTotalPoints => GetMandatoryJedi().Count * 10;
         public static double GetResistanceTotalPoints => GetMandatoryResistance().Count * 10;
         public static double GetRebelsTotalPoints => GetMandatoryRebels().Count * 10;
@@ -40,9 +41,18 @@ namespace TripleZero.Bot.Helper
             var list = new List<KeyValuePair<string, string>>();
             list.Add(new KeyValuePair<string, string>("Darth Traya","Sith"));
             list.Add(new KeyValuePair<string, string>("Darth Nihilus", "Sith"));
-            list.Add(new KeyValuePair<string, string>("Darth Sion", "Sith"));
-            list.Add(new KeyValuePair<string, string>("Bastila Shan (Fallen)", "Sith"));
-            list.Add(new KeyValuePair<string, string>("Sith Trooper", "Sith"));
+            list.Add(new KeyValuePair<string, string>("Darth Sion", "Sith"));            
+            //list.Add(new KeyValuePair<string, string>("Count Dooku");
+            return list;
+        }
+
+        private static List<KeyValuePair<string, string>> GetMandatorySithEmpire()
+        {
+            var list = new List<KeyValuePair<string, string>>();
+            list.Add(new KeyValuePair<string, string>("Darth Revan", "Sith Empire"));
+            list.Add(new KeyValuePair<string, string>("HK-47", "Sith Empire"));
+            list.Add(new KeyValuePair<string, string>("Bastila Shan (Fallen)", "Sith Empire"));
+            list.Add(new KeyValuePair<string, string>("Sith Trooper", "Sith Empire"));
             //list.Add(new KeyValuePair<string, string>("Count Dooku");
             return list;
         }
@@ -150,6 +160,9 @@ namespace TripleZero.Bot.Helper
             var list = new List<KeyValuePair<string, string>>();
             //Sith
             list.AddRange(GetMandatorySith());
+
+            //Sith Empire
+            list.AddRange(GetMandatorySithEmpire());
 
             //Jedi
             list.AddRange(GetMandatoryJedi());
@@ -368,6 +381,8 @@ namespace TripleZero.Bot.Helper
             yazList.Add("Mother Talzin");
             yazList.Add("R2-D2");
             yazList.Add("Jedi Knight Revan");
+            yazList.Add("Darth Revan");
+            //yazList.Add("Bastila Shan (Fallen)");
 
             //yazList.Add("Kylo Ren (Unmasked)");
             return yazList;
@@ -394,6 +409,7 @@ namespace TripleZero.Bot.Helper
             yazList.Add("Mission Vao");
             yazList.Add("Carth Onasi");
             yazList.Add("Darth Nihilus");
+            yazList.Add("HK-47");
 
 
             //yazList.Add("Bastila Shan");

@@ -24,7 +24,7 @@ namespace TripleZero.Worker
         private MemoryCache _myCache;
 
         static void Main(string[] args)
-             => new Worker().MainAsync().GetAwaiter().GetResult();
+             =>  new Worker().MainAsync().GetAwaiter().GetResult();
         public async Task MainAsync()
         {
             _settings = new ApplicationSettings(new SettingsConfiguration()).GetSettingsWorker();

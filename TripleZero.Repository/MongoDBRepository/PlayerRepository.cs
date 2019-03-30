@@ -46,6 +46,16 @@ namespace TripleZero.Repository.MongoDBRepository
             return result.FirstOrDefault();
         }
 
+        public async Task<List<Player>> GetByGuild(string guildName)
+        {
+            var filter = Builders<PlayerDto>.Filter.Eq("GuildName", guildName);
+            //var projection = Builders<PlayerDto>.Projection.Exclude(_=>_.Characters.Select(x=>x.Mods));
+            var projection = Builders<PlayerDto>.Projection.Exclude("Characters.Mods");
+            //var projection = Builders<PlayerDto>.Projection.Exclude("Mods");
+            var result = await new DocumentRepository<Player, PlayerDto>(_mongoDBConnectionHelper, _mapper).GetByFilter(this.CollectionName, filter, projection);
+            return result;
+        }
+
         public async Task<bool> Upsert(Player player)
         {
             player.DBUpdateDate = DateTime.UtcNow;

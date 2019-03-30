@@ -97,6 +97,58 @@ namespace TripleZero.Modules
 
         }
 
+        [Command("yazometer-g", RunMode = RunMode.Async)]
+        [Summary("Get full YAZ report for a guild")]
+        [Remarks("*yazometer-g {playerUserName}*")]
+        [Alias("yazg2")]
+        public async Task GetYazGForGuild(string guildAlias)
+        {
+            guildAlias = guildAlias.Trim();
+
+            string loadingStr = string.Format($"```YAZometer is loading for guild '{guildAlias}'...```");
+            var messageLoading = await ReplyAsync($"{loadingStr}");
+            var applicationSettings = new ApplicationSettings(new SettingsConfiguration());
+            var repoSettings = applicationSettings.GetTripleZeroRepositorySettings();
+            IMapper mapper = null;
+
+            var context = new PlayerContext(repoSettings, _cacheClient, mapper);
+
+            List<Player> players = new List<Player>();
+            try
+            {
+                players = await context.GetGuildPlayersData(guildAlias);
+            }
+            catch (Exception ex)
+            {
+                await ReplyAsync($"I wasn't able to retrieve data from API!!!Try again later!!!");
+                await messageLoading.DeleteAsync();
+                await this.Context.Client.GetUser("TSiTaS", "1984").SendMessageAsync($"{this.Context.User.Username} : '{this.Context.Message}' resulted to : {ex.Message}");
+
+                throw ex;
+            }           
+
+            var dict = new Dictionary<string, double>();
+            foreach (var player in players)
+            {
+                var yazometerGear = YazHelper.GetYazometerToons(player);
+                var yazometerZeta = YazHelper.GetYazometerZeta(player);
+                //var yazometerShips = YazHelper.GetYazometerShips(player);
+
+                dict.Add(player.PlayerName, yazometerGear.Sum(p => p.Score) + yazometerZeta.Sum(p => p.Score) /*+ yazometerShips.Sum(p=>p.Score)*/);
+            }
+
+            var retStr = $"```css\nYAZometer Report for guild {players.FirstOrDefault().GuildName} \n```";
+            foreach (var row in dict.OrderByDescending(p => p.Value))
+            {
+                retStr += $"\n{((row.Value * 100) / YazHelper.GetTotalPoints).ToString("#.##")} - {row.Key} ";
+            }
+            retStr += $"\n**Average score** : {((dict.Sum(p => p.Value) * 100) / (dict.Count * YazHelper.GetTotalPoints)).ToString("#.##") }%";
+
+
+            await ReplyAsync($"{retStr}");
+            await messageLoading.DeleteAsync();
+        }
+
         //[Command("guildCharacter", RunMode = RunMode.Async)]
         //[Summary("Get report for specific character in the specified guild")]
         //[Remarks("*guildCharacter {guildAlias or guildId} {characterAlias}*")]

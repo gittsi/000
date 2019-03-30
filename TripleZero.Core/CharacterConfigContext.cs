@@ -20,19 +20,29 @@ namespace TripleZero.Core
             _mapper = mapper;
         }
 
+        public CharacterConfigContext(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         public async Task<List<CharacterConfig>> GetCharactersConfig()
         {
             List<CharacterConfig> charactersConfig;
 
             string functionName = "GetCharacterConfig";
             string key = "get";
-            var objCache = _cacheClient.GetDataFromRepositoryCache(functionName, key);
-            if (objCache != null)
+
+            if (_cacheClient != null)
             {
-                charactersConfig = (List<CharacterConfig>)objCache;
-                charactersConfig.ForEach(p=>p.LoadedFromCache = true);
-                return charactersConfig;
+                var objCache = _cacheClient.GetDataFromRepositoryCache(functionName, key);
+                if (objCache != null)
+                {
+                    charactersConfig = (List<CharacterConfig>)objCache;
+                    charactersConfig.ForEach(p => p.LoadedFromCache = true);
+                    return charactersConfig;
+                }
             }
+            
 
             var repo = new CharacterRepository(_mapper);
             charactersConfig =  await repo.GetCharacters();
@@ -40,7 +50,7 @@ namespace TripleZero.Core
             //load to cache
             try
             {
-                var b = await _cacheClient.AddToRepositoryCache(functionName, key, charactersConfig, 120);
+                if (_cacheClient != null) await _cacheClient.AddToRepositoryCache(functionName, key, charactersConfig, 120);
             }
             catch (Exception ex)
             {

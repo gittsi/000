@@ -34,6 +34,17 @@ namespace TripleZero.Repository.MongoDBRepository
             return data;
         }
 
+        public async Task<List<T>> GetByFilter(string collectionName, FilterDefinition<TDto> filter, ProjectionDefinition<TDto> projection)
+        {
+            var collection = _db.GetCollection<TDto>(collectionName);
+            var options = new FindOptions<TDto> { Projection = projection };
+
+            var dataDto = await collection.FindAsync<TDto>(filter, options).Result.ToListAsync();
+            var data = _mapper.Map<List<T>>(dataDto);
+
+            return data;
+        }
+
         public async Task<List<T>> GetByFilter(string collectionName, FilterDefinition<TDto> filter)
         {
             var collection = _db.GetCollection<TDto>(collectionName);

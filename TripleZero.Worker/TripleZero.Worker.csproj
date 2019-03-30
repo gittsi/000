@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SWGoH.Model\SWGoH.Model.csproj" />
+    <ProjectReference Include="..\TripleZero.Core\TripleZero.Core.csproj" />
     <ProjectReference Include="..\TripleZero.Repository\TripleZero.Repository.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -30,9 +31,18 @@ namespace TripleZero.Repository.MongoDBRepository
 
         public async Task<GuildConfig> GetGuildConfigByAlias(string alias)
         {
-            var filter = Builders<GuildConfigDto>.Filter.Eq("Aliases", alias);
-            var result = await new DocumentRepository<GuildConfig, GuildConfigDto>(_mongoDBConnectionHelper, _mapper).GetByFilter(this.CollectionName,filter);
-            return result.FirstOrDefault();            
+            try
+            {
+                var filter = Builders<GuildConfigDto>.Filter.Eq("Aliases", alias);
+                var result = await new DocumentRepository<GuildConfig, GuildConfigDto>(_mongoDBConnectionHelper, _mapper).GetByFilter(this.CollectionName, filter);
+                return result.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
+                 
         }
 
         public async Task<GuildConfig> GetGuildConfigById(string id)
